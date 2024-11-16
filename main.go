@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/enuesaa/taskrun/internal/repository"
-	"github.com/enuesaa/taskrun/internal/router"
+	"github.com/enuesaa/taskhop/internal/repository"
+	"github.com/enuesaa/taskhop/internal/router"
 )
 
 func main() {

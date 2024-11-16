@@ -1,7 +1,8 @@
 package router
 
 import (
-	"github.com/enuesaa/taskrun/internal/repository"
+	"github.com/enuesaa/taskhop/internal/repository"
+	"github.com/enuesaa/taskhop/internal/routegql"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -15,6 +16,7 @@ func New(repos repository.Repos) *echo.Echo {
 	}))
 
 	// routes
+	app.Any("/graphql", routegql.Handle(repos))
 
 	app.HideBanner = true
 	app.HidePort = true

@@ -2,45 +2,11 @@
 
 package schema
 
-type Config struct {
-	BaseURL string `json:"baseUrl"`
-}
-
-type Header struct {
-	Name  string `json:"name"`
-	Value string `json:"value"`
-}
-
-type HeaderInput struct {
-	Name  string `json:"name"`
-	Value string `json:"value"`
-}
-
-type Invocation struct {
-	ID              string    `json:"id"`
-	Status          int       `json:"status"`
-	Method          string    `json:"method"`
-	URL             string    `json:"url"`
-	RequestHeaders  []*Header `json:"requestHeaders"`
-	ResponseHeaders []*Header `json:"responseHeaders"`
-	RequestBody     string    `json:"requestBody"`
-	ResponseBody    string    `json:"responseBody"`
-	Started         string    `json:"started"`
-	Received        string    `json:"received"`
-}
-
-type Mutation struct {
+type Health struct {
+	Time string `json:"time"`
+	Ok   bool   `json:"ok"`
+	Code string `json:"code"`
 }
 
 type Query struct {
-}
-
-type ServerInvocationInput struct {
-	Method         string         `json:"method"`
-	URL            string         `json:"url"`
-	RequestHeaders []*HeaderInput `json:"requestHeaders,omitempty"`
-	RequestBody    string         `json:"requestBody"`
-}
-
-type Subscription struct {
 }
