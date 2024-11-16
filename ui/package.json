@@ -9,6 +9,7 @@
 		"format": "prettier --write src"
 	},
 	"devDependencies": {
+		"@graphql-codegen/cli": "^5.0.3",
 		"@sveltejs/adapter-static": "^3.0.6",
 		"@sveltejs/kit": "^2.7.4",
 		"@sveltejs/vite-plugin-svelte": "4.0.0",
@@ -25,6 +26,7 @@
 	},
 	"dependencies": {
 		"@tanstack/svelte-query": "^5.59.16",
+		"@urql/svelte": "^4.2.2",
 		"lucide-svelte": "^0.454.0"
 	},
 	"prettier": {
