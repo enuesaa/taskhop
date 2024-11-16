@@ -10,12 +10,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.23'
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-
       - uses: pnpm/action-setup@v4
         with:
           version: '9'
+
       - run: pnpm install
         working-directory: ./ui
+      - run: pnpm build
+        working-directory: ./ui
+
+      - run: go install
+      - run: go test ./...
