@@ -1,0 +1,17 @@
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type Query {
+  getConfig: Config!
+}
+
+type Mutation {
+  makeServerInvocation(input: ServerInvocationInput!): Boolean!
+}
+
+type Subscription {
+  subscribeInvocations: [Invocation!]!
+}

@@ -1,0 +1,17 @@
+# run `go run github.com/99designs/gqlgen generate`
+
+# see https://tech.layerx.co.jp/entry/2021/10/22/171242
+# see https://qiita.com/__m/items/e4df77e5f58f862db644
+# see https://github.com/stashapp/stash-box
+# see https://www.ragate.co.jp/blog/articles/6018
+
+schema:
+  - 'gql/*.graphql'
+
+exec:
+  filename: internal/routegql/exec.go
+  package: routegql
+
+model:
+  filename: internal/routegql/schema/main.go
+  package: schema
