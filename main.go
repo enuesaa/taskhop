@@ -1,15 +1,17 @@
 package main
 
 import (
-	"net/http"
-	
-	"github.com/labstack/echo/v4"
+	"log"
+
+	"github.com/enuesaa/taskrun/internal/repository"
+	"github.com/enuesaa/taskrun/internal/router"
 )
 
 func main() {
-	e := echo.New()
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello")
-	})
-	e.Logger.Fatal(e.Start(":1323"))
+	repos := repository.New()
+	app := router.New(repos)
+
+	if err := app.Start(":3000"); err != nil {
+		log.Fatal(err)
+	}
 }
