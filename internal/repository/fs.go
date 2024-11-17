@@ -4,19 +4,18 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"time"
 )
 
 type FsRepositoryInterface interface {
 	IsExist(path string) bool
 	IsDir(path string) (bool, error)
-	GetModTime(path string) (time.Time, error)
-	IsBrokenSymlink(path string) (bool, error)
 	CreateDir(path string) error
+	Create(path string, body []byte) error
 	HomeDir() (string, error)
 	WorkDir() (string, error)
 	Remove(path string) error
-	CopyFile(srcPath string, dstPath string) error
+	Read(path string) ([]byte, error)
+	ListDirs(path string) ([]string, error)
 	ListFiles(path string) ([]string, error)
 }
 type FsRepository struct{}
@@ -36,33 +35,20 @@ func (repo *FsRepository) IsDir(path string) (bool, error) {
 	return f.IsDir(), nil
 }
 
-func (repo *FsRepository) GetModTime(path string) (time.Time, error) {
-	f, err := os.Stat(path)
-	if err != nil {
-		return time.Now(), err
-	}
-	return f.ModTime(), nil
-}
-
-func (repo *FsRepository) IsBrokenSymlink(path string) (bool, error) {
-	f, err := os.Lstat(path)
-	if err != nil {
-		return false, err
-	}
-
-	// bitwise AND
-	if f.Mode()&os.ModeSymlink != os.ModeSymlink {
-		// Not a symlink
-		return false, nil
-	}
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return true, nil
-	}
-	return false, nil
-}
-
 func (repo *FsRepository) CreateDir(path string) error {
 	return os.MkdirAll(path, os.ModePerm)
+}
+
+func (repo *FsRepository) Create(path string, body []byte) error {
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	if _, err := file.Write(body); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (repo *FsRepository) HomeDir() (string, error) {
@@ -77,38 +63,40 @@ func (repo *FsRepository) Remove(path string) error {
 	return os.RemoveAll(path)
 }
 
-func (repo *FsRepository) CopyFile(srcPath string, dstPath string) error {
-	if err := repo.CreateDir(filepath.Dir(dstPath)); err != nil {
-		return err
-	}
-
-	srcF, err := os.Open(srcPath)
+func (repo *FsRepository) Read(path string) ([]byte, error) {
+	f, err := os.Open(path)
 	if err != nil {
-		return err
+		return make([]byte, 0), err
 	}
-	defer srcF.Close()
+	defer f.Close()
+	return io.ReadAll(f)
+}
 
-	dstF, err := os.Create(dstPath)
-	if err != nil {
-		return err
-	}
-	defer dstF.Close()
-
-	_, err = io.Copy(dstF, srcF)
-	return err
+func (repo *FsRepository) ListDirs(path string) ([]string, error) {
+	list := make([]string, 0)
+	err := filepath.Walk(path, func(fpath string, file os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if file.IsDir() {
+			list = append(list, fpath)
+		}
+		return nil
+	})
+	return list, err
 }
 
 func (repo *FsRepository) ListFiles(path string) ([]string, error) {
-	entries, err := os.ReadDir(path)
-	if err != nil {
-		return []string{}, err
-	}
-	filenames := make([]string, 0)
-	for _, entry := range entries {
-		if entry.Name() == ".git" {
-			continue
+	list := make([]string, 0)
+	err := filepath.Walk(path, func(fpath string, file os.FileInfo, err error) error {
+		if err != nil {
+			return err
 		}
-		filenames = append(filenames, filepath.Join(path, entry.Name()))
-	}
-	return filenames, nil
+		if file.IsDir() {
+			return nil
+		}
+		list = append(list, fpath)
+		return nil
+	})
+	return list, err
 }
