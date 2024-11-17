@@ -1,7 +1,17 @@
 schema {
   query: Query
+  mutation: Mutation
+  subscription: Subscription
 }
 
 type Query {
   getHealth: Health!
+}
+
+type Mutation {
+  runCmd(input: RunCmdInput!): Boolean!
+}
+
+type Subscription {
+  subscribeRunCmdOutput: RunCmdOutput!
 }

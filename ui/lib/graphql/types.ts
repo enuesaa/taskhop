@@ -21,7 +21,31 @@ export type Health = {
 	time: Scalars['String']['output']
 }
 
+export type Mutation = {
+	__typename?: 'Mutation'
+	runCmd: Scalars['Boolean']['output']
+}
+
+export type MutationRunCmdArgs = {
+	input: RunCmdInput
+}
+
 export type Query = {
 	__typename?: 'Query'
 	getHealth: Health
+}
+
+export type RunCmdInput = {
+	cmd: Scalars['String']['input']
+	memo: Scalars['String']['input']
+}
+
+export type RunCmdOutput = {
+	__typename?: 'RunCmdOutput'
+	output: Scalars['String']['output']
+}
+
+export type Subscription = {
+	__typename?: 'Subscription'
+	subscribeRunCmdOutput: RunCmdOutput
 }

@@ -8,5 +8,20 @@ type Health struct {
 	Code string `json:"code"`
 }
 
+type Mutation struct {
+}
+
 type Query struct {
+}
+
+type RunCmdInput struct {
+	Memo string `json:"memo"`
+	Cmd  string `json:"cmd"`
+}
+
+type RunCmdOutput struct {
+	Output string `json:"output"`
+}
+
+type Subscription struct {
 }

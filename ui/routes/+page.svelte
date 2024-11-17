@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RunCmd from './RunCmd.svelte'
 	import { getHealth } from '$lib/graphql/health'
 
 	const health = getHealth()
@@ -8,3 +9,5 @@ a
 {#if $health.isSuccess}
 	{$health.data.code}
 {/if}
+
+<RunCmd />

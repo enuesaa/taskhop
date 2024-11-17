@@ -1,11 +1,7 @@
 import { type Config } from 'tailwindcss'
 
 export default {
-	content: [
-		'routes/**/*.svelte',
-		'lib/**/*.svelte',
-		'app.html',
-	],
+	content: ['routes/**/*.svelte', 'lib/**/*.svelte', 'app.html'],
 	theme: {
 		colors: {
 			white: '#fafafa',
