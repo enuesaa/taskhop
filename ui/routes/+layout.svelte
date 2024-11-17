@@ -6,10 +6,6 @@
 	const queryClient = new QueryClient()
 </script>
 
-<svelte:head>
-	<title>my-svelte-template</title>
-</svelte:head>
-
 <QueryClientProvider client={queryClient}>
 	<Header />
 	<main class="container mx-auto">

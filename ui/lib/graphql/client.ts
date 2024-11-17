@@ -1,4 +1,4 @@
-import { Client, createRequest, fetchExchange, type OperationResult, gql } from '@urql/svelte'
+import { Client, createRequest, fetchExchange, gql } from '@urql/svelte'
 import { PUBLIC_GRAPHQL_ENDPOINT } from '$env/static/public'
 import { createMutation, createQuery, useQueryClient } from '@tanstack/svelte-query'
 

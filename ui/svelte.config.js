@@ -9,5 +9,10 @@ export default {
 			pages: 'dist',
 			fallback: '404.html',
 		}),
+		files: {
+			lib: 'lib',
+			routes: 'routes',
+			appTemplate: 'app.html',
+		},
 	},
 }

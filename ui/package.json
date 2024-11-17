@@ -4,9 +4,10 @@
 	"private": true,
 	"license": "MIT",
 	"scripts": {
-		"dev": "rm -rf .svelte-kit && svelte-kit sync && vite dev --port 3000",
+		"dev": "rm -rf .svelte-kit && svelte-kit sync && vite dev --port 3001",
 		"build": "vite build",
-		"format": "prettier --write src"
+		"format": "prettier '**/*.{svelte,js,ts,mjs,json}' --write",
+		"gen": "graphql-codegen --config graphql.codegen.ts"
 	},
 	"devDependencies": {
 		"@graphql-codegen/cli": "^5.0.3",
