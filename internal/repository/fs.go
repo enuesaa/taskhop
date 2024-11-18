@@ -18,11 +18,6 @@ type FsRepositoryInterface interface {
 	ListDirs(path string) ([]string, error)
 	ListFiles(path string) ([]string, error)
 }
-
-func newFsRepository() FsRepository {
-	return FsRepository{}
-}
-
 type FsRepository struct{}
 
 func (repo *FsRepository) IsExist(path string) bool {
