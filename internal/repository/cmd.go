@@ -9,6 +9,11 @@ type CmdRepositoryInterface interface {
 	Exec(writer io.Writer, workdir string, command string, args []string) (*exec.Cmd, error)
 	Kill(cmd *exec.Cmd) error
 }
+
+func newCmdRepository() CmdRepository {
+	return CmdRepository{}
+}
+
 type CmdRepository struct{}
 
 func (repo *CmdRepository) Exec(writer io.Writer, workdir string, command string, args []string) (*exec.Cmd, error) {

@@ -4,6 +4,7 @@ go 1.23.0
 
 require (
 	github.com/99designs/gqlgen v0.17.56
+	github.com/google/wire v0.6.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/vektah/gqlparser/v2 v2.5.19
