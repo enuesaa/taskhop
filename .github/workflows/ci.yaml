@@ -4,27 +4,35 @@ on:
   push:
     branches:
       - '**'
+  workflow_dispatch:
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/env
 
-      - uses: actions/setup-go@v4
-        with:
-          go-version: '1.23'
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - uses: pnpm/action-setup@v4
-        with:
-          version: '9'
-
-      - run: pnpm install
-        working-directory: ./ui
-      - run: pnpm build
-        working-directory: ./ui
-
+      - run: go generate ./...
       - run: go install
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/env
+      - run: go generate ./...
       - run: go test ./...
+
+  staticcheck:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/env
+      - run: go install honnef.co/go/tools/cmd/staticcheck@latest
+
+      - run: go generate ./...
+      - run: echo '# staticcheck' >> $GITHUB_STEP_SUMMARY
+      - run: staticcheck ./... >> $GITHUB_STEP_SUMMARY
