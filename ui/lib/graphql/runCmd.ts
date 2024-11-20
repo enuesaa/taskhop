@@ -1,4 +1,4 @@
-import { get, mutate } from '$lib/graphql/client'
+import { mutate } from '$lib/graphql/client'
 import type { MutationRunCmdArgs } from './types'
 
 const createQuery = `mutation ($input: RunCmdInput!) {
