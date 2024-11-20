@@ -2,16 +2,20 @@ package main
 
 import (
 	"log"
+	"net/http"
 
-	"github.com/enuesaa/taskhop/internal/repository"
-	"github.com/enuesaa/taskhop/internal/router"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 func main() {
-	repos := repository.New()
-	app := router.New(repos)
+	app := chi.NewRouter()
+	app.Use(middleware.Logger)
+	app.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Hello World!"))
+	})
 
-	if err := app.Start(":3000"); err != nil {
-		log.Fatal(err)
+	if err := http.ListenAndServe(":3000", app); err != nil {
+		log.Fatalf("Error: %s", err.Error())
 	}
 }
