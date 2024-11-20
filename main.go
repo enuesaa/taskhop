@@ -14,9 +14,9 @@ func main() {
 	app := router.New(repos)
 
 	ctx := context.Background()
-	ctx = context.WithValue(ctx, "a%s", "b")
 
-	repos.Log.Info(ctx, "a%s", "b")
+	ctx = repos.Log.Use(ctx, "a", "b")
+	repos.Log.Info(ctx, "aa")
 
 	if err := http.ListenAndServe(":3000", app); err != nil {
 		log.Fatalf("Error: %s", err.Error())
