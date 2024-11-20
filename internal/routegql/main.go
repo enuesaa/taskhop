@@ -6,16 +6,14 @@ import (
 
 	"github.com/enuesaa/taskhop/internal/repository"
 	"github.com/gorilla/websocket"
-	"github.com/labstack/echo/v4"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/handler/extension"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 )
 
-func Handle(repos repository.Repos) echo.HandlerFunc {
+func Handle(repos repository.Repos) http.HandlerFunc {
 	// see https://github.com/99designs/gqlgen/issues/1664
-	// see https://github.com/99designs/gqlgen/issues/2826
 	gqhandle := handler.New(NewExecutableSchema(Config{
 		Resolvers: &Resolver{
 			Repos: repos,
@@ -35,5 +33,5 @@ func Handle(repos repository.Repos) echo.HandlerFunc {
 	})
 	gqhandle.Use(extension.Introspection{})
 
-	return echo.WrapHandler(gqhandle)
+	return gqhandle.ServeHTTP
 }

@@ -1,10 +1,11 @@
 package routegqlplayground
 
 import (
+	"net/http"
+
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/labstack/echo/v4"
 )
 
-func Handle() echo.HandlerFunc {
-	return echo.WrapHandler(playground.Handler("graphql", "/graphql"))
+func Handle() http.HandlerFunc {
+	return playground.Handler("graphql", "/graphql")
 }

@@ -8,7 +8,7 @@ type Repos struct {
 
 func New() Repos {
 	return Repos{
-		Fs: &FsRepository{},
+		Fs:  &FsRepository{},
 		Cmd: &CmdRepository{},
 		Log: &LogRepository{},
 	}

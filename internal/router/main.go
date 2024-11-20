@@ -4,23 +4,26 @@ import (
 	"github.com/enuesaa/taskhop/internal/repository"
 	"github.com/enuesaa/taskhop/internal/routegql"
 	"github.com/enuesaa/taskhop/internal/routegqlplayground"
+
 	"github.com/enuesaa/taskhop/ui"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
 )
 
-func New(repos repository.Repos) *echo.Echo {
-	app := echo.New()
+func New(repos repository.Repos) *chi.Mux {
+	app := chi.NewRouter()
 
 	// middleware
-	app.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"*"},
+	app.Use(middleware.Logger)
+	app.Use(cors.Handler(cors.Options{
+		AllowedOrigins: []string{"*"},
 	}))
 
 	// routes
-	app.Any("/graphql", routegql.Handle(repos))
-	app.GET("/graphql/playground", routegqlplayground.Handle())
-	app.Any("/*", ui.Handle())
+	app.HandleFunc("/graphql", routegql.Handle(repos))
+	app.Get("/graphql/playground", routegqlplayground.Handle())
+	app.HandleFunc("/*", ui.Handle())
 
 	return app
 }
