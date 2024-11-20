@@ -1,11 +1,7 @@
 version: 3
 
 tasks:
-  gengql:server:
+  gengql:
     cmds:
       - go run github.com/99designs/gqlgen generate
-
-  gengql:ui:
-    dir: ./ui
-    cmds:
-      - pnpm gengql
+      - cd ui && pnpm gengql

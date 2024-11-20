@@ -4,7 +4,7 @@
 	const runCmd = useRunCmd()
 
 	async function handleClick() {
-		await $runCmd.mutateAsync({input: { cmd: 'ls -la', memo: '' }})
+		await $runCmd.mutateAsync({ input: { cmd: 'ls -la', memo: '' } })
 	}
 </script>
 
