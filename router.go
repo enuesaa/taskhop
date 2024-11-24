@@ -1,14 +1,9 @@
 package main
 
 import (
-	"context"
-	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/enuesaa/taskhop/gql"
-	"github.com/enuesaa/taskhop/internal/logging"
-	"go.uber.org/fx"
 
 	"github.com/enuesaa/taskhop/ui"
 	"github.com/go-chi/chi/v5"
@@ -16,45 +11,31 @@ import (
 	"github.com/go-chi/cors"
 )
 
-func NewHandler(gqhandle http.HandlerFunc, log logging.LogRepositoryInterface) http.Handler {
-	app := chi.NewRouter()
+func NewServer(gqhandle http.HandlerFunc) *http.Server {
+	router := chi.NewRouter()
 
 	// middleware
-	app.Use(func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			start := time.Now()
-			next.ServeHTTP(w, r)
-			log.Info(r.Context(), "%s %s %s", r.Method, r.URL.Path, time.Since(start))
-		})
-	})
-	app.Use(middleware.Recoverer)
-	app.Use(middleware.NoCache)
-	app.Use(cors.Handler(cors.Options{
+	// app.Use(func(next http.Handler) http.Handler {
+	// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	// 		start := time.Now()
+	// 		next.ServeHTTP(w, r)
+	// 		log.Info(r.Context(), "%s %s %s", r.Method, r.URL.Path, time.Since(start))
+	// 	})
+	// })
+	router.Use(middleware.Recoverer)
+	router.Use(middleware.NoCache)
+	router.Use(cors.Handler(cors.Options{
 		AllowedOrigins: []string{"*"},
 	}))
 
 	// routes
-	app.HandleFunc("/graphql", gqhandle)
-	app.Get("/graphql/playground", gql.HandlePlayground())
-	app.HandleFunc("/*", ui.Handle())
+	router.HandleFunc("/graphql", gqhandle)
+	router.Get("/graphql/playground", gql.HandlePlayground())
+	router.HandleFunc("/*", ui.Handle())
 
-	return app
-}
-
-func NewServer(lc fx.Lifecycle, handler http.Handler) *http.Server {
 	srv := &http.Server{
 		Addr: ":3000",
-		Handler: handler,
+		Handler: router,
 	}
-	lc.Append(fx.Hook{
-		OnStart: func(ctx context.Context) error {
-			fmt.Println("Starting HTTP server")
-			go srv.ListenAndServe()
-			return nil
-		},
-		OnStop: func(ctx context.Context) error {
-			return srv.Shutdown(ctx)
-		},
-	})
 	return srv
 }
