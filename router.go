@@ -2,8 +2,10 @@ package main
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/enuesaa/taskhop/gql"
+	"github.com/enuesaa/taskhop/internal/logging"
 
 	"github.com/enuesaa/taskhop/ui"
 	"github.com/go-chi/chi/v5"
@@ -11,17 +13,17 @@ import (
 	"github.com/go-chi/cors"
 )
 
-func NewServer(gqhandle http.HandlerFunc) *http.Server {
+func NewServer(gqhandle http.HandlerFunc, logi logging.I) *http.Server {
 	router := chi.NewRouter()
 
 	// middleware
-	// app.Use(func(next http.Handler) http.Handler {
-	// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-	// 		start := time.Now()
-	// 		next.ServeHTTP(w, r)
-	// 		log.Info(r.Context(), "%s %s %s", r.Method, r.URL.Path, time.Since(start))
-	// 	})
-	// })
+	router.Use(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			start := time.Now()
+			next.ServeHTTP(w, r)
+			logi.Info(r.Context(), "%s %s %s", r.Method, r.URL.Path, time.Since(start))
+		})
+	})
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.NoCache)
 	router.Use(cors.Handler(cors.Options{
