@@ -1,10 +1,10 @@
-package routegql
+package gql
 
 import (
 	"github.com/enuesaa/taskhop/internal/repository"
-	"github.com/enuesaa/taskhop/internal/routegql/mutation"
-	"github.com/enuesaa/taskhop/internal/routegql/query"
-	"github.com/enuesaa/taskhop/internal/routegql/subscription"
+	"github.com/enuesaa/taskhop/gql/mutation"
+	"github.com/enuesaa/taskhop/gql/query"
+	"github.com/enuesaa/taskhop/gql/subscription"
 )
 
 type Resolver struct {

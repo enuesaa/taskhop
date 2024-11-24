@@ -4,18 +4,18 @@ import (
 	"context"
 	"time"
 
-	"github.com/enuesaa/taskhop/internal/routegql/schema"
+	"github.com/enuesaa/taskhop/gql/model"
 )
 
-func (r *SubscriptionResolver) SubscribeRunCmdOutput(ctx context.Context) (<-chan *schema.RunCmdOutput, error) {
-	ch := make(chan *schema.RunCmdOutput)
+func (r *SubscriptionResolver) SubscribeRunCmdOutput(ctx context.Context) (<-chan *model.RunCmdOutput, error) {
+	ch := make(chan *model.RunCmdOutput)
 
 	go func() {
 		defer close(ch)
 		for {
 			time.Sleep(1 * time.Second)
 
-			res := &schema.RunCmdOutput{
+			res := &model.RunCmdOutput{
 				Output: "text",
 			}
 			select {

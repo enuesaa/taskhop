@@ -1,4 +1,4 @@
-package routegql
+package gql
 
 import (
 	"net/http"

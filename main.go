@@ -6,19 +6,18 @@ import (
 	"net/http"
 
 	"github.com/enuesaa/taskhop/internal/repository"
-	"github.com/enuesaa/taskhop/internal/router"
 )
 
 func main() {
 	repos := repository.New()
-	app := router.New(repos)
+	router := NewRouter(repos)
 
 	ctx := context.Background()
 
 	ctx = repos.Log.Use(ctx, "a", "b")
 	repos.Log.Info(ctx, "aa")
 
-	if err := http.ListenAndServe(":3000", app); err != nil {
+	if err := http.ListenAndServe(":3000", router); err != nil {
 		log.Fatalf("Error: %s", err.Error())
 	}
 }

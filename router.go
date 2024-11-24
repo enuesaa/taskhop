@@ -1,12 +1,11 @@
-package router
+package main
 
 import (
 	"net/http"
 	"time"
 
 	"github.com/enuesaa/taskhop/internal/repository"
-	"github.com/enuesaa/taskhop/internal/routegql"
-	"github.com/enuesaa/taskhop/internal/routegqlplayground"
+	"github.com/enuesaa/taskhop/gql"
 
 	"github.com/enuesaa/taskhop/ui"
 	"github.com/go-chi/chi/v5"
@@ -14,7 +13,7 @@ import (
 	"github.com/go-chi/cors"
 )
 
-func New(repos repository.Repos) *chi.Mux {
+func NewRouter(repos repository.Repos) *chi.Mux {
 	app := chi.NewRouter()
 
 	// middleware
@@ -32,8 +31,8 @@ func New(repos repository.Repos) *chi.Mux {
 	}))
 
 	// routes
-	app.HandleFunc("/graphql", routegql.Handle(repos))
-	app.Get("/graphql/playground", routegqlplayground.Handle())
+	app.HandleFunc("/graphql", gql.Handle(repos))
+	app.Get("/graphql/playground", gql.HandlePlayground())
 	app.HandleFunc("/*", ui.Handle())
 
 	return app
