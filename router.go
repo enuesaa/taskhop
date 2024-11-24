@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/enuesaa/taskhop/gql"
-	"github.com/enuesaa/taskhop/internal/repository"
+	"github.com/enuesaa/taskhop/internal/logging"
 	"go.uber.org/fx"
 
 	"github.com/enuesaa/taskhop/ui"
@@ -16,7 +16,7 @@ import (
 	"github.com/go-chi/cors"
 )
 
-func NewHandler(repos repository.Repos) http.Handler {
+func NewHandler(gqhandle http.HandlerFunc, log logging.LogRepositoryInterface) http.Handler {
 	app := chi.NewRouter()
 
 	// middleware
@@ -24,7 +24,7 @@ func NewHandler(repos repository.Repos) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			start := time.Now()
 			next.ServeHTTP(w, r)
-			repos.Log.Info(r.Context(), "%s %s %s", r.Method, r.URL.Path, time.Since(start))
+			log.Info(r.Context(), "%s %s %s", r.Method, r.URL.Path, time.Since(start))
 		})
 	})
 	app.Use(middleware.Recoverer)
@@ -34,7 +34,7 @@ func NewHandler(repos repository.Repos) http.Handler {
 	}))
 
 	// routes
-	app.HandleFunc("/graphql", gql.Handle(repos))
+	app.HandleFunc("/graphql", gqhandle)
 	app.Get("/graphql/playground", gql.HandlePlayground())
 	app.HandleFunc("/*", ui.Handle())
 

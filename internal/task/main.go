@@ -1,9 +1,9 @@
 package task
 
-import "github.com/enuesaa/taskhop/internal/repository"
+import "github.com/enuesaa/taskhop/internal/fs"
 
-func GetReadme(repos repository.Repos) (string, error) {
-	content, err := repos.Fs.Read("README.md")
+func GetReadme(fsrepo fs.FsRepositoryInterface) (string, error) {
+	content, err := fsrepo.Read("README.md")
 	if err != nil {
 		return "", err
 	}

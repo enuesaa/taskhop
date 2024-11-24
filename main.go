@@ -1,22 +1,24 @@
 package main
 
 import (
-	// "log"
-	// "net/http"
-
-	// "github.com/enuesaa/taskhop/internal/repository"
 	"net/http"
 
-	"github.com/enuesaa/taskhop/internal/repository"
+	"github.com/enuesaa/taskhop/gql"
+	"github.com/enuesaa/taskhop/internal/cmd"
+	"github.com/enuesaa/taskhop/internal/fs"
+	"github.com/enuesaa/taskhop/internal/logging"
 	"go.uber.org/fx"
 )
 
 func main() {
 	fx.New(
 		fx.Provide(
-			NewServer,
+			logging.New,
+			cmd.New,
+			fs.New,
+			gql.New,
 			NewHandler,
-			repository.New,
+			NewServer,
 		),
 		fx.Invoke(func(*http.Server) {}),
 	).Run()

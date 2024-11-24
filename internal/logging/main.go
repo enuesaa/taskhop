@@ -7,6 +7,10 @@ import (
 	"os"
 )
 
+func New() LogRepositoryInterface {
+	return &LogRepository{}
+}
+
 func init() {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	slog.SetDefault(logger)

@@ -6,6 +6,10 @@ import (
 	"path/filepath"
 )
 
+func New() FsRepositoryInterface {
+	return &FsRepository{}
+}
+
 type FsRepositoryInterface interface {
 	IsExist(path string) bool
 	IsDir(path string) (bool, error)

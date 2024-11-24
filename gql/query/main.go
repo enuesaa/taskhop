@@ -1,9 +1,7 @@
 package query
 
-import (
-	"github.com/enuesaa/taskhop/internal/repository"
-)
+import "github.com/enuesaa/taskhop/internal/fs"
 
 type QueryResolver struct {
-	Repos repository.Repos
+	Fs fs.FsRepositoryInterface
 }

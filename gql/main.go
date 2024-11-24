@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/enuesaa/taskhop/internal/repository"
+	"github.com/enuesaa/taskhop/internal/fs"
 	"github.com/gorilla/websocket"
 
 	"github.com/99designs/gqlgen/graphql/handler"
@@ -12,11 +12,11 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 )
 
-func Handle(repos repository.Repos) http.HandlerFunc {
+func New(fsrepo fs.FsRepositoryInterface) http.HandlerFunc {
 	// see https://github.com/99designs/gqlgen/issues/1664
 	gqhandle := handler.New(NewExecutableSchema(Config{
 		Resolvers: &Resolver{
-			Repos: repos,
+			Fs: fsrepo,
 		},
 	}))
 	gqhandle.AddTransport(transport.Options{})

@@ -9,7 +9,7 @@ import (
 )
 
 func (r *QueryResolver) GetHealth(ctx context.Context) (*model.Health, error) {
-	readme, err := task.GetReadme(r.Repos)
+	readme, err := task.GetReadme(r.Fs)
 	if err != nil {
 		res := model.Health{
 			Ok:   false,
