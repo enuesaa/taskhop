@@ -1,4 +1,4 @@
-package repository
+package fs
 
 import (
 	"io"

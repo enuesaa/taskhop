@@ -1,15 +1,21 @@
 package repository
 
+import (
+	"github.com/enuesaa/taskhop/internal/repository/cmd"
+	"github.com/enuesaa/taskhop/internal/repository/fs"
+	"github.com/enuesaa/taskhop/internal/repository/logging"
+)
+
 type Repos struct {
-	Fs  FsRepositoryInterface
-	Cmd CmdRepositoryInterface
-	Log LogRepositoryInterface
+	Fs  fs.FsRepositoryInterface
+	Cmd cmd.CmdRepositoryInterface
+	Log logging.LogRepositoryInterface
 }
 
 func New() Repos {
 	return Repos{
-		Fs:  &FsRepository{},
-		Cmd: &CmdRepository{},
-		Log: &LogRepository{},
+		Fs:  &fs.FsRepository{},
+		Cmd: &cmd.CmdRepository{},
+		Log: &logging.LogRepository{},
 	}
 }
