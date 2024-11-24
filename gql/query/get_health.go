@@ -5,11 +5,10 @@ import (
 	"time"
 
 	"github.com/enuesaa/taskhop/gql/model"
-	"github.com/enuesaa/taskhop/internal/task"
 )
 
 func (r *QueryResolver) GetHealth(ctx context.Context) (*model.Health, error) {
-	readme, err := task.GetReadme(r.Fs)
+	readme, err := r.Usecase.GetReadme()
 	if err != nil {
 		res := model.Health{
 			Ok:   false,

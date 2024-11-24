@@ -4,16 +4,16 @@ import (
 	"github.com/enuesaa/taskhop/gql/mutation"
 	"github.com/enuesaa/taskhop/gql/query"
 	"github.com/enuesaa/taskhop/gql/subscription"
-	"github.com/enuesaa/taskhop/internal/fs"
+	"github.com/enuesaa/taskhop/internal/usecase"
 )
 
 type Resolver struct {
-	Fs fs.FsRepositoryInterface
+	Usecase usecase.Usecase
 }
 
 func (r *Resolver) Query() QueryResolver {
 	resolver := query.QueryResolver{
-		Fs: r.Fs,
+		Usecase: r.Usecase,
 	}
 	return &resolver
 }
