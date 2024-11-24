@@ -1,11 +1,14 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"net/http"
 	"time"
 
-	"github.com/enuesaa/taskhop/internal/repository"
 	"github.com/enuesaa/taskhop/gql"
+	"github.com/enuesaa/taskhop/internal/repository"
+	"go.uber.org/fx"
 
 	"github.com/enuesaa/taskhop/ui"
 	"github.com/go-chi/chi/v5"
@@ -13,7 +16,7 @@ import (
 	"github.com/go-chi/cors"
 )
 
-func NewRouter(repos repository.Repos) *chi.Mux {
+func NewHandler(repos repository.Repos) http.Handler {
 	app := chi.NewRouter()
 
 	// middleware
@@ -36,4 +39,22 @@ func NewRouter(repos repository.Repos) *chi.Mux {
 	app.HandleFunc("/*", ui.Handle())
 
 	return app
+}
+
+func NewServer(lc fx.Lifecycle, handler http.Handler) *http.Server {
+	srv := &http.Server{
+		Addr: ":3000",
+		Handler: handler,
+	}
+	lc.Append(fx.Hook{
+		OnStart: func(ctx context.Context) error {
+			fmt.Println("Starting HTTP server")
+			go srv.ListenAndServe()
+			return nil
+		},
+		OnStop: func(ctx context.Context) error {
+			return srv.Shutdown(ctx)
+		},
+	})
+	return srv
 }
