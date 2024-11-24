@@ -5,9 +5,8 @@ import (
 	"os/exec"
 )
 
-func (i *Impl) Exec(writer io.Writer, workdir string, command string, args []string) (*exec.Cmd, error) {
-	cmd := exec.Command(command, args...)
-	cmd.Dir = workdir
+func (i *Impl) Exec(writer io.Writer, command string) (*exec.Cmd, error) {
+	cmd := exec.Command("bash", "-c", command)
 
 	cmd.Stdout = writer
 	cmd.Stderr = writer

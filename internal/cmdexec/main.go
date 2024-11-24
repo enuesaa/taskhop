@@ -10,7 +10,11 @@ func New() I {
 }
 
 type I interface {
-	Exec(writer io.Writer, workdir string, command string, args []string) (*exec.Cmd, error)
+	Exec(writer io.Writer, command string) (*exec.Cmd, error)
+	MultiExec(writer io.Writer, commands []string) error
 	Kill(cmd *exec.Cmd) error
 }
 type Impl struct{}
+
+// TODO:
+// おそらく cmd store みたいなのが必要
