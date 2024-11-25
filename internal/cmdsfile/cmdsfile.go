@@ -1,7 +1,7 @@
 package cmdsfile
 
 type CmdsFile struct {
-	Title string `yaml:"title"`
-	Workdir string `yaml:"workdir"`
-	Cmds []string `yaml:"cmds"`
+	Title string `yaml:"title" validate:"required"`
+	Workdir string `yaml:"workdir" validate:"required"`
+	Cmds []string `yaml:"cmds" validate:"required,min=1,dive,required"`
 }

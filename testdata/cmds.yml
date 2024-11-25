@@ -2,6 +2,7 @@
 
 title: Example
 workdir: /workdir
+
 cmds:
   - echo a
   - echo b

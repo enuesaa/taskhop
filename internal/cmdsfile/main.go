@@ -6,6 +6,7 @@ func New() I {
 
 type I interface {
 	Read(filename string) (CmdsFile, error)
+	Validate(cmdsfile CmdsFile) error
 }
 
 type Impl struct {}

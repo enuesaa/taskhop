@@ -16,11 +16,15 @@ import (
 )
 
 func NewCommander() *fx.App {
-	file, err := cmdsfile.New().Read("cmds.example.yml")
+	file, err := cmdsfile.New().Read("testdata/cmds.yml")
 	if err != nil {
 		log.Fatalf("Error: %s", err.Error())
 	}
 	fmt.Printf("%+v\n", file)
+
+	if err := cmdsfile.New().Validate(file); err != nil {
+		log.Fatalf("Error: %s", err.Error())
+	}
 
 	app := fx.New(
 		fx.Provide(
