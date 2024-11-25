@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/enuesaa/taskhop/gql"
+	"github.com/enuesaa/taskhop/internal"
 	"github.com/enuesaa/taskhop/internal/cmdexec"
 	"github.com/enuesaa/taskhop/internal/cmdsfile"
 	"github.com/enuesaa/taskhop/internal/fs"
@@ -29,7 +30,8 @@ func New() *fx.App {
 	app := fx.New(
 		fx.Provide(
 			logging.New,
-			cmdexec.New,
+			cmdexec.Module,
+			internal.NewContainer,
 			fs.New,
 			cmdsfile.New,
 			gql.New,

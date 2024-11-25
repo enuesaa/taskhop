@@ -9,4 +9,4 @@ type I interface {
 	Validate(cmdsfile CmdsFile) error
 }
 
-type Impl struct {}
+type Impl struct{}

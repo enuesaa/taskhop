@@ -10,6 +10,6 @@ type I interface {
 	Register()
 	UnRegister()
 }
-type Impl struct{
+type Impl struct {
 	Has bool
 }

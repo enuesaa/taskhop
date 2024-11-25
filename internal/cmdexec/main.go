@@ -3,10 +3,14 @@ package cmdexec
 import (
 	"io"
 	"os/exec"
+
+	"github.com/enuesaa/taskhop/internal/cmdexec/repository"
 )
 
-func New() I {
-	return &Impl{}
+func New(repo repository.Impl) *Impl {
+	return &Impl{
+		repo: repo,
+	}
 }
 
 type I interface {
@@ -14,7 +18,9 @@ type I interface {
 	MultiExec(writer io.Writer, commands []string) error
 	Kill(cmd *exec.Cmd) error
 }
-type Impl struct{}
+type Impl struct {
+	repo repository.I
+}
 
 // TODO:
 // おそらく cmd store みたいなのが必要
