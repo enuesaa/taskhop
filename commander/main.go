@@ -1,27 +1,37 @@
-package app
+package commander
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/enuesaa/taskhop/gql"
 	"github.com/enuesaa/taskhop/internal/cmdexec"
+	"github.com/enuesaa/taskhop/internal/cmdsfile"
 	"github.com/enuesaa/taskhop/internal/fs"
 	"github.com/enuesaa/taskhop/internal/logging"
 	"github.com/enuesaa/taskhop/internal/usecase"
 	"go.uber.org/fx"
 )
 
-func NewRunner() *fx.App {
-	Polling()
-	fetch()
+func New() *fx.App {
+	file, err := cmdsfile.New().Read("testdata/cmds.yml")
+	if err != nil {
+		log.Fatalf("Error: %s", err.Error())
+	}
+	fmt.Printf("%+v\n", file)
+
+	if err := cmdsfile.New().Validate(file); err != nil {
+		log.Fatalf("Error: %s", err.Error())
+	}
 
 	app := fx.New(
 		fx.Provide(
 			logging.New,
 			cmdexec.New,
 			fs.New,
+			cmdsfile.New,
 			gql.New,
 			usecase.New,
 			NewServer,
