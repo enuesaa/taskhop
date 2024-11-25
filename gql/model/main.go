@@ -18,18 +18,6 @@ type Mutation struct {
 type Query struct {
 }
 
-type RunCmdInput struct {
-	Memo string `json:"memo"`
-	Cmd  string `json:"cmd"`
-}
-
-type RunCmdOutput struct {
-	Output string `json:"output"`
-}
-
-type Subscription struct {
-}
-
 type Task struct {
 	Cmds []string `json:"cmds"`
 }

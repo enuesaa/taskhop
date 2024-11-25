@@ -8,7 +8,6 @@ import (
 	"embed"
 	"errors"
 	"fmt"
-	"io"
 	"strconv"
 	"sync"
 	"sync/atomic"
@@ -42,7 +41,6 @@ type Config struct {
 type ResolverRoot interface {
 	Mutation() MutationResolver
 	Query() QueryResolver
-	Subscription() SubscriptionResolver
 }
 
 type DirectiveRoot struct {
@@ -58,20 +56,11 @@ type ComplexityRoot struct {
 	Mutation struct {
 		Log      func(childComplexity int, input model.LogInput) int
 		Register func(childComplexity int) int
-		RunCmd   func(childComplexity int, input model.RunCmdInput) int
 	}
 
 	Query struct {
 		Health func(childComplexity int) int
 		Task   func(childComplexity int) int
-	}
-
-	RunCmdOutput struct {
-		Output func(childComplexity int) int
-	}
-
-	Subscription struct {
-		SubscribeRunCmdOutput func(childComplexity int) int
 	}
 
 	Task struct {
@@ -80,16 +69,12 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	RunCmd(ctx context.Context, input model.RunCmdInput) (bool, error)
 	Register(ctx context.Context) (bool, error)
 	Log(ctx context.Context, input model.LogInput) (bool, error)
 }
 type QueryResolver interface {
 	Health(ctx context.Context) (*model.Health, error)
 	Task(ctx context.Context) (*model.Task, error)
-}
-type SubscriptionResolver interface {
-	SubscribeRunCmdOutput(ctx context.Context) (<-chan *model.RunCmdOutput, error)
 }
 
 type executableSchema struct {
@@ -151,18 +136,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.Register(childComplexity), true
 
-	case "Mutation.runCmd":
-		if e.complexity.Mutation.RunCmd == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_runCmd_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Mutation.RunCmd(childComplexity, args["input"].(model.RunCmdInput)), true
-
 	case "Query.health":
 		if e.complexity.Query.Health == nil {
 			break
@@ -176,20 +149,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Task(childComplexity), true
-
-	case "RunCmdOutput.output":
-		if e.complexity.RunCmdOutput.Output == nil {
-			break
-		}
-
-		return e.complexity.RunCmdOutput.Output(childComplexity), true
-
-	case "Subscription.subscribeRunCmdOutput":
-		if e.complexity.Subscription.SubscribeRunCmdOutput == nil {
-			break
-		}
-
-		return e.complexity.Subscription.SubscribeRunCmdOutput(childComplexity), true
 
 	case "Task.cmds":
 		if e.complexity.Task.Cmds == nil {
@@ -207,7 +166,6 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	ec := executionContext{opCtx, e, 0, 0, make(chan graphql.DeferredResult)}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputLogInput,
-		ec.unmarshalInputRunCmdInput,
 	)
 	first := true
 
@@ -251,23 +209,6 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 			ctx = graphql.WithUnmarshalerMap(ctx, inputUnmarshalMap)
 			data := ec._Mutation(ctx, opCtx.Operation.SelectionSet)
 			var buf bytes.Buffer
-			data.MarshalGQL(&buf)
-
-			return &graphql.Response{
-				Data: buf.Bytes(),
-			}
-		}
-	case ast.Subscription:
-		next := ec._Subscription(ctx, opCtx.Operation.SelectionSet)
-
-		var buf bytes.Buffer
-		return func(ctx context.Context) *graphql.Response {
-			buf.Reset()
-			data := next(ctx)
-
-			if data == nil {
-				return nil
-			}
 			data.MarshalGQL(&buf)
 
 			return &graphql.Response{
@@ -321,7 +262,7 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 	return introspection.WrapTypeFromDef(ec.Schema(), ec.Schema().Types[name]), nil
 }
 
-//go:embed "schema/health.graphql" "schema/logInput.graphql" "schema/runcmdInput.graphql" "schema/runcmdOutput.graphql" "schema/schema.graphql" "schema/task.graphql"
+//go:embed "schema/health.graphql" "schema/logInput.graphql" "schema/schema.graphql" "schema/task.graphql"
 var sourcesFS embed.FS
 
 func sourceData(filename string) string {
@@ -335,8 +276,6 @@ func sourceData(filename string) string {
 var sources = []*ast.Source{
 	{Name: "schema/health.graphql", Input: sourceData("schema/health.graphql"), BuiltIn: false},
 	{Name: "schema/logInput.graphql", Input: sourceData("schema/logInput.graphql"), BuiltIn: false},
-	{Name: "schema/runcmdInput.graphql", Input: sourceData("schema/runcmdInput.graphql"), BuiltIn: false},
-	{Name: "schema/runcmdOutput.graphql", Input: sourceData("schema/runcmdOutput.graphql"), BuiltIn: false},
 	{Name: "schema/schema.graphql", Input: sourceData("schema/schema.graphql"), BuiltIn: false},
 	{Name: "schema/task.graphql", Input: sourceData("schema/task.graphql"), BuiltIn: false},
 }
@@ -375,38 +314,6 @@ func (ec *executionContext) field_Mutation_log_argsInput(
 	}
 
 	var zeroVal model.LogInput
-	return zeroVal, nil
-}
-
-func (ec *executionContext) field_Mutation_runCmd_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	arg0, err := ec.field_Mutation_runCmd_argsInput(ctx, rawArgs)
-	if err != nil {
-		return nil, err
-	}
-	args["input"] = arg0
-	return args, nil
-}
-func (ec *executionContext) field_Mutation_runCmd_argsInput(
-	ctx context.Context,
-	rawArgs map[string]interface{},
-) (model.RunCmdInput, error) {
-	// We won't call the directive if the argument is null.
-	// Set call_argument_directives_with_null to true to call directives
-	// even if the argument is null.
-	_, ok := rawArgs["input"]
-	if !ok {
-		var zeroVal model.RunCmdInput
-		return zeroVal, nil
-	}
-
-	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNRunCmdInput2githubᚗcomᚋenuesaaᚋtaskhopᚋgqlᚋmodelᚐRunCmdInput(ctx, tmp)
-	}
-
-	var zeroVal model.RunCmdInput
 	return zeroVal, nil
 }
 
@@ -642,61 +549,6 @@ func (ec *executionContext) fieldContext_Health_code(_ context.Context, field gr
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
 		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Mutation_runCmd(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_runCmd(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().RunCmd(rctx, fc.Args["input"].(model.RunCmdInput))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(bool)
-	fc.Result = res
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Mutation_runCmd(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Mutation",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_runCmd_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
 	}
 	return fc, nil
 }
@@ -1024,112 +876,6 @@ func (ec *executionContext) fieldContext_Query___schema(_ context.Context, field
 				return ec.fieldContext___Schema_directives(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Schema", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _RunCmdOutput_output(ctx context.Context, field graphql.CollectedField, obj *model.RunCmdOutput) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_RunCmdOutput_output(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Output, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_RunCmdOutput_output(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "RunCmdOutput",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Subscription_subscribeRunCmdOutput(ctx context.Context, field graphql.CollectedField) (ret func(ctx context.Context) graphql.Marshaler) {
-	fc, err := ec.fieldContext_Subscription_subscribeRunCmdOutput(ctx, field)
-	if err != nil {
-		return nil
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = nil
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Subscription().SubscribeRunCmdOutput(rctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return nil
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return nil
-	}
-	return func(ctx context.Context) graphql.Marshaler {
-		select {
-		case res, ok := <-resTmp.(<-chan *model.RunCmdOutput):
-			if !ok {
-				return nil
-			}
-			return graphql.WriterFunc(func(w io.Writer) {
-				w.Write([]byte{'{'})
-				graphql.MarshalString(field.Alias).MarshalGQL(w)
-				w.Write([]byte{':'})
-				ec.marshalNRunCmdOutput2ᚖgithubᚗcomᚋenuesaaᚋtaskhopᚋgqlᚋmodelᚐRunCmdOutput(ctx, field.Selections, res).MarshalGQL(w)
-				w.Write([]byte{'}'})
-			})
-		case <-ctx.Done():
-			return nil
-		}
-	}
-}
-
-func (ec *executionContext) fieldContext_Subscription_subscribeRunCmdOutput(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Subscription",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "output":
-				return ec.fieldContext_RunCmdOutput_output(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type RunCmdOutput", field.Name)
 		},
 	}
 	return fc, nil
@@ -2979,40 +2725,6 @@ func (ec *executionContext) unmarshalInputLogInput(ctx context.Context, obj inte
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputRunCmdInput(ctx context.Context, obj interface{}) (model.RunCmdInput, error) {
-	var it model.RunCmdInput
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"memo", "cmd"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "memo":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("memo"))
-			data, err := ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Memo = data
-		case "cmd":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cmd"))
-			data, err := ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Cmd = data
-		}
-	}
-
-	return it, nil
-}
-
 // endregion **************************** input.gotpl *****************************
 
 // region    ************************** interface.gotpl ***************************
@@ -3089,13 +2801,6 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Mutation")
-		case "runCmd":
-			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_runCmd(ctx, field)
-			})
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
 		case "register":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_register(ctx, field)
@@ -3225,65 +2930,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 	}
 
 	return out
-}
-
-var runCmdOutputImplementors = []string{"RunCmdOutput"}
-
-func (ec *executionContext) _RunCmdOutput(ctx context.Context, sel ast.SelectionSet, obj *model.RunCmdOutput) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, runCmdOutputImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("RunCmdOutput")
-		case "output":
-			out.Values[i] = ec._RunCmdOutput_output(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var subscriptionImplementors = []string{"Subscription"}
-
-func (ec *executionContext) _Subscription(ctx context.Context, sel ast.SelectionSet) func(ctx context.Context) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, subscriptionImplementors)
-	ctx = graphql.WithFieldContext(ctx, &graphql.FieldContext{
-		Object: "Subscription",
-	})
-	if len(fields) != 1 {
-		ec.Errorf(ctx, "must subscribe to exactly one stream")
-		return nil
-	}
-
-	switch fields[0].Name {
-	case "subscribeRunCmdOutput":
-		return ec._Subscription_subscribeRunCmdOutput(ctx, fields[0])
-	default:
-		panic("unknown field " + strconv.Quote(fields[0].Name))
-	}
 }
 
 var taskImplementors = []string{"Task"}
@@ -3683,25 +3329,6 @@ func (ec *executionContext) marshalNHealth2ᚖgithubᚗcomᚋenuesaaᚋtaskhop�
 func (ec *executionContext) unmarshalNLogInput2githubᚗcomᚋenuesaaᚋtaskhopᚋgqlᚋmodelᚐLogInput(ctx context.Context, v interface{}) (model.LogInput, error) {
 	res, err := ec.unmarshalInputLogInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) unmarshalNRunCmdInput2githubᚗcomᚋenuesaaᚋtaskhopᚋgqlᚋmodelᚐRunCmdInput(ctx context.Context, v interface{}) (model.RunCmdInput, error) {
-	res, err := ec.unmarshalInputRunCmdInput(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNRunCmdOutput2githubᚗcomᚋenuesaaᚋtaskhopᚋgqlᚋmodelᚐRunCmdOutput(ctx context.Context, sel ast.SelectionSet, v model.RunCmdOutput) graphql.Marshaler {
-	return ec._RunCmdOutput(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNRunCmdOutput2ᚖgithubᚗcomᚋenuesaaᚋtaskhopᚋgqlᚋmodelᚐRunCmdOutput(ctx context.Context, sel ast.SelectionSet, v *model.RunCmdOutput) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._RunCmdOutput(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {

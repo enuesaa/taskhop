@@ -1,7 +1,6 @@
 schema {
   query: Query
   mutation: Mutation
-  subscription: Subscription
 }
 
 type Query {
@@ -10,11 +9,6 @@ type Query {
 }
 
 type Mutation {
-  runCmd(input: RunCmdInput!): Boolean!
   register: Boolean!
   log(input: LogInput!): Boolean!
-}
-
-type Subscription {
-  subscribeRunCmdOutput: RunCmdOutput!
 }
