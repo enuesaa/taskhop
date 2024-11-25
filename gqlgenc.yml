@@ -6,13 +6,13 @@ model:
 
 client:
   package: client
-  filename: gql/client/client.go
+  filename: runner/client/client.go
 
 schema:
   - gql/schema/*.graphql
 
 query:
-  - gql/documents/*.graphql
+  - runner/documents/*.graphql
 
 generate:
   clientInterfaceName: GraphQLClient

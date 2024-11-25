@@ -1,11 +1,11 @@
-package runner
+package connect
 
 import (
 	"context"
 	"fmt"
 	"net/http"
 
-	"github.com/enuesaa/taskhop/gql/client"
+	"github.com/enuesaa/taskhop/runner/client"
 )
 
 func checkHealth(address string) error {
@@ -17,7 +17,7 @@ func checkHealth(address string) error {
 		return err
 	}
 
-	if data.Health.Ok != true {
+	if !data.Health.Ok {
 		return fmt.Errorf("commander not healthy")
 	}
 	return nil

@@ -1,6 +1,6 @@
-package runner
+package connect
 
-func connect(address string) error {
+func Connect(address string) error {
 	if err := polling(address); err != nil {
 		return err
 	}

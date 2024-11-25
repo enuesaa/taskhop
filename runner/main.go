@@ -6,11 +6,12 @@ import (
 	"github.com/enuesaa/taskhop/internal/fs"
 	"github.com/enuesaa/taskhop/internal/logging"
 	"github.com/enuesaa/taskhop/internal/usecase"
+	"github.com/enuesaa/taskhop/runner/connect"
 	"go.uber.org/fx"
 )
 
 func New(commanderAddress string) *fx.App {
-	connect(commanderAddress)
+	connect.Connect(commanderAddress)
 
 	app := fx.New(
 		fx.Provide(
