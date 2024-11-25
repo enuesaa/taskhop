@@ -1,9 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["cmds"],
+  "required": ["title", "workdir", "cmds"],
   "additionalProperties": false,
   "properties": {
+    "title": {
+      "type": "string"
+    },
+    "workdir": {
+      "type": "string"
+    },
     "cmds": {
       "type": "array",
       "items": {

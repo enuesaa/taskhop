@@ -47,6 +47,7 @@ func NewCommander() *fx.App {
 				},
 			})
 		}),
+		fx.NopLogger,
 	)
 
 	return app

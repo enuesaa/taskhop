@@ -41,6 +41,7 @@ func NewRunner() *fx.App {
 				},
 			})
 		}),
+		fx.NopLogger,
 	)
 
 	return app
