@@ -7,7 +7,7 @@ import (
 	"github.com/enuesaa/taskhop/gql/model"
 )
 
-func (r *QueryResolver) GetHealth(ctx context.Context) (*model.Health, error) {
+func (r *QueryResolver) Health(ctx context.Context) (*model.Health, error) {
 	readme, err := r.Usecase.GetReadme()
 	if err != nil {
 		res := model.Health{

@@ -12,7 +12,7 @@ func main() {
 		app := commander.New()
 		app.Run()
 	} else {
-		app := runner.New()
+		app := runner.New(cli.Commander)
 		app.Run()
 	}
 }

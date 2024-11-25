@@ -5,7 +5,7 @@ schema {
 }
 
 type Query {
-  getHealth: Health!
+  health: Health!
 }
 
 type Mutation {

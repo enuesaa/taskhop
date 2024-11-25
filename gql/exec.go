@@ -60,7 +60,7 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		GetHealth func(childComplexity int) int
+		Health func(childComplexity int) int
 	}
 
 	RunCmdOutput struct {
@@ -76,7 +76,7 @@ type MutationResolver interface {
 	RunCmd(ctx context.Context, input model.RunCmdInput) (bool, error)
 }
 type QueryResolver interface {
-	GetHealth(ctx context.Context) (*model.Health, error)
+	Health(ctx context.Context) (*model.Health, error)
 }
 type SubscriptionResolver interface {
 	SubscribeRunCmdOutput(ctx context.Context) (<-chan *model.RunCmdOutput, error)
@@ -134,12 +134,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.RunCmd(childComplexity, args["input"].(model.RunCmdInput)), true
 
-	case "Query.getHealth":
-		if e.complexity.Query.GetHealth == nil {
+	case "Query.health":
+		if e.complexity.Query.Health == nil {
 			break
 		}
 
-		return e.complexity.Query.GetHealth(childComplexity), true
+		return e.complexity.Query.Health(childComplexity), true
 
 	case "RunCmdOutput.output":
 		if e.complexity.RunCmdOutput.Output == nil {
@@ -623,8 +623,8 @@ func (ec *executionContext) fieldContext_Mutation_runCmd(ctx context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Query_getHealth(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_getHealth(ctx, field)
+func (ec *executionContext) _Query_health(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_health(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -637,7 +637,7 @@ func (ec *executionContext) _Query_getHealth(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().GetHealth(rctx)
+		return ec.resolvers.Query().Health(rctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -654,7 +654,7 @@ func (ec *executionContext) _Query_getHealth(ctx context.Context, field graphql.
 	return ec.marshalNHealth2ᚖgithubᚗcomᚋenuesaaᚋtaskhopᚋgqlᚋmodelᚐHealth(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Query_getHealth(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Query_health(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Query",
 		Field:      field,
@@ -2842,7 +2842,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Query")
-		case "getHealth":
+		case "health":
 			field := field
 
 			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
@@ -2851,7 +2851,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_getHealth(ctx, field)
+				res = ec._Query_health(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}

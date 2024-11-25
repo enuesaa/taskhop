@@ -4,4 +4,4 @@ tasks:
   gengql:
     cmds:
       - go run github.com/99designs/gqlgen generate
-      - cd ui && pnpm gengql
+      - gqlgenc

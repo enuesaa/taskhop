@@ -9,9 +9,8 @@ import (
 	"go.uber.org/fx"
 )
 
-func New() *fx.App {
-	Polling()
-	fetch()
+func New(commanderAddress string) *fx.App {
+	connect(commanderAddress)
 
 	app := fx.New(
 		fx.Provide(

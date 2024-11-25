@@ -20,39 +20,31 @@ func NewClient(cli clientv2.HttpClient, baseURL string, options *clientv2.Option
 	return &Client{Client: clientv2.NewClient(cli, baseURL, options, interceptors...)}
 }
 
-type GetHealth_GetHealth struct {
-	Ok   bool   "json:\"ok\" graphql:\"ok\""
-	Code string "json:\"code\" graphql:\"code\""
+type GetHealth_Health struct {
+	Ok bool "json:\"ok\" graphql:\"ok\""
 }
 
-func (t *GetHealth_GetHealth) GetOk() bool {
+func (t *GetHealth_Health) GetOk() bool {
 	if t == nil {
-		t = &GetHealth_GetHealth{}
+		t = &GetHealth_Health{}
 	}
 	return t.Ok
 }
-func (t *GetHealth_GetHealth) GetCode() string {
-	if t == nil {
-		t = &GetHealth_GetHealth{}
-	}
-	return t.Code
-}
 
 type GetHealth struct {
-	GetHealth GetHealth_GetHealth "json:\"getHealth\" graphql:\"getHealth\""
+	Health GetHealth_Health "json:\"health\" graphql:\"health\""
 }
 
-func (t *GetHealth) GetGetHealth() *GetHealth_GetHealth {
+func (t *GetHealth) GetHealth() *GetHealth_Health {
 	if t == nil {
 		t = &GetHealth{}
 	}
-	return &t.GetHealth
+	return &t.Health
 }
 
 const GetHealthDocument = `query getHealth {
-	getHealth {
+	health {
 		ok
-		code
 	}
 }
 `

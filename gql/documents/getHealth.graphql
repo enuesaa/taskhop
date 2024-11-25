@@ -1,6 +1,5 @@
 query getHealth {
-	getHealth {
-        ok
-        code    
-	}
+  health {
+    ok
+  }
 }
