@@ -14,6 +14,8 @@ import (
 )
 
 func NewRunner() *fx.App {
+	Polling()
+
 	app := fx.New(
 		fx.Provide(
 			logging.New,
