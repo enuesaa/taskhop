@@ -7,7 +7,6 @@ import (
 	"github.com/enuesaa/taskhop/gql"
 	"github.com/enuesaa/taskhop/internal/logging"
 
-	"github.com/enuesaa/taskhop/ui"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -33,7 +32,6 @@ func NewServer(gqhandle http.HandlerFunc, logi logging.I) *http.Server {
 	// routes
 	router.HandleFunc("/graphql", gqhandle)
 	router.Get("/graphql/playground", gql.HandlePlayground())
-	router.HandleFunc("/*", ui.Handle())
 
 	srv := &http.Server{
 		Addr: ":3000",

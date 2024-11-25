@@ -5,7 +5,10 @@ ubuntu on wsl2 でプログラミングをしたいが windows のキー配置�
 そのため mac から ubuntu にアクセスしたい
 
 ## 方法
-ubuntu on wsl2 でバイナリを実行し、オンラインエディタ (ライクな何か) を立ち上げ、ファイルの編集などできる
+- ubuntu on wsl2 でバイナリを実行 (runner)
+- mac でもバイナリを実行 (commander)
+
+runner は commander のIPアドレスをポーリングして、もし命令がレスポンスされてきたら、実行する
 
 ## Stacks
 ### echo
