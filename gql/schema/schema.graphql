@@ -6,6 +6,7 @@ schema {
 
 type Query {
   health: Health!
+  task: Task!
 }
 
 type Mutation {

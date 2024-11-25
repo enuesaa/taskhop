@@ -25,3 +25,7 @@ type RunCmdOutput struct {
 
 type Subscription struct {
 }
+
+type Task struct {
+	Cmds []string `json:"cmds"`
+}
