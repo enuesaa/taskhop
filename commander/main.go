@@ -12,7 +12,6 @@ import (
 	"github.com/enuesaa/taskhop/internal/fs"
 	"github.com/enuesaa/taskhop/internal/logging"
 	"github.com/enuesaa/taskhop/internal/runnermg"
-	"github.com/enuesaa/taskhop/internal/usecase"
 	"go.uber.org/fx"
 )
 
@@ -35,7 +34,6 @@ func New() *fx.App {
 			cmdsfile.New,
 			gql.New,
 			runnermg.New,
-			usecase.New,
 			NewServer,
 		),
 		fx.Invoke(func(lc fx.Lifecycle, s *http.Server) {
