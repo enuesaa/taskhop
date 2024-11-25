@@ -2,11 +2,13 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/enuesaa/taskhop/gql"
 	"github.com/enuesaa/taskhop/internal/cmdexec"
+	"github.com/enuesaa/taskhop/internal/cmdsfile"
 	"github.com/enuesaa/taskhop/internal/fs"
 	"github.com/enuesaa/taskhop/internal/logging"
 	"github.com/enuesaa/taskhop/internal/usecase"
@@ -14,11 +16,18 @@ import (
 )
 
 func NewCommander() *fx.App {
+	file, err := cmdsfile.New().Read("cmds.example.yml")
+	if err != nil {
+		log.Fatalf("Error: %s", err.Error())
+	}
+	fmt.Printf("%+v\n", file)
+
 	app := fx.New(
 		fx.Provide(
 			logging.New,
 			cmdexec.New,
 			fs.New,
+			cmdsfile.New,
 			gql.New,
 			usecase.New,
 			NewServer,
