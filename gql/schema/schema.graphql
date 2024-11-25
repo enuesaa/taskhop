@@ -12,6 +12,7 @@ type Query {
 type Mutation {
   runCmd(input: RunCmdInput!): Boolean!
   register: Boolean!
+  log(input: LogInput!): Boolean!
 }
 
 type Subscription {

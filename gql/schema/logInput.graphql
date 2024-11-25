@@ -1,0 +1,3 @@
+input LogInput {
+  output: String!
+}

@@ -8,6 +8,10 @@ type Health struct {
 	Code string `json:"code"`
 }
 
+type LogInput struct {
+	Output string `json:"output"`
+}
+
 type Mutation struct {
 }
 
