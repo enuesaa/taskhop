@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -14,6 +15,10 @@ import (
 )
 
 func main() {
+	cli := LaunchCLI()
+	fmt.Println(cli)
+	fmt.Println(cli.HasCommander())
+
 	app := fx.New(
 		fx.Provide(
 			logging.New,

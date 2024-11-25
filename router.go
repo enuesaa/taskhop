@@ -34,7 +34,7 @@ func NewServer(gqhandle http.HandlerFunc, logi logging.I) *http.Server {
 	router.Get("/graphql/playground", gql.HandlePlayground())
 
 	srv := &http.Server{
-		Addr: ":3000",
+		Addr:    ":3000",
 		Handler: router,
 	}
 	return srv

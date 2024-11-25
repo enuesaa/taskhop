@@ -1,3 +1,3 @@
 package subscription
 
-type SubscriptionResolver struct {}
+type SubscriptionResolver struct{}

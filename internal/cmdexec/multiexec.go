@@ -11,7 +11,7 @@ func (i *Impl) MultiExec(writer io.Writer, commands []string) error {
 
 		cmd.Stdout = writer
 		cmd.Stderr = writer
-	
+
 		if err := cmd.Start(); err != nil {
 			return err
 		}

@@ -8,14 +8,14 @@ import (
 
 func New(fsi fs.I, logi logging.I, cmdexeci cmdexec.I) Usecase {
 	return Usecase{
-		fs: fsi,
-		log: logi,
+		fs:      fsi,
+		log:     logi,
 		cmdexec: cmdexeci,
 	}
 }
 
 type Usecase struct {
-	fs fs.I
-	log logging.I
+	fs      fs.I
+	log     logging.I
 	cmdexec cmdexec.I
 }

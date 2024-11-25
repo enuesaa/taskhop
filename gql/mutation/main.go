@@ -1,6 +1,5 @@
 package mutation
 
-import (
-)
+import ()
 
-type MutationResolver struct {}
+type MutationResolver struct{}

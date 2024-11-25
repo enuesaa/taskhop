@@ -21,4 +21,4 @@ type I interface {
 	Info(ctx context.Context, format string, a ...any)
 }
 
-type Impl struct {}
+type Impl struct{}
