@@ -11,6 +11,7 @@ import (
 	"github.com/enuesaa/taskhop/internal/cmdsfile"
 	"github.com/enuesaa/taskhop/internal/fs"
 	"github.com/enuesaa/taskhop/internal/logging"
+	"github.com/enuesaa/taskhop/internal/runnermg"
 	"github.com/enuesaa/taskhop/internal/usecase"
 	"go.uber.org/fx"
 )
@@ -33,6 +34,7 @@ func New() *fx.App {
 			fs.New,
 			cmdsfile.New,
 			gql.New,
+			runnermg.New,
 			usecase.New,
 			NewServer,
 		),
