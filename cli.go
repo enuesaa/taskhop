@@ -18,6 +18,6 @@ type CLI struct {
 	Commander string
 }
 
-func (c *CLI) HasCommander() bool {
-    return c.Commander != ""
+func (c *CLI) IsCommander() bool {
+    return c.Commander == ""
 }
