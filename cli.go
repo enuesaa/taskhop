@@ -11,7 +11,7 @@ func LaunchCLI() CLI {
 	flag.StringVar(&cli.Commander, "commander", "", "commander address. Example: localhost:3000")
 	flag.Parse()
 
-    return cli
+	return cli
 }
 
 type CLI struct {
@@ -19,5 +19,5 @@ type CLI struct {
 }
 
 func (c *CLI) IsCommander() bool {
-    return c.Commander == ""
+	return c.Commander == ""
 }

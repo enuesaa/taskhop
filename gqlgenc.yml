@@ -1,0 +1,19 @@
+# run `gqlgenc`
+
+model:
+  filename: gql/model/main.go
+  package: model
+
+client:
+  package: client
+  filename: gql/client/client.go
+
+schema:
+  - gql/schema/*.graphql
+
+query:
+  - gql/documents/*.graphql
+
+generate:
+  clientInterfaceName: GraphQLClient
+  structFieldsAlwaysPointers: true

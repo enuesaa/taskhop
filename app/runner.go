@@ -15,6 +15,7 @@ import (
 
 func NewRunner() *fx.App {
 	Polling()
+	fetch()
 
 	app := fx.New(
 		fx.Provide(

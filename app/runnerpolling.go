@@ -15,6 +15,7 @@ func Polling() {
 		} else {
 			fmt.Printf("接続成功: %s\n", address)
 			conn.Close()
+			break
 		}
 		time.Sleep(5 * time.Second)
 	}
