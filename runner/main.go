@@ -3,18 +3,25 @@ package runner
 import (
 	"fmt"
 
+	"github.com/enuesaa/taskhop/runner/client"
 	"github.com/enuesaa/taskhop/runner/connector"
 	"go.uber.org/fx"
 )
 
 func New(commanderAddress string) *fx.App {
+	address := client.Address(commanderAddress)
+
 	app := fx.New(
-		fx.Provide(connector.New),
+		fx.Supply(address),
+		fx.Provide(
+			client.New,
+			connector.New,
+		),
 		fx.Invoke(func(con *connector.Connector) error {
-			return con.Connect(commanderAddress)
+			return con.Connect()
 		}),
 		fx.Invoke(func(con *connector.Connector) error {
-			task, err := con.Receive(commanderAddress)
+			task, err := con.Receive()
 			if err != nil {
 				return err
 			}

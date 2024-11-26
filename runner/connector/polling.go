@@ -6,7 +6,9 @@ import (
 	"time"
 )
 
-func (c *Connector) Polling(address string) error {
+func (c *Connector) polling() error {
+	address := string(c.address)
+
 	for range 120 {
 		conn, err := net.DialTimeout("tcp", address, 5*time.Second)
 		if err != nil {

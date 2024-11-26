@@ -1,10 +1,10 @@
 package connector
 
-func (c *Connector) Connect(address string) error {
-	if err := c.Polling(address); err != nil {
+func (c *Connector) Connect() error {
+	if err := c.polling(); err != nil {
 		return err
 	}
-	if err := c.CheckHealth(address); err != nil {
+	if err := c.checkHealth(); err != nil {
 		return err
 	}
 	return nil
