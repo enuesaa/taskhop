@@ -14,11 +14,19 @@ func Handle() http.HandlerFunc {
 	return gqhandle.ServeHTTP
 }
 
-func New() *handler.Server {
+func New() *Handler {
 	schema := NewExecutableSchema(Config{
 		Resolvers: &Resolver{},
 	})
 	gqhandle := handler.NewDefaultServer(schema)
 
-	return gqhandle
+	return &Handler{gqhandle}
+}
+
+type Handler struct {
+	http.Handler
+}
+
+func (h *Handler) Pattern() string {
+	return "/graphql"
 }

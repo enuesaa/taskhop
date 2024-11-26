@@ -9,9 +9,6 @@ import (
 	"github.com/enuesaa/taskhop/internal"
 	"github.com/enuesaa/taskhop/internal/cmdexec"
 	"github.com/enuesaa/taskhop/internal/cmdsfile"
-	"github.com/enuesaa/taskhop/internal/fs"
-	"github.com/enuesaa/taskhop/internal/logging"
-	"github.com/enuesaa/taskhop/internal/runnermg"
 	"go.uber.org/fx"
 )
 
@@ -27,14 +24,10 @@ func New() *fx.App {
 	}
 
 	app := fx.New(
+		cmdexec.Module,
+		Module,
 		fx.Provide(
-			logging.New,
-			cmdexec.Module,
 			internal.NewContainer,
-			fs.New,
-			cmdsfile.New,
-			runnermg.New,
-			NewServer,
 		),
 		fx.Invoke(func(lc fx.Lifecycle, s *http.Server) {
 			lc.Append(fx.Hook{
@@ -51,7 +44,7 @@ func New() *fx.App {
 				},
 			})
 		}),
-		fx.NopLogger,
+		// fx.NopLogger,
 	)
 
 	return app

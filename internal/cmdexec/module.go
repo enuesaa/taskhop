@@ -6,6 +6,8 @@ import (
 )
 
 var Module = fx.Options(
-	fx.Provide(New),
-	fx.Provide(repository.New),
+	fx.Provide(
+		New,
+		repository.New,
+	),
 )
