@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/enuesaa/taskhop/commander/gql"
 	"github.com/enuesaa/taskhop/commander/gqlplayground"
 	"github.com/enuesaa/taskhop/internal/logging"
 
@@ -12,7 +13,7 @@ import (
 	"github.com/go-chi/cors"
 )
 
-func NewServer(gqhandle http.HandlerFunc, logi logging.I) *http.Server {
+func NewServer(logi logging.I) *http.Server {
 	router := chi.NewRouter()
 
 	// middleware
@@ -30,7 +31,7 @@ func NewServer(gqhandle http.HandlerFunc, logi logging.I) *http.Server {
 	}))
 
 	// routes
-	router.HandleFunc("/graphql", gqhandle)
+	router.HandleFunc("/graphql", gql.Handle())
 	router.Get("/graphql/playground", gqlplayground.Handle())
 
 	srv := &http.Server{

@@ -2,33 +2,23 @@ package gql
 
 import (
 	"net/http"
-	"time"
-
-	"github.com/gorilla/websocket"
-
 	"github.com/99designs/gqlgen/graphql/handler"
-	"github.com/99designs/gqlgen/graphql/handler/extension"
-	"github.com/99designs/gqlgen/graphql/handler/transport"
 )
 
-func New() http.HandlerFunc {
-	// see https://github.com/99designs/gqlgen/issues/1664
-	gqhandle := handler.New(NewExecutableSchema(Config{
+func Handle() http.HandlerFunc {
+	schema := NewExecutableSchema(Config{
 		Resolvers: &Resolver{},
-	}))
-	gqhandle.AddTransport(transport.Options{})
-	gqhandle.AddTransport(transport.GET{})
-	gqhandle.AddTransport(transport.POST{})
-	gqhandle.AddTransport(transport.MultipartForm{})
-	gqhandle.AddTransport(&transport.Websocket{
-		Upgrader: websocket.Upgrader{
-			CheckOrigin: func(r *http.Request) bool {
-				return true
-			},
-		},
-		KeepAlivePingInterval: 10 * time.Second,
 	})
-	gqhandle.Use(extension.Introspection{})
+	gqhandle := handler.NewDefaultServer(schema)
 
 	return gqhandle.ServeHTTP
+}
+
+func New() *handler.Server {
+	schema := NewExecutableSchema(Config{
+		Resolvers: &Resolver{},
+	})
+	gqhandle := handler.NewDefaultServer(schema)
+
+	return gqhandle
 }

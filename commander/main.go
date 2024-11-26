@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/enuesaa/taskhop/commander/gql"
 	"github.com/enuesaa/taskhop/internal"
 	"github.com/enuesaa/taskhop/internal/cmdexec"
 	"github.com/enuesaa/taskhop/internal/cmdsfile"
@@ -34,7 +33,6 @@ func New() *fx.App {
 			internal.NewContainer,
 			fs.New,
 			cmdsfile.New,
-			gql.New,
 			runnermg.New,
 			NewServer,
 		),
