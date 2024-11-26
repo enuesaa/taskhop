@@ -2,7 +2,6 @@ package commander
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -16,16 +15,6 @@ import (
 )
 
 func New() *fx.App {
-	file, err := cmdsfile.New().Read("testdata/cmds.yml")
-	if err != nil {
-		log.Fatalf("Error: %s", err.Error())
-	}
-	fmt.Printf("%+v\n", file)
-
-	if err := cmdsfile.New().Validate(file); err != nil {
-		log.Fatalf("Error: %s", err.Error())
-	}
-
 	app := fx.New(
 		cmdexec.Module,		
 		fx.Provide(
@@ -35,6 +24,18 @@ func New() *fx.App {
 			internal.NewContainer,
 			NewRouter,
 		),
+		fx.Invoke(func(cmdi cmdsfile.I) error {
+			file, err := cmdi.Read("testdata/cmdas.yml")
+			if err != nil {
+				log.Printf("Error: %s", err.Error())
+				return err
+			}
+			if err := cmdi.Validate(file); err != nil {
+				log.Printf("Error: %s", err.Error())
+				return err
+			}
+			return nil
+		}),
 		fx.Invoke(func(lc fx.Lifecycle, router *chi.Mux) {
 			server := &http.Server{
 				Addr:    ":3000",
@@ -54,7 +55,7 @@ func New() *fx.App {
 				},
 			})
 		}),
-		// fx.NopLogger,
+		fx.NopLogger,
 	)
 
 	return app
