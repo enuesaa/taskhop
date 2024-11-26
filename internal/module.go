@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"github.com/enuesaa/taskhop/internal/archivefx"
 	"github.com/enuesaa/taskhop/internal/cmdfx"
 	"github.com/enuesaa/taskhop/internal/logfx"
 	"github.com/enuesaa/taskhop/internal/runfx"
@@ -9,6 +10,7 @@ import (
 )
 
 var Module = fx.Options(
+	archivefx.Module,
 	cmdfx.Module,
 	taskfx.Module,
 	runfx.Module,

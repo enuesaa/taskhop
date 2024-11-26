@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 )
 
-func UnArchive() error {
+func (i *Impl) UnArchive() error {
 	dest := "./aaa"
 
 	zipr, err := zip.OpenReader("archive.zip")
