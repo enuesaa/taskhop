@@ -13,5 +13,4 @@ ui/.env.local
 ui/.env.dev.local
 ui/.svelte-kit
 
-app.zip
-bootstrap
+*.zip

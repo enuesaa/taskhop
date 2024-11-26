@@ -6,12 +6,18 @@ import (
 	"net/http"
 
 	"github.com/enuesaa/taskhop/internal"
+	"github.com/enuesaa/taskhop/internal/archivefx"
 	"github.com/enuesaa/taskhop/internal/taskfx"
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/fx"
 )
 
 func New() *fx.App {
+	if err := archivefx.Archive(); err != nil {
+		log.Fatalf("Error: %s", err.Error())
+	}
+	log.Printf("created!\n")
+
 	app := fx.New(
 		internal.Module,
 		fx.Provide(NewRouter),
