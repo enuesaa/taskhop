@@ -1,4 +1,4 @@
-package connect
+package connector
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"github.com/enuesaa/taskhop/runner/client"
 )
 
-func checkHealth(address string) error {
+func (c *Connector) CheckHealth(address string) error {
 	url := fmt.Sprintf("http://%s/graphql", address)
 	cli := client.NewClient(http.DefaultClient, url, nil)
 

@@ -1,4 +1,4 @@
-package connect
+package connector
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func polling(address string) error {
+func (c *Connector) Polling(address string) error {
 	for range 120 {
 		conn, err := net.DialTimeout("tcp", address, 5*time.Second)
 		if err != nil {
