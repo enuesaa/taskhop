@@ -6,10 +6,12 @@ import (
 	"context"
 
 	"github.com/Yamashou/gqlgenc/clientv2"
+	"github.com/enuesaa/taskhop/commander/gql/model"
 )
 
 type GraphQLClient interface {
 	GetHealth(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*GetHealth, error)
+	GetTask(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*GetTask, error)
 }
 
 type Client struct {
@@ -31,6 +33,24 @@ func (t *GetHealth_Health) GetOk() bool {
 	return t.Ok
 }
 
+type GetTask_Task struct {
+	Status model.TaskStatus "json:\"status\" graphql:\"status\""
+	Cmds   []string         "json:\"cmds\" graphql:\"cmds\""
+}
+
+func (t *GetTask_Task) GetStatus() *model.TaskStatus {
+	if t == nil {
+		t = &GetTask_Task{}
+	}
+	return &t.Status
+}
+func (t *GetTask_Task) GetCmds() []string {
+	if t == nil {
+		t = &GetTask_Task{}
+	}
+	return t.Cmds
+}
+
 type GetHealth struct {
 	Health GetHealth_Health "json:\"health\" graphql:\"health\""
 }
@@ -40,6 +60,17 @@ func (t *GetHealth) GetHealth() *GetHealth_Health {
 		t = &GetHealth{}
 	}
 	return &t.Health
+}
+
+type GetTask struct {
+	Task GetTask_Task "json:\"task\" graphql:\"task\""
+}
+
+func (t *GetTask) GetTask() *GetTask_Task {
+	if t == nil {
+		t = &GetTask{}
+	}
+	return &t.Task
 }
 
 const GetHealthDocument = `query getHealth {
@@ -64,6 +95,30 @@ func (c *Client) GetHealth(ctx context.Context, interceptors ...clientv2.Request
 	return &res, nil
 }
 
+const GetTaskDocument = `query getTask {
+	task {
+		status
+		cmds
+	}
+}
+`
+
+func (c *Client) GetTask(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*GetTask, error) {
+	vars := map[string]any{}
+
+	var res GetTask
+	if err := c.Client.Post(ctx, "getTask", GetTaskDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
 var DocumentOperationNames = map[string]string{
 	GetHealthDocument: "getHealth",
+	GetTaskDocument:   "getTask",
 }

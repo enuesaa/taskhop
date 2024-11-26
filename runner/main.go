@@ -1,19 +1,27 @@
 package runner
 
 import (
-	"github.com/enuesaa/taskhop/internal"
+	"fmt"
+
 	"github.com/enuesaa/taskhop/runner/connector"
 	"go.uber.org/fx"
 )
 
 func New(commanderAddress string) *fx.App {
 	app := fx.New(
-		internal.Module,
 		fx.Provide(connector.New),
 		fx.Invoke(func(con *connector.Connector) error {
 			return con.Connect(commanderAddress)
 		}),
-		// fx.NopLogger,
+		fx.Invoke(func(con *connector.Connector) error {
+			task, err := con.Receive(commanderAddress)
+			if err != nil {
+				return err
+			}
+			fmt.Printf("%+v\n", task)
+			return nil
+		}),
+		fx.NopLogger,
 	)
 
 	return app

@@ -1,0 +1,6 @@
+query getTask {
+  task {
+    status
+    cmds
+  }
+}
