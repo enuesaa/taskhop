@@ -1,4 +1,4 @@
-package cmdexec
+package cmdfx
 
 import (
 	"io"

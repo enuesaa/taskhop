@@ -6,31 +6,22 @@ import (
 	"net/http"
 
 	"github.com/enuesaa/taskhop/internal"
-	"github.com/enuesaa/taskhop/internal/cmdexec"
-	"github.com/enuesaa/taskhop/internal/cmdsfile"
-	"github.com/enuesaa/taskhop/internal/logging"
-	"github.com/enuesaa/taskhop/internal/runnermg"
+	"github.com/enuesaa/taskhop/internal/taskfx"
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/fx"
 )
 
 func New() *fx.App {
 	app := fx.New(
-		cmdexec.Module,		
-		fx.Provide(
-			cmdsfile.New,
-			logging.New,
-			runnermg.New,
-			internal.NewContainer,
-			NewRouter,
-		),
-		fx.Invoke(func(cmdi cmdsfile.I) error {
-			file, err := cmdi.Read("testdata/cmdas.yml")
+		internal.Module,
+		fx.Provide(NewRouter),
+		fx.Invoke(func(taski taskfx.I) error {
+			file, err := taski.Read("testdata/cmds.yml")
 			if err != nil {
 				log.Printf("Error: %s", err.Error())
 				return err
 			}
-			if err := cmdi.Validate(file); err != nil {
+			if err := taski.Validate(file); err != nil {
 				log.Printf("Error: %s", err.Error())
 				return err
 			}

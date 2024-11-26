@@ -1,10 +1,10 @@
-package cmdexec
+package cmdfx
 
 import (
 	"io"
 	"os/exec"
 
-	"github.com/enuesaa/taskhop/internal/cmdexec/repository"
+	"github.com/enuesaa/taskhop/internal/cmdfx/repository"
 )
 
 func New(repo repository.I) I {

@@ -1,4 +1,4 @@
-package cmdsfile
+package taskfx
 
 import (
 	"fmt"
@@ -6,8 +6,8 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-func (i *Impl) Validate(cmdsfile CmdsFile) error {
-	err := validator.New().Struct(cmdsfile)
+func (i *Impl) Validate(task Task) error {
+	err := validator.New().Struct(task)
 	if err != nil {
 		for _, err := range err.(validator.ValidationErrors) {
 			return fmt.Errorf("%s: %s", err.Field(), err.Tag())

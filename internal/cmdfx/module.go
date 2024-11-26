@@ -1,7 +1,7 @@
-package cmdexec
+package cmdfx
 
 import (
-	"github.com/enuesaa/taskhop/internal/cmdexec/repository"
+	"github.com/enuesaa/taskhop/internal/cmdfx/repository"
 	"go.uber.org/fx"
 )
 

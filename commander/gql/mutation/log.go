@@ -7,7 +7,7 @@ import (
 )
 
 func (r *MutationResolver) Log(ctx context.Context, input model.LogInput) (bool, error) {
-	r.Logging.Info(context.Background(), input.Output)
+	r.Logi.Info(context.Background(), input.Output)
 
 	return true, nil
 }

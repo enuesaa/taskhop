@@ -1,4 +1,4 @@
-package runnermg
+package runfx
 
 func New() I {
 	return &Impl{

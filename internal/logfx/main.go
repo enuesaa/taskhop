@@ -1,4 +1,4 @@
-package logging
+package logfx
 
 import (
 	"context"
