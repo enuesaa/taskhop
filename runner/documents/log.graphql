@@ -1,0 +1,3 @@
+mutation log ($input: LogInput!) {
+  log(input: $input)
+}

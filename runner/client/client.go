@@ -12,6 +12,7 @@ import (
 type GraphQLClient interface {
 	GetHealth(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*GetHealth, error)
 	GetTask(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*GetTask, error)
+	Log(ctx context.Context, input model.LogInput, interceptors ...clientv2.RequestInterceptor) (*Log, error)
 	Register(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*Register, error)
 }
 
@@ -74,6 +75,17 @@ func (t *GetTask) GetTask() *GetTask_Task {
 	return &t.Task
 }
 
+type Log struct {
+	Log bool "json:\"log\" graphql:\"log\""
+}
+
+func (t *Log) GetLog() bool {
+	if t == nil {
+		t = &Log{}
+	}
+	return t.Log
+}
+
 type Register struct {
 	Register bool "json:\"register\" graphql:\"register\""
 }
@@ -130,6 +142,28 @@ func (c *Client) GetTask(ctx context.Context, interceptors ...clientv2.RequestIn
 	return &res, nil
 }
 
+const LogDocument = `mutation log ($input: LogInput!) {
+	log(input: $input)
+}
+`
+
+func (c *Client) Log(ctx context.Context, input model.LogInput, interceptors ...clientv2.RequestInterceptor) (*Log, error) {
+	vars := map[string]any{
+		"input": input,
+	}
+
+	var res Log
+	if err := c.Client.Post(ctx, "log", LogDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
 const RegisterDocument = `mutation register {
 	register
 }
@@ -153,5 +187,6 @@ func (c *Client) Register(ctx context.Context, interceptors ...clientv2.RequestI
 var DocumentOperationNames = map[string]string{
 	GetHealthDocument: "getHealth",
 	GetTaskDocument:   "getTask",
+	LogDocument:       "log",
 	RegisterDocument:  "register",
 }

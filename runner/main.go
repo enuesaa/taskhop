@@ -3,6 +3,7 @@ package runner
 import (
 	"fmt"
 
+	"github.com/enuesaa/taskhop/internal"
 	"github.com/enuesaa/taskhop/runner/client"
 	"github.com/enuesaa/taskhop/runner/connector"
 	"go.uber.org/fx"
@@ -12,6 +13,7 @@ func New(commanderAddress string) *fx.App {
 	address := client.Address(commanderAddress)
 
 	app := fx.New(
+		internal.Module,
 		fx.Supply(address),
 		fx.Provide(
 			client.New,
@@ -26,6 +28,7 @@ func New(commanderAddress string) *fx.App {
 				return err
 			}
 			fmt.Printf("%+v\n", task)
+			con.Run(task)
 			return nil
 		}),
 		fx.NopLogger,
