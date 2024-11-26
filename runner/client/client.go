@@ -12,6 +12,7 @@ import (
 type GraphQLClient interface {
 	GetHealth(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*GetHealth, error)
 	GetTask(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*GetTask, error)
+	Register(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*Register, error)
 }
 
 type Client struct {
@@ -73,6 +74,17 @@ func (t *GetTask) GetTask() *GetTask_Task {
 	return &t.Task
 }
 
+type Register struct {
+	Register bool "json:\"register\" graphql:\"register\""
+}
+
+func (t *Register) GetRegister() bool {
+	if t == nil {
+		t = &Register{}
+	}
+	return t.Register
+}
+
 const GetHealthDocument = `query getHealth {
 	health {
 		ok
@@ -118,7 +130,28 @@ func (c *Client) GetTask(ctx context.Context, interceptors ...clientv2.RequestIn
 	return &res, nil
 }
 
+const RegisterDocument = `mutation register {
+	register
+}
+`
+
+func (c *Client) Register(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*Register, error) {
+	vars := map[string]any{}
+
+	var res Register
+	if err := c.Client.Post(ctx, "register", RegisterDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
 var DocumentOperationNames = map[string]string{
 	GetHealthDocument: "getHealth",
 	GetTaskDocument:   "getTask",
+	RegisterDocument:  "register",
 }

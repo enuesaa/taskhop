@@ -21,7 +21,7 @@ func New(commanderAddress string) *fx.App {
 			return con.Connect()
 		}),
 		fx.Invoke(func(con *connector.Connector) error {
-			task, err := con.Receive()
+			task, err := con.Register()
 			if err != nil {
 				return err
 			}
