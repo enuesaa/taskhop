@@ -7,7 +7,7 @@ import (
 	"github.com/enuesaa/taskhop/internal/cmdexec/repository"
 )
 
-func New(repo repository.Impl) *Impl {
+func New(repo repository.I) I {
 	return &Impl{
 		repo: repo,
 	}

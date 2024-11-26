@@ -2,22 +2,16 @@ package gql
 
 import (
 	"net/http"
+
 	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/enuesaa/taskhop/internal"
 )
 
-func New() *Handler {
+func Handle(c internal.Container) http.HandlerFunc {
 	schema := NewExecutableSchema(Config{
 		Resolvers: &Resolver{},
 	})
 	handle := handler.NewDefaultServer(schema)
 
-	return &Handler{handle}
-}
-
-type Handler struct {
-	http.Handler
-}
-
-func (h *Handler) Pattern() string {
-	return "/graphql"
+	return handle.ServeHTTP
 }

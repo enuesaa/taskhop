@@ -1,14 +1,14 @@
 package commander
 
 import (
-	"net/http"
-
+	"github.com/enuesaa/taskhop/commander/gql"
+	"github.com/enuesaa/taskhop/commander/gqlplayground"
 	"github.com/enuesaa/taskhop/commander/middleware"
 	"github.com/enuesaa/taskhop/internal"
 	"github.com/go-chi/chi/v5"
 )
 
-func NewServer(routes []Route, c internal.Container) *http.Server {
+func NewRouter(c internal.Container) *chi.Mux {
 	router := chi.NewRouter()
 
 	// middleware
@@ -18,13 +18,8 @@ func NewServer(routes []Route, c internal.Container) *http.Server {
 	router.Use(middleware.Cors())
 
 	// routes
-	for _, route := range routes {
-		router.Handle(route.Pattern(), route)
-	}
+	router.Handle("/graphql", gql.Handle(c))
+	router.Handle("/graphql/playground", gqlplayground.Handle())
 
-	srv := &http.Server{
-		Addr:    ":3000",
-		Handler: router,
-	}
-	return srv
+	return router
 }

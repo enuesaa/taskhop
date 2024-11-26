@@ -9,6 +9,9 @@ import (
 	"github.com/enuesaa/taskhop/internal"
 	"github.com/enuesaa/taskhop/internal/cmdexec"
 	"github.com/enuesaa/taskhop/internal/cmdsfile"
+	"github.com/enuesaa/taskhop/internal/logging"
+	"github.com/enuesaa/taskhop/internal/runnermg"
+	"github.com/go-chi/chi/v5"
 	"go.uber.org/fx"
 )
 
@@ -24,23 +27,30 @@ func New() *fx.App {
 	}
 
 	app := fx.New(
-		cmdexec.Module,
-		Module,
+		cmdexec.Module,		
 		fx.Provide(
+			cmdsfile.New,
+			logging.New,
+			runnermg.New,
 			internal.NewContainer,
+			NewRouter,
 		),
-		fx.Invoke(func(lc fx.Lifecycle, s *http.Server) {
+		fx.Invoke(func(lc fx.Lifecycle, router *chi.Mux) {
+			server := &http.Server{
+				Addr:    ":3000",
+				Handler: router,
+			}
 			lc.Append(fx.Hook{
 				OnStart: func(ctx context.Context) error {
 					go func() {
-						if err := s.ListenAndServe(); err != nil {
+						if err := server.ListenAndServe(); err != nil {
 							log.Printf("Error: %s\n", err)
 						}
 					}()
 					return nil
 				},
 				OnStop: func(ctx context.Context) error {
-					return s.Shutdown(ctx)
+					return server.Shutdown(ctx)
 				},
 			})
 		}),
