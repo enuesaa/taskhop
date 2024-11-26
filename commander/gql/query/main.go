@@ -1,3 +1,7 @@
 package query
 
-type QueryResolver struct {}
+import "github.com/enuesaa/taskhop/internal"
+
+type QueryResolver struct {
+	internal.Container
+}

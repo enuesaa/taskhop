@@ -1,7 +1,7 @@
 version: 3
 
 tasks:
-  gengql:
+  gen:
     cmds:
       - go run github.com/99designs/gqlgen generate
       - gqlgenc

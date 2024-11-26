@@ -9,7 +9,7 @@ import (
 
 func Handle(c internal.Container) http.HandlerFunc {
 	schema := NewExecutableSchema(Config{
-		Resolvers: &Resolver{},
+		Resolvers: &Resolver{c},
 	})
 	handle := handler.NewDefaultServer(schema)
 

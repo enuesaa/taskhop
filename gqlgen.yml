@@ -1,12 +1,12 @@
 # run `go run github.com/99designs/gqlgen generate`
 
 schema:
-  - gql/schema/*.graphql
+  - commander/gql/schema/*.graphql
 
 exec:
-  filename: gql/exec.go
+  filename: commander/gql/exec.go
   package: gql
 
 model:
-  filename: gql/model/main.go
+  filename: commander/gql/model/main.go
   package: model
