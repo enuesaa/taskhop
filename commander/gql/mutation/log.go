@@ -3,7 +3,7 @@ package mutation
 import (
 	"context"
 
-	"github.com/enuesaa/taskhop/gql/model"
+	"github.com/enuesaa/taskhop/commander/gql/model"
 	"github.com/enuesaa/taskhop/internal/logging"
 )
 

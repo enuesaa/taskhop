@@ -1,8 +1,8 @@
 package gql
 
 import (
-	"github.com/enuesaa/taskhop/gql/mutation"
-	"github.com/enuesaa/taskhop/gql/query"
+	"github.com/enuesaa/taskhop/commander/gql/mutation"
+	"github.com/enuesaa/taskhop/commander/gql/query"
 )
 
 type Resolver struct {}

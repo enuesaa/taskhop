@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/enuesaa/taskhop/gql"
+	"github.com/enuesaa/taskhop/commander/gql"
 	"github.com/enuesaa/taskhop/internal"
 	"github.com/enuesaa/taskhop/internal/cmdexec"
 	"github.com/enuesaa/taskhop/internal/cmdsfile"
