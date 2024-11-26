@@ -17,6 +17,10 @@ func New() *fx.App {
 		log.Fatalf("Error: %s", err.Error())
 	}
 	log.Printf("created!\n")
+	if err := archivefx.UnArchive(); err != nil {
+		log.Fatalf("Error: %s", err.Error())
+	}
+	log.Printf("unarchived!\n")
 
 	app := fx.New(
 		internal.Module,
