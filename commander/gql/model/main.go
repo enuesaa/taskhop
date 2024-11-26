@@ -2,6 +2,12 @@
 
 package model
 
+import (
+	"fmt"
+	"io"
+	"strconv"
+)
+
 type Health struct {
 	Time string `json:"time"`
 	Ok   bool   `json:"ok"`
@@ -19,5 +25,49 @@ type Query struct {
 }
 
 type Task struct {
-	Cmds []string `json:"cmds"`
+	Status TaskStatus `json:"status"`
+	Cmds   []string   `json:"cmds"`
+}
+
+type TaskStatus string
+
+const (
+	TaskStatusWaiting    TaskStatus = "WAITING"
+	TaskStatusProceeding TaskStatus = "PROCEEDING"
+	TaskStatusCompleted  TaskStatus = "COMPLETED"
+)
+
+var AllTaskStatus = []TaskStatus{
+	TaskStatusWaiting,
+	TaskStatusProceeding,
+	TaskStatusCompleted,
+}
+
+func (e TaskStatus) IsValid() bool {
+	switch e {
+	case TaskStatusWaiting, TaskStatusProceeding, TaskStatusCompleted:
+		return true
+	}
+	return false
+}
+
+func (e TaskStatus) String() string {
+	return string(e)
+}
+
+func (e *TaskStatus) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = TaskStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid TaskStatus", str)
+	}
+	return nil
+}
+
+func (e TaskStatus) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }

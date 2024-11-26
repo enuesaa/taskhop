@@ -16,12 +16,12 @@ func New() *fx.App {
 		internal.Module,
 		fx.Provide(NewRouter),
 		fx.Invoke(func(taski taskfx.I) error {
-			file, err := taski.Read("testdata/cmds.yml")
+			task, err := taski.Read("testdata/cmds.yml")
 			if err != nil {
 				log.Printf("Error: %s", err.Error())
 				return err
 			}
-			if err := taski.Validate(file); err != nil {
+			if err := taski.Validate(task); err != nil {
 				log.Printf("Error: %s", err.Error())
 				return err
 			}

@@ -2,9 +2,9 @@ package internal
 
 import (
 	"github.com/enuesaa/taskhop/internal/cmdfx"
-	"github.com/enuesaa/taskhop/internal/taskfx"
 	"github.com/enuesaa/taskhop/internal/logfx"
 	"github.com/enuesaa/taskhop/internal/runfx"
+	"github.com/enuesaa/taskhop/internal/taskfx"
 )
 
 func NewContainer(
@@ -14,16 +14,16 @@ func NewContainer(
 	runi runfx.I,
 ) Container {
 	return Container{
-		Cmdi: cmdi,
+		Cmdi:  cmdi,
 		Taski: taski,
-		Logi: logi,
-		Runi: runi,
+		Logi:  logi,
+		Runi:  runi,
 	}
 }
 
 type Container struct {
-	Cmdi cmdfx.I
+	Cmdi  cmdfx.I
 	Taski taskfx.I
-	Logi logfx.I
-	Runi runfx.I
+	Logi  logfx.I
+	Runi  runfx.I
 }

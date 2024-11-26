@@ -6,6 +6,6 @@ import (
 
 func (r *MutationResolver) Register(ctx context.Context) (bool, error) {
 	r.Runi.Register()
-	
+
 	return true, nil
 }

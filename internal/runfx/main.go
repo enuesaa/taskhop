@@ -2,14 +2,15 @@ package runfx
 
 func New() I {
 	return &Impl{
-		Has: false,
+		Status: StatusWaiting,
 	}
 }
 
 type I interface {
-	Register()
-	UnRegister()
+	GetStatus() Status
+	Register() error
+	UnRegister() error
 }
 type Impl struct {
-	Has bool
+	Status Status
 }
