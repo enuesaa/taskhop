@@ -9,18 +9,15 @@ import (
 	"go.uber.org/fx"
 )
 
-func New(workdir string, connect string) *fx.App {
-	address := client.Address(connect)
+func New(workdir string, commanderAddress string) *fx.App {
+	client := client.New(commanderAddress)
 
 	app := fx.New(
 		internal.Module,
-		fx.Supply(address),
-		fx.Provide(
-			client.New,
-			connector.New,
-		),
+		fx.Supply(client),
+		fx.Provide(connector.New),
 		fx.Invoke(func(con *connector.Connector) error {
-			return con.Connect()
+			return con.Connect(commanderAddress)
 		}),
 		fx.Invoke(func(con *connector.Connector) error {
 			task, err := con.Register()
@@ -29,7 +26,7 @@ func New(workdir string, connect string) *fx.App {
 			}
 			fmt.Printf("%+v\n", task)
 
-			if err := con.UnArchive(workdir); err != nil {
+			if err := con.UnArchive(commanderAddress, workdir); err != nil {
 				return err
 			}
 

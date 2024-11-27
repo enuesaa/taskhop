@@ -5,8 +5,8 @@ import (
 	"net/http"
 )
 
-func New(address Address) GraphQLClient {
-	url := fmt.Sprintf("http://%s/graphql", address)
+func New(commanderAddres string) GraphQLClient {
+	url := fmt.Sprintf("http://%s/graphql", commanderAddres)
 
 	return NewClient(http.DefaultClient, url, nil)
 }

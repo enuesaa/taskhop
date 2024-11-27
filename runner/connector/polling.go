@@ -6,20 +6,18 @@ import (
 	"time"
 )
 
-func (c *Connector) polling() error {
-	address := string(c.address)
-
+func (c *Connector) polling(commanderAddress string) error {
 	for range 120 {
-		conn, err := net.DialTimeout("tcp", address, 5*time.Second)
+		conn, err := net.DialTimeout("tcp", commanderAddress, 5*time.Second)
 		if err != nil {
-			fmt.Printf("FAILED: %s\n", address)
+			fmt.Printf("FAILED: %s\n", commanderAddress)
 		} else {
-			fmt.Printf("FOUND: %s\n", address)
+			fmt.Printf("FOUND: %s\n", commanderAddress)
 			conn.Close()
 			return nil
 		}
 		time.Sleep(5 * time.Second)
 	}
 
-	return fmt.Errorf("failed to connect: %s", address)
+	return fmt.Errorf("failed to connect: %s", commanderAddress)
 }

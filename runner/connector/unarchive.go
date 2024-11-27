@@ -5,8 +5,8 @@ import (
 	"net/http"
 )
 
-func (c *Connector) UnArchive(workdir string) error {
-	url := fmt.Sprintf("http://%s/storage/archive", c.address)
+func (c *Connector) UnArchive(commanderAddress, workdir string) error {
+	url := fmt.Sprintf("http://%s/storage/archive", commanderAddress)
 
 	res, err := http.Get(url)
 	if err != nil {
