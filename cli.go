@@ -10,7 +10,7 @@ func LaunchCLI() CLI {
 		Workdir: "",
 	}
 	flag.StringVar(&cli.Connect, "c", "", "commander address. Example: localhost:3000")
-	flag.StringVar(&cli.Connect, "w", "./", "workdir. Example: ./aaa")
+	flag.StringVar(&cli.Workdir, "w", ".", "workdir. Example: ./aaa")
 	flag.Parse()
 
 	return cli

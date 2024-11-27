@@ -1,12 +1,17 @@
 package taskfx
 
 func New() I {
-	return &Impl{}
+	return &Impl{
+		Workdir: ".",
+	}
 }
 
 type I interface {
-	Read(filename string) (Task, error)
+	Use(workdir string)
+	Read() (Task, error)
 	Validate(task Task) error
 }
 
-type Impl struct{}
+type Impl struct{
+	Workdir string
+}

@@ -6,7 +6,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func (i *Impl) Read(filename string) (Task, error) {
+func (i *Impl) Read() (Task, error) {
+	filename := i.getTaskFilePath()
 	var task Task
 
 	f, err := os.Open(filename)

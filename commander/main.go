@@ -16,7 +16,8 @@ func New(workdir string) *fx.App {
 		internal.Module,
 		fx.Provide(NewRouter),
 		fx.Invoke(func(taski taskfx.I) error {
-			task, err := taski.Read("testdata/cmds.yml")
+			taski.Use(workdir)
+			task, err := taski.Read()
 			if err != nil {
 				log.Printf("Error: %s", err.Error())
 				return err

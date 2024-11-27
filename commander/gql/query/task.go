@@ -8,7 +8,7 @@ import (
 )
 
 func (r *QueryResolver) Task(ctx context.Context) (*model.Task, error) {
-	f, err := r.Taski.Read("testdata/cmds.yml")
+	f, err := r.Taski.Read()
 	if err != nil {
 		return nil, err
 	}
