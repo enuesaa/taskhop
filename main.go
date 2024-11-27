@@ -9,10 +9,10 @@ func main() {
 	cli := LaunchCLI()
 
 	if cli.IsCommander() {
-		app := commander.New()
+		app := commander.New(cli.Workdir)
 		app.Run()
 	} else {
-		app := runner.New(cli.Commander)
+		app := runner.New(cli.Workdir, cli.Connect)
 		app.Run()
 	}
 }

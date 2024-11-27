@@ -11,7 +11,7 @@ import (
 	"go.uber.org/fx"
 )
 
-func New() *fx.App {
+func New(workdir string) *fx.App {
 	app := fx.New(
 		internal.Module,
 		fx.Provide(NewRouter),

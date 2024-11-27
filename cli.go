@@ -6,18 +6,21 @@ import (
 
 func LaunchCLI() CLI {
 	cli := CLI{
-		Commander: "",
+		Connect: "",
+		Workdir: "",
 	}
-	flag.StringVar(&cli.Commander, "commander", "", "commander address. Example: localhost:3000")
+	flag.StringVar(&cli.Connect, "c", "", "commander address. Example: localhost:3000")
+	flag.StringVar(&cli.Connect, "w", "./", "workdir. Example: ./aaa")
 	flag.Parse()
 
 	return cli
 }
 
 type CLI struct {
-	Commander string
+	Connect string
+	Workdir string
 }
 
 func (c *CLI) IsCommander() bool {
-	return c.Commander == ""
+	return c.Connect == ""
 }

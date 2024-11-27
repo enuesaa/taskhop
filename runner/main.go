@@ -9,8 +9,8 @@ import (
 	"go.uber.org/fx"
 )
 
-func New(commanderAddress string) *fx.App {
-	address := client.Address(commanderAddress)
+func New(workdir string, connect string) *fx.App {
+	address := client.Address(connect)
 
 	app := fx.New(
 		internal.Module,
