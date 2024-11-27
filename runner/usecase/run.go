@@ -1,13 +1,13 @@
-package connector
+package usecase
 
 import (
 	"context"
 
 	"github.com/enuesaa/taskhop/commander/gql/model"
-	"github.com/enuesaa/taskhop/runner/client"
+	"github.com/enuesaa/taskhop/runner/gqlclient"
 )
 
-func (c *Connector) Run(task client.GetTask_Task, workdir string) error {
+func (c *UseCase) Run(task gqlclient.GetTask_Task, workdir string) error {
 	w := LogWriter{
 		Callback: func (data string) error {
 			input := model.LogInput{

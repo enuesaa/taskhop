@@ -5,8 +5,8 @@ model:
   package: model
 
 client:
-  package: client
-  filename: runner/client/client.go
+  package: gqlclient
+  filename: runner/gqlclient/client.go
 
 schema:
   - commander/gql/schema/*.graphql
