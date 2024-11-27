@@ -7,9 +7,23 @@ import (
 	"github.com/enuesaa/taskhop/runner/client"
 )
 
-func (c *Connector) Run(task client.GetTask_Task) {
-	input := model.LogInput{
-		Output: "hello",
+func (c *Connector) Run(task client.GetTask_Task) error {
+	w := LogWriter{
+		Callback: func (data string) error {
+			input := model.LogInput{
+				Output: data,
+			}
+			_, err := c.client.Log(context.Background(), input)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
 	}
-	c.client.Log(context.Background(), input)
+
+	if err := c.Cmdi.MultiExec(&w, task.Cmds); err != nil {
+		return err
+	}
+
+	return nil
 }
