@@ -1,7 +1,6 @@
 package runner
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/enuesaa/taskhop/internal"
@@ -20,26 +19,11 @@ func New(workdir string, address string) *fx.App {
 		internal.Module,
 		fx.Supply(client),
 		fx.Provide(usecase.New),
-		fx.Invoke(func(u *usecase.UseCase) error {
-			return u.Connect()
+		fx.Invoke(func (u *usecase.UseCase) {
+			u.Use(workdir)
 		}),
-		fx.Invoke(func(u *usecase.UseCase) error {
-			task, err := u.Register()
-			if err != nil {
-				return err
-			}
-			fmt.Printf("%+v\n", task)
-
-			if err := u.UnArchive(); err != nil {
-				return err
-			}
-
-			if err := u.Run(task); err != nil {
-				return err
-			}
-
-			return nil
-		}),
+		fx.Invoke(InvokeConnect),
+		fx.Invoke(InvokeMain),
 		fx.NopLogger,
 	)
 
