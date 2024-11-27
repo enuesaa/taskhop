@@ -2,17 +2,19 @@ package usecase
 
 import (
 	"github.com/enuesaa/taskhop/internal"
-	"github.com/enuesaa/taskhop/runner/gqlclient"
+	"github.com/enuesaa/taskhop/runner/connector"
 )
 
-func New(cli gqlclient.Client, c internal.Container) *UseCase {
+func New(client connector.Client, c internal.Container) *UseCase {
 	return &UseCase{
 		Container: c,
-		client: cli,
+		client: client,
+		Workdir: ".",
 	}
 }
 
 type UseCase struct {
 	internal.Container
-	client gqlclient.Client
+	client connector.Client
+	Workdir string
 }

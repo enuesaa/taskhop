@@ -1,28 +1,13 @@
 package usecase
 
-import (
-	"context"
-	"errors"
-	"time"
-)
+import "context"
 
-var ErrConnection = errors.New("failed to connect")
-
-func (c *UseCase) Connect() error {
-	// polling
-	for range 120 {
-		if c.client.Dial() {
-			break
-		}
-		time.Sleep(5 * time.Second)
+func (u *UseCase) Connect() error {
+	if err := u.client.DialPolling(); err != nil {
+		return err
 	}
-
-	data, err := c.client.GetHealth(context.Background())
-	if err != nil {
-		return ErrConnection
-	}
-	if !data.Health.Ok {
-		return ErrConnection
+	if _, err := u.client.GetHealth(context.Background()); err != nil {
+		return err
 	}
 	return nil
 }

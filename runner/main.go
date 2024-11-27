@@ -6,13 +6,13 @@ import (
 
 	"github.com/enuesaa/taskhop/internal"
 	"github.com/enuesaa/taskhop/runner/usecase"
-	"github.com/enuesaa/taskhop/runner/gqlclient"
+	"github.com/enuesaa/taskhop/runner/connector"
 	"go.uber.org/fx"
 )
 
-func New(workdir string, commanderAddress string) *fx.App {
-	client := gqlclient.New(commanderAddress)
-	if err := client.Validate(); err != nil {
+func New(workdir string, address string) *fx.App {
+	client, err := connector.New(address)
+	if err != nil {
 		log.Fatalf("Error: %s", err.Error())
 	}
 
@@ -30,11 +30,11 @@ func New(workdir string, commanderAddress string) *fx.App {
 			}
 			fmt.Printf("%+v\n", task)
 
-			if err := u.UnArchive(workdir); err != nil {
+			if err := u.UnArchive(); err != nil {
 				return err
 			}
 
-			if err := u.Run(task, workdir); err != nil {
+			if err := u.Run(task); err != nil {
 				return err
 			}
 

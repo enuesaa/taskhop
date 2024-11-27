@@ -1,4 +1,4 @@
-package gqlclient
+package connector
 
 import "net/url"
 

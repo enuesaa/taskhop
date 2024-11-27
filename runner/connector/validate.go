@@ -1,10 +1,10 @@
-package gqlclient
+package connector
 
 import "errors"
 
 var ErrInvalidAddress = errors.New("invalid address")
 
-func (c *Client) Validate() error {
+func (c *Client) validate() error {
 	if c.Address() == "" {
 		return ErrInvalidAddress
 	}

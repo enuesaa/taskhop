@@ -2,9 +2,9 @@ package usecase
 
 import "bytes"
 
-func (c *UseCase) UnArchive(workdir string) error {
+func (u *UseCase) UnArchive() error {
 	var buf bytes.Buffer
-	c.client.GetStorageArchive(&buf)
+	u.client.GetStorageArchive(&buf)
 
-	return c.Arvi.UnArchive(&buf, workdir)
+	return u.Arvi.UnArchive(&buf, u.Workdir)
 }
