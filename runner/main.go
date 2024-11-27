@@ -28,7 +28,15 @@ func New(workdir string, connect string) *fx.App {
 				return err
 			}
 			fmt.Printf("%+v\n", task)
-			con.Run(task)
+
+			if err := con.UnArchive(workdir); err != nil {
+				return err
+			}
+
+			if err := con.Run(task, workdir); err != nil {
+				return err
+			}
+
 			return nil
 		}),
 		fx.NopLogger,

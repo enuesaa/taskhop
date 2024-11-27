@@ -5,9 +5,10 @@ import (
 	"os/exec"
 )
 
-func (i *Impl) MultiExec(writer io.Writer, commands []string) error {
+func (i *Impl) MultiExec(writer io.Writer, commands []string, workdir string) error {
 	for _, command := range commands {
 		cmd := exec.Command("bash", "-c", command)
+		cmd.Dir = workdir
 
 		cmd.Stdout = writer
 		cmd.Stderr = writer

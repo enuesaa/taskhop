@@ -2,19 +2,18 @@ package archivefx
 
 import (
 	"archive/zip"
+	"bytes"
 	"io"
 	"os"
 	"path/filepath"
 )
 
-func (i *Impl) UnArchive() error {
-	dest := "./aaa"
-
-	zipr, err := zip.OpenReader("archive.zip")
+func (i *Impl) UnArchive(r io.Reader, dest string) error {
+	buf, err := io.ReadAll(r)
+	zipr, err := zip.NewReader(bytes.NewReader(buf), int64(len(buf)))
 	if err != nil {
 		return err
 	}
-	defer zipr.Close()
 
 	for _, file := range zipr.File {
 		fpath := filepath.Join(dest, file.Name)

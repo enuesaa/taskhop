@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/enuesaa/taskhop/internal"
+	"github.com/enuesaa/taskhop/internal/archivefx"
 	"github.com/enuesaa/taskhop/internal/taskfx"
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/fx"
@@ -26,6 +27,10 @@ func New(workdir string) *fx.App {
 				log.Printf("Error: %s", err.Error())
 				return err
 			}
+			return nil
+		}),
+		fx.Invoke(func(arvi archivefx.I) error {
+			arvi.Use(workdir)
 			return nil
 		}),
 		fx.Invoke(func(lc fx.Lifecycle, router *chi.Mux) {
