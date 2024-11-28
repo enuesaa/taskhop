@@ -4,13 +4,14 @@ import (
 	"log"
 
 	"github.com/enuesaa/taskhop/internal"
-	"github.com/enuesaa/taskhop/runner/usecase"
+	"github.com/enuesaa/taskhop/internal/cli"
 	"github.com/enuesaa/taskhop/runner/connector"
+	"github.com/enuesaa/taskhop/runner/usecase"
 	"go.uber.org/fx"
 )
 
-func New(workdir string, address string) *fx.App {
-	client, err := connector.New(address)
+func New(config cli.Config) *fx.App {
+	client, err := connector.New(config.Address)
 	if err != nil {
 		log.Fatalf("Error: %s", err.Error())
 	}
@@ -20,7 +21,7 @@ func New(workdir string, address string) *fx.App {
 		fx.Supply(client),
 		fx.Provide(usecase.New),
 		fx.Invoke(func (u *usecase.UseCase) {
-			u.Use(workdir)
+			u.Use(config.Workdir)
 		}),
 		fx.Invoke(InvokeConnect),
 		fx.Invoke(InvokeMain),

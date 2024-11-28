@@ -2,17 +2,18 @@ package main
 
 import (
 	"github.com/enuesaa/taskhop/commander"
+	"github.com/enuesaa/taskhop/internal/cli"
 	"github.com/enuesaa/taskhop/runner"
 )
 
 func main() {
-	cli := LaunchCLI()
+	config := cli.Launch()
 
-	if cli.IsCommander() {
-		app := commander.New(cli.Workdir)
+	if config.IsCommander() {
+		app := commander.New(config)
 		app.Run()
 	} else {
-		app := runner.New(cli.Workdir, cli.Connect)
+		app := runner.New(config)
 		app.Run()
 	}
 }
