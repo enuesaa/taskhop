@@ -13,7 +13,7 @@ func NewRouter(c internal.Container) *chi.Mux {
 	router := chi.NewRouter()
 
 	// middleware
-	router.Use(middleware.Logger(c))
+	// router.Use(middleware.Logger(c))
 	router.Use(middleware.Recover())
 	router.Use(middleware.NoCache())
 	router.Use(middleware.Cors())

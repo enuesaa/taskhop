@@ -3,7 +3,6 @@ package archivefx
 import (
 	"archive/zip"
 	"bytes"
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -21,7 +20,6 @@ func (i *Impl) Archive() (io.Reader, error) {
 		if info.IsDir() {
 			return nil
 		}
-		fmt.Println(path)
 
 		f, err := os.Open(path)
 		if err != nil {

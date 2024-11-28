@@ -2,15 +2,7 @@ package logfx
 
 import (
 	"context"
-	"log/slog"
-	"os"
 )
-
-func init() {
-	// TODO remove
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	slog.SetDefault(logger)
-}
 
 func New() I {
 	return &Impl{}

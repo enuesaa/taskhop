@@ -7,10 +7,13 @@ import (
 )
 
 func (i *Impl) Info(ctx context.Context, format string, a ...any) {
-	logattr, ok := ctx.Value(logAttrKey{}).(map[string]interface{})
-	if !ok {
-		logattr = map[string]interface{}{}
-	}
+	// logattr, ok := ctx.Value(logAttrKey{}).(map[string]interface{})
+	// if !ok {
+	// 	logattr = map[string]interface{}{}
+	// }
+	// message := fmt.Sprintf(format, a...)
+	// slog.Info(message, slog.Attr{Key: "attr", Value: slog.AnyValue(logattr)})
+
 	message := fmt.Sprintf(format, a...)
-	slog.Info(message, slog.Attr{Key: "attr", Value: slog.AnyValue(logattr)})
+	slog.Info(message)
 }

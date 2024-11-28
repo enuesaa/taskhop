@@ -7,7 +7,6 @@ import (
 
 	"github.com/enuesaa/taskhop/internal"
 	"github.com/enuesaa/taskhop/internal/cli"
-	"github.com/enuesaa/taskhop/internal/taskfx"
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/fx"
 )
@@ -17,16 +16,17 @@ func New(config cli.Config) *fx.App {
 		internal.Module,
 		fx.Supply(config),
 		fx.Provide(NewRouter),
-		fx.Invoke(func(taski taskfx.I) error {
-			task, err := taski.Read()
+		fx.Invoke(func(c internal.Container) error {
+			task, err := c.Taski.Read()
 			if err != nil {
 				log.Printf("Error: %s", err.Error())
 				return err
 			}
-			if err := taski.Validate(task); err != nil {
+			if err := c.Taski.Validate(task); err != nil {
 				log.Printf("Error: %s", err.Error())
 				return err
 			}
+			c.Logi.Info(context.Background(), "started")
 			return nil
 		}),
 		fx.Invoke(func(lc fx.Lifecycle, router *chi.Mux) {
