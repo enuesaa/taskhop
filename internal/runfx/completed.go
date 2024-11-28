@@ -13,7 +13,3 @@ func (i *Impl) Completed() error {
 
 	return nil
 }
-
-func (i *Impl) Subscribe() <-chan Status {
-	return i.ch
-}

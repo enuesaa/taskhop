@@ -2,8 +2,7 @@ package commander
 
 import (
 	"context"
-	"fmt"
-	"log"
+	"errors"
 	"net/http"
 
 	"github.com/enuesaa/taskhop/internal"
@@ -21,11 +20,11 @@ func New(config cli.Config) *fx.App {
 		fx.Invoke(func(c internal.Container) error {
 			task, err := c.Taski.Read()
 			if err != nil {
-				log.Printf("Error: %s", err.Error())
+				c.Logi.Info(context.Background(), "Error: %s", err.Error())
 				return err
 			}
 			if err := c.Taski.Validate(task); err != nil {
-				log.Printf("Error: %s", err.Error())
+				c.Logi.Info(context.Background(), "Error: %s", err.Error())
 				return err
 			}
 			c.Logi.Info(context.Background(), "started")
@@ -34,7 +33,6 @@ func New(config cli.Config) *fx.App {
 		fx.Invoke(func(c internal.Container, shutdowner fx.Shutdowner) error {
 			go func() {
 				for status := range c.Runi.Subscribe() {
-					fmt.Println("ddd")
 					if status == runfx.StatusCompleted {
 						shutdowner.Shutdown()
 						break
@@ -43,7 +41,7 @@ func New(config cli.Config) *fx.App {
 			}()
 			return nil
 		}),
-		fx.Invoke(func(lc fx.Lifecycle, router *chi.Mux) {
+		fx.Invoke(func(lc fx.Lifecycle, router *chi.Mux, c internal.Container) {
 			server := &http.Server{
 				Addr:    ":3000",
 				Handler: router,
@@ -52,12 +50,16 @@ func New(config cli.Config) *fx.App {
 				OnStart: func(ctx context.Context) error {
 					go func() {
 						if err := server.ListenAndServe(); err != nil {
-							log.Printf("Error: %s\n", err)
+							if errors.Is(err, http.ErrServerClosed) {
+								return
+							}
+							c.Logi.Info(context.Background(), "Error: %s", err.Error())
 						}
 					}()
 					return nil
 				},
 				OnStop: func(ctx context.Context) error {
+					c.Logi.Info(context.Background(), "stop app")
 					return server.Shutdown(ctx)
 				},
 			})

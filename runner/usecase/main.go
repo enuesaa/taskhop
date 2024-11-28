@@ -6,8 +6,8 @@ import (
 	"github.com/enuesaa/taskhop/runner/connector"
 )
 
-func New(config cli.Config, conn connector.Connector, c internal.Container) *UseCase {
-	return &UseCase{
+func New(config cli.Config, conn connector.Connector, c internal.Container) UseCase {
+	return UseCase{
 		Container: c,
 		conn: conn,
 		config: config,
