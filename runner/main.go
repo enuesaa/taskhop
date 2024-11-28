@@ -31,8 +31,7 @@ func New(config cli.Config) *fx.App {
 		
 			if err := u.Run(task); err != nil {
 				return err
-			}
-		
+			}		
 			return nil
 		}),
 		fx.NopLogger,

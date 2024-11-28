@@ -2,11 +2,13 @@ package commander
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/enuesaa/taskhop/internal"
 	"github.com/enuesaa/taskhop/internal/cli"
+	"github.com/enuesaa/taskhop/internal/runfx"
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/fx"
 )
@@ -27,6 +29,18 @@ func New(config cli.Config) *fx.App {
 				return err
 			}
 			c.Logi.Info(context.Background(), "started")
+			return nil
+		}),
+		fx.Invoke(func(c internal.Container, shutdowner fx.Shutdowner) error {
+			go func() {
+				for status := range c.Runi.Subscribe() {
+					fmt.Println("ddd")
+					if status == runfx.StatusCompleted {
+						shutdowner.Shutdown()
+						break
+					}
+				}
+			}()
 			return nil
 		}),
 		fx.Invoke(func(lc fx.Lifecycle, router *chi.Mux) {

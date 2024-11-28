@@ -10,6 +10,7 @@ import (
 )
 
 type GraphQLClient interface {
+	Completed(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*Completed, error)
 	GetHealth(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*GetHealth, error)
 	GetTask(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*GetTask, error)
 	Log(ctx context.Context, input model.LogInput, interceptors ...clientv2.RequestInterceptor) (*Log, error)
@@ -51,6 +52,17 @@ func (t *GetTask_Task) GetCmds() []string {
 		t = &GetTask_Task{}
 	}
 	return t.Cmds
+}
+
+type Completed struct {
+	Completed bool "json:\"completed\" graphql:\"completed\""
+}
+
+func (t *Completed) GetCompleted() bool {
+	if t == nil {
+		t = &Completed{}
+	}
+	return t.Completed
 }
 
 type GetHealth struct {
@@ -95,6 +107,26 @@ func (t *Register) GetRegister() bool {
 		t = &Register{}
 	}
 	return t.Register
+}
+
+const CompletedDocument = `mutation completed {
+	completed
+}
+`
+
+func (c *Client) Completed(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*Completed, error) {
+	vars := map[string]any{}
+
+	var res Completed
+	if err := c.Client.Post(ctx, "completed", CompletedDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
 }
 
 const GetHealthDocument = `query getHealth {
@@ -185,6 +217,7 @@ func (c *Client) Register(ctx context.Context, interceptors ...clientv2.RequestI
 }
 
 var DocumentOperationNames = map[string]string{
+	CompletedDocument: "completed",
 	GetHealthDocument: "getHealth",
 	GetTaskDocument:   "getTask",
 	LogDocument:       "log",
