@@ -10,6 +10,9 @@ import (
 
 func (i *Impl) UnArchive(r io.Reader, dest string) error {
 	buf, err := io.ReadAll(r)
+	if err != nil {
+		return err
+	}
 	zipr, err := zip.NewReader(bytes.NewReader(buf), int64(len(buf)))
 	if err != nil {
 		return err
