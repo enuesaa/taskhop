@@ -4,7 +4,7 @@ import "bytes"
 
 func (u *UseCase) UnArchive() error {
 	var buf bytes.Buffer
-	u.client.GetStorageArchive(&buf)
+	u.conn.GetStorageArchive(&buf)
 
 	return u.Arvi.UnArchive(&buf, u.config.Workdir)
 }

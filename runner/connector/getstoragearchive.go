@@ -6,9 +6,8 @@ import (
 	"net/http"
 )
 
-func (c *Client) GetStorageArchive(dest io.Writer) error {
-	address := c.Address()
-	url := fmt.Sprintf("http://%s/storage/archive", address)
+func (c *Connector) GetStorageArchive(dest io.Writer) error {
+	url := fmt.Sprintf("http://%s/storage/archive", c.config.Address)
 
 	res, err := http.Get(url)
 	if err != nil {

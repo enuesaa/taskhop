@@ -11,7 +11,7 @@ import (
 var ErrTaskNotAvailable = errors.New("task not available")
 
 func (c *UseCase) Register() (connector.GetTask_Task, error) {
-	taskres, err := c.client.GetTask(context.Background())
+	taskres, err := c.conn.GetTask(context.Background())
 	if err != nil {
 		return connector.GetTask_Task{}, err
 	}
@@ -21,7 +21,7 @@ func (c *UseCase) Register() (connector.GetTask_Task, error) {
 		return connector.GetTask_Task{}, ErrTaskNotAvailable
 	}
 
-	regires, err := c.client.Register(context.Background())
+	regires, err := c.conn.Register(context.Background())
 	if err != nil {
 		return connector.GetTask_Task{}, err
 	}

@@ -7,7 +7,7 @@ import (
 )
 
 // send logs
-func (c *Client) Write(b []byte) (int, error) {
+func (c *Connector) Write(b []byte) (int, error) {
 	data := string(b)
 
 	input := model.LogInput{

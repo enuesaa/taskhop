@@ -7,7 +7,7 @@ import (
 
 var ErrConnection = errors.New("failed to connect")
 
-func (c *Client) DialPolling() error {
+func (c *Connector) DialPolling() error {
 	for range 120 {
 		if c.Dial() {
 			return nil

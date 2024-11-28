@@ -11,7 +11,6 @@ func New(config cli.Config, repo repository.I) I {
 	return &Impl{
 		config: config,
 		repo: repo,
-		Workdir: ".",
 	}
 }
 
@@ -22,5 +21,4 @@ type I interface {
 type Impl struct {
 	config cli.Config
 	repo repository.I
-	Workdir string
 }
