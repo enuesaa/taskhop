@@ -4,21 +4,23 @@ import (
 	"io"
 
 	"github.com/enuesaa/taskhop/internal/archivefx/repository"
+	"github.com/enuesaa/taskhop/internal/cli"
 )
 
-func New(repo repository.I) I {
+func New(config cli.Config, repo repository.I) I {
 	return &Impl{
+		config: config,
 		repo: repo,
 		Workdir: ".",
 	}
 }
 
 type I interface {
-	Use(workdir string)
 	Archive() (io.Reader, error)
 	UnArchive(r io.Reader, dest string) error
 }
 type Impl struct {
+	config cli.Config
 	repo repository.I
 	Workdir string
 }

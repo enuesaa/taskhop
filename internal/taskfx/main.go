@@ -1,17 +1,18 @@
 package taskfx
 
-func New() I {
+import "github.com/enuesaa/taskhop/internal/cli"
+
+func New(config cli.Config) I {
 	return &Impl{
-		Workdir: ".",
+		config: config,
 	}
 }
 
 type I interface {
-	Use(workdir string)
 	Read() (Task, error)
 	Validate(task Task) error
 }
 
 type Impl struct{
-	Workdir string
+	config cli.Config
 }

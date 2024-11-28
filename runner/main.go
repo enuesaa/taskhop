@@ -20,9 +20,6 @@ func New(config cli.Config) *fx.App {
 		internal.Module,
 		fx.Supply(client),
 		fx.Provide(usecase.New),
-		fx.Invoke(func (u *usecase.UseCase) {
-			u.Use(config.Workdir)
-		}),
 		fx.Invoke(InvokeConnect),
 		fx.Invoke(InvokeMain),
 		fx.NopLogger,
