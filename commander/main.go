@@ -7,7 +7,7 @@ import (
 
 	"github.com/enuesaa/taskhop/internal"
 	"github.com/enuesaa/taskhop/internal/cli"
-	"github.com/enuesaa/taskhop/internal/runfx"
+	"github.com/enuesaa/taskhop/internal/taskfx"
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/fx"
 )
@@ -32,8 +32,8 @@ func New(config cli.Config) *fx.App {
 		}),
 		fx.Invoke(func(c internal.Container, shutdowner fx.Shutdowner) error {
 			go func() {
-				for status := range c.Runi.Subscribe() {
-					if status == runfx.StatusCompleted {
+				for status := range c.Taski.Subscribe() {
+					if status == taskfx.StatusCompleted {
 						shutdowner.Shutdown()
 						break
 					}

@@ -1,5 +1,5 @@
-package runfx
+package taskfx
 
 func (i *Impl) GetStatus() Status {
-	return i.Status
+	return i.status
 }

@@ -1,14 +1,14 @@
-package runfx
+package taskfx
 
 import "errors"
 
 var ErrCompletedNotAvailable = errors.New("unregister not available")
 
 func (i *Impl) Completed() error {
-	if i.Status != StatusProceeding {
+	if i.status != StatusProceeding {
 		return ErrCompletedNotAvailable
 	}
-	i.Status = StatusCompleted
+	i.status = StatusCompleted
 	i.ch <- StatusCompleted
 
 	return nil
