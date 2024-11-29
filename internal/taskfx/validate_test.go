@@ -6,6 +6,8 @@ import (
 	"github.com/enuesaa/taskhop/internal/cli"
 	"github.com/enuesaa/taskhop/internal/taskfx/repository"
 	"github.com/stretchr/testify/assert"
+	"go.uber.org/fx"
+	"go.uber.org/fx/fxtest"
 )
 
 func TestValidate(t *testing.T) {
@@ -19,8 +21,19 @@ cmds:
 `,
 	}
 
-	taski := New(cli.Config{}, &mock)
-	task, err := taski.Read()
+	var i I
+	fxtest.New(
+		t,
+		fx.Supply(
+			cli.Config{},
+			fx.Annotate(&mock, fx.As(new(repository.I))),
+		),
+		fx.Provide(New),
+		fx.Populate(&i),
+		fx.NopLogger,
+	).RequireStart().RequireStop()
+
+	task, err := i.Read()
 	assert.NoError(t, err)
-	assert.NoError(t, taski.Validate(task))
+	assert.NoError(t, i.Validate(task))
 }
