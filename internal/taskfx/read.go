@@ -1,20 +1,15 @@
 package taskfx
 
-import (
-	"os"
-
-	"gopkg.in/yaml.v3"
-)
+import "gopkg.in/yaml.v3"
 
 func (i *Impl) Read() (Task, error) {
 	filename := i.getTaskFilePath()
 	var task Task
 
-	f, err := os.Open(filename)
+	f, err := i.repo.Read(filename)
 	if err != nil {
 		return task, err
 	}
-	defer f.Close()
 
 	decoder := yaml.NewDecoder(f)
 	if err := decoder.Decode(&task); err != nil {
