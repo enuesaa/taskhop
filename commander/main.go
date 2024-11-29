@@ -13,6 +13,7 @@ import (
 )
 
 func New(config cli.Config) *fx.App {
+	// see https://github.com/ankorstore/yokai
 	app := fx.New(
 		internal.Module,
 		fx.Supply(config),
@@ -64,7 +65,7 @@ func New(config cli.Config) *fx.App {
 				},
 			})
 		}),
-		fx.NopLogger,
+		// fx.NopLogger,
 	)
 
 	return app

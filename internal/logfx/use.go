@@ -1,17 +1,9 @@
 package logfx
 
-import (
-	"context"
-)
+import "context"
 
-type logAttrKey struct{}
+type taskIdKey struct{}
 
-func (i *Impl) Use(ctx context.Context, key string, value interface{}) context.Context {
-	logattr, ok := ctx.Value(logAttrKey{}).(map[string]interface{})
-	if !ok {
-		logattr = map[string]interface{}{}
-	}
-	logattr[key] = value
-
-	return context.WithValue(ctx, logAttrKey{}, logattr)
+func (i *Impl) Use(ctx context.Context, id string) context.Context {
+	return context.WithValue(ctx, taskIdKey{}, id)
 }

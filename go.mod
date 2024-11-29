@@ -8,7 +8,6 @@ require (
 	github.com/go-chi/chi/v5 v5.1.0
 	github.com/go-chi/cors v1.2.1
 	github.com/go-playground/validator/v10 v10.23.0
-	github.com/golang/mock v1.6.0
 	github.com/stretchr/testify v1.9.0
 	github.com/vektah/gqlparser/v2 v2.5.19
 	go.uber.org/fx v1.23.0

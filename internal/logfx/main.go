@@ -9,7 +9,7 @@ func New() I {
 }
 
 type I interface {
-	Use(ctx context.Context, key string, value interface{}) context.Context
+	Use(ctx context.Context, id string) context.Context
 	Info(ctx context.Context, format string, a ...any)
 }
 
