@@ -11,6 +11,7 @@ require (
 	github.com/stretchr/testify v1.9.0
 	github.com/vektah/gqlparser/v2 v2.5.19
 	go.uber.org/fx v1.23.0
+	go.uber.org/mock v0.5.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
