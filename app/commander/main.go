@@ -12,7 +12,16 @@ import (
 	"go.uber.org/fx"
 )
 
-func New(config cli.Config) *fx.App {
+func New(c cli.ICli, lc fx.Lifecycle) IApp {
+	app := App{
+		cli: c,
+		lc: lc,
+	}
+
+	return &app
+}
+
+func NewOld(config cli.Config) *fx.App {
 	// see https://github.com/ankorstore/yokai
 	app := fx.New(
 		internal.Module,
@@ -31,17 +40,17 @@ func New(config cli.Config) *fx.App {
 			c.Logi.Info(context.Background(), "started")
 			return nil
 		}),
-		fx.Invoke(func(c internal.Container, shutdowner fx.Shutdowner) error {
-			go func() {
-				for status := range c.Taski.Subscribe() {
-					if status == taskfx.StatusCompleted {
-						shutdowner.Shutdown()
-						break
-					}
-				}
-			}()
-			return nil
-		}),
+		// fx.Invoke(func(c internal.Container, shutdowner fx.Shutdowner) error {
+		// 	go func() {
+		// 		for status := range c.Taski.Subscribe() {
+		// 			if status == taskfx.StatusCompleted {
+		// 				shutdowner.Shutdown()
+		// 				break
+		// 			}
+		// 		}
+		// 	}()
+		// 	return nil
+		// }),
 		fx.Invoke(func(lc fx.Lifecycle, router *chi.Mux, c internal.Container) {
 			server := &http.Server{
 				Addr:    ":3000",

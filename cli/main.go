@@ -11,4 +11,6 @@ func New() ICli {
 type ICli interface {
 	Launch() error
 	IsCommander() bool
+	GetAddress() string
+	GetWorkdir() string
 }

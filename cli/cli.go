@@ -41,3 +41,11 @@ func (c *Cli) validate() error {
 	}
 	return nil
 }
+
+func (c *Cli) GetAddress() string {
+	return c.Address
+}
+
+func (c *Cli) GetWorkdir() string {
+	return c.Workdir
+}
