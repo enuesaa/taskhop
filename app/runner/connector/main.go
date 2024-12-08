@@ -4,15 +4,15 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/enuesaa/taskhop/internal/cli"
+	"github.com/enuesaa/taskhop/cli"
 )
 
-func New(config cli.Config) Connector {
-	url := fmt.Sprintf("http://%s/graphql", config.Address)
+func New(cl cli.ICli) Connector {
+	url := fmt.Sprintf("http://%s/graphql", cl.GetAddress())
 	client := NewClient(http.DefaultClient, url, nil)
 	connector := Connector{
 		GraphQLClient: client,
-		config: config,
+		cli: cl,
 	}
 
 	return connector
@@ -20,5 +20,5 @@ func New(config cli.Config) Connector {
 
 type Connector struct {
 	GraphQLClient
-	config cli.Config
+	cli cli.ICli
 }

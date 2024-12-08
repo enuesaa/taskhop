@@ -1,18 +1,18 @@
-package usecase
+package runner
 
 import (
 	"context"
 	"errors"
 
-	"github.com/enuesaa/taskhop/commander/gql/model"
-	"github.com/enuesaa/taskhop/runner/connector"
+	"github.com/enuesaa/taskhop/app/commander/gql/model"
+	"github.com/enuesaa/taskhop/app/runner/connector"
 )
 
 var ErrTaskNotAvailable = errors.New("task not available")
 
-func (u *UseCase) Register() (connector.GetTask_Task, error) {
-	u.Logi.Info(context.Background(), "receive a task")
-	taskres, err := u.conn.GetTask(context.Background())
+func (a *App) Register() (connector.GetTask_Task, error) {
+	a.lib.Log.Info(context.Background(), "receive a task")
+	taskres, err := a.conn.GetTask(context.Background())
 	if err != nil {
 		return connector.GetTask_Task{}, err
 	}
@@ -22,8 +22,8 @@ func (u *UseCase) Register() (connector.GetTask_Task, error) {
 		return connector.GetTask_Task{}, ErrTaskNotAvailable
 	}
 
-	u.Logi.Info(context.Background(), "assign me")
-	regires, err := u.conn.Register(context.Background())
+	a.lib.Log.Info(context.Background(), "assign me")
+	regires, err := a.conn.Register(context.Background())
 	if err != nil {
 		return connector.GetTask_Task{}, err
 	}
