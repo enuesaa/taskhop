@@ -1,7 +1,7 @@
 package runner
 
-func New() IApp {
-	return &App{}
+func New() App {
+	return App{}
 }
 
 // func New(config cli.Config) *fx.App {

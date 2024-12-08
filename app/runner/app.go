@@ -4,17 +4,11 @@ import (
 	"github.com/enuesaa/taskhop/app/runner/connector"
 	"github.com/enuesaa/taskhop/cli"
 	"github.com/enuesaa/taskhop/lib"
-	"go.uber.org/fx"
 )
-
-type IApp interface {
-	Run() error
-}
 
 type App struct {
 	cli cli.ICli
 	lib lib.Lib
-	lc fx.Lifecycle
 	conn connector.Connector
 }
 

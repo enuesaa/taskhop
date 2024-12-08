@@ -6,13 +6,13 @@ import (
 	"go.uber.org/fx"
 )
 
-func New(cl cli.ICli, li lib.Lib, lc fx.Lifecycle) IApp {
+func New(cl cli.ICli, li lib.Lib, lc fx.Lifecycle) App {
 	app := App{
 		cli: cl,
 		lib: li,
 		lc: lc,
 	}
-	return &app
+	return app
 }
 
 // func NewOld(config cli.Config) *fx.App {

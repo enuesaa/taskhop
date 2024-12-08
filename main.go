@@ -19,13 +19,19 @@ func main() {
 		fx.Invoke(func (cl cli.ICli) error {
 			return cl.Launch()
 		}),
-		fx.Invoke(func(cl cli.ICli, commanderApp commander.IApp, runnerApp runner.IApp) error {
+		// fx.Invoke(func (cl fx.NopLogger) fx.Option {
+		// 	if cl.IsDebug() {
+		// 		return fx.Options() // TODO: customize logger
+		// 	}
+		// 	return fx.NopLogger
+		// }),
+		fx.Invoke(func(cl cli.ICli, commanderApp commander.App, runnerApp runner.App) error {
+			// これ: この辺りで動的に 		fx.NopLogger, を指定したい
 			if cl.IsCommander() {
 				return commanderApp.Run()
 			}
 			return runnerApp.Run()
 		}),
-		fx.NopLogger,
 	)
 	app.Run()
 

@@ -15,10 +15,6 @@ import (
 	"go.uber.org/fx"
 )
 
-type IApp interface {
-	Run() error
-}
-
 type App struct {
 	cli cli.ICli
 	lib lib.Lib

@@ -7,10 +7,3 @@ func New() ICli {
 	}
 	return &cli
 }
-
-type ICli interface {
-	Launch() error
-	IsCommander() bool
-	GetAddress() string
-	GetWorkdir() string
-}
