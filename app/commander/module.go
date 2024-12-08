@@ -1,9 +1,9 @@
 package commander
 
-// import (
-// 	"go.uber.org/fx"
-// )
+import (
+	"go.uber.org/fx"
+)
 
-// var Module = fx.Options(
-// 	fx.Provide(App), // TODO
-// )
+var Module = fx.Options(
+	fx.Provide(New),
+)

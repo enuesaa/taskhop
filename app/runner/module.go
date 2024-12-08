@@ -5,5 +5,5 @@ import (
 )
 
 var Module = fx.Options(
-	fx.Provide(New), // TODO
+	fx.Provide(New),
 )
