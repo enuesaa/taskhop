@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-
 	"github.com/enuesaa/taskhop/app/commander"
 	"github.com/enuesaa/taskhop/app/runner"
 	"github.com/enuesaa/taskhop/cli"
@@ -38,8 +36,4 @@ func main() {
 		}),
 	)
 	app.Run()
-
-	if app.Err() != nil {
-		log.Panicf("Error: %s", app.Err().Error())
-	}
 }

@@ -25,7 +25,7 @@ cmds:
 	fxtest.New(
 		t,
 		fx.Supply(
-			cli.Cli{}, // TODO
+			fx.Annotate(&cli.Cli{}, fx.As(new(cli.ICli))),
 			fx.Annotate(&mock, fx.As(new(repository.I))),
 		),
 		fx.Provide(New),
