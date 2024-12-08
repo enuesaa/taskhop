@@ -5,8 +5,8 @@ import (
 )
 
 func (r *MutationResolver) Register(ctx context.Context) (bool, error) {
-	r.Taski.Register()
-	r.Logi.Info(context.Background(), "register!")
+	r.Lib.Task.Register()
+	r.Lib.Log.Info(context.Background(), "register!")
 
 	return true, nil
 }

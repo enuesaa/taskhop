@@ -1,8 +1,17 @@
 package commander
 
 import (
+	"context"
+	"errors"
+	"net/http"
+
+	"github.com/enuesaa/taskhop/app/commander/gql"
+	"github.com/enuesaa/taskhop/app/commander/gqlplayground"
+	"github.com/enuesaa/taskhop/app/commander/storage"
+	"github.com/enuesaa/taskhop/app/commander/middleware"
 	"github.com/enuesaa/taskhop/cli"
 	"github.com/enuesaa/taskhop/lib"
+	"github.com/go-chi/chi/v5"
 	"go.uber.org/fx"
 )
 
@@ -12,7 +21,7 @@ type IApp interface {
 
 type App struct {
 	cli cli.ICli
-	lib lib.ILib
+	lib lib.Lib
 	lc fx.Lifecycle
 }
 
@@ -27,40 +36,57 @@ func (a *App) Run() error {
 }
 
 func (a *App) load() error {
-	task, err := a.Taski.Read()
+	task, err := a.lib.Task.Read()
 	if err != nil {
-		c.Logi.Info(context.Background(), "Error: %s", err.Error())
+		a.lib.Log.Info(context.Background(), "Error: %s", err.Error())
 		return err
 	}
-	if err := c.Taski.Validate(task); err != nil {
-		c.Logi.Info(context.Background(), "Error: %s", err.Error())
+	if err := a.lib.Task.Validate(task); err != nil {
+		a.lib.Log.Info(context.Background(), "Error: %s", err.Error())
 		return err
 	}
-	c.Logi.Info(context.Background(), "started")
+	a.lib.Log.Info(context.Background(), "started")
 	return nil
 }
 
 func (a *App) start() error {
 	server := &http.Server{
 		Addr:    ":3000",
-		Handler: router,
+		Handler: a.router(),
 	}
-	lc.Append(fx.Hook{
+	a.lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
 			go func() {
 				if err := server.ListenAndServe(); err != nil {
 					if errors.Is(err, http.ErrServerClosed) {
 						return
 					}
-					c.Logi.Info(context.Background(), "Error: %s", err.Error())
+					a.lib.Log.Info(context.Background(), "Error: %s", err.Error())
 				}
 			}()
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {
-			c.Logi.Info(context.Background(), "stop app")
+			a.lib.Log.Info(context.Background(), "stop app")
 			return server.Shutdown(ctx)
 		},
 	})
 	return nil
+}
+
+func (a *App) router() *chi.Mux {
+	router := chi.NewRouter()
+
+	// middleware
+	// router.Use(middleware.Logger(c))
+	router.Use(middleware.Recover())
+	router.Use(middleware.NoCache())
+	router.Use(middleware.Cors())
+
+	// routes
+	router.Handle("/graphql", gql.Handle(a.lib))
+	router.Handle("/graphql/playground", gqlplayground.Handle())
+	router.Handle("/storage/archive", storage.Handle(a.lib))
+
+	return router
 }

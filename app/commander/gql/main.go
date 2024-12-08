@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/99designs/gqlgen/graphql/handler"
-	"github.com/enuesaa/taskhop/internal"
+	"github.com/enuesaa/taskhop/lib"
 )
 
-func Handle(c internal.Container) http.HandlerFunc {
+func Handle(c lib.Lib) http.HandlerFunc {
 	schema := NewExecutableSchema(Config{
 		Resolvers: &Resolver{c},
 	})

@@ -1,7 +1,7 @@
 package mutation
 
-import "github.com/enuesaa/taskhop/internal"
+import "github.com/enuesaa/taskhop/lib"
 
 type MutationResolver struct {
-	internal.Container
+	Lib lib.Lib
 }

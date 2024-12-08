@@ -4,15 +4,15 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/enuesaa/taskhop/internal"
+	"github.com/enuesaa/taskhop/lib"
 )
 
-func Logger(c internal.Container) Fn {
+func Logger(li lib.Lib) Fn {
 	handle := func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			start := time.Now()
 			next.ServeHTTP(w, r)
-			c.Logi.Info(r.Context(), "%s %s %s", r.Method, r.URL.Path, time.Since(start))
+			li.Log.Info(r.Context(), "%s %s %s", r.Method, r.URL.Path, time.Since(start))
 		})
 	}
 	return handle

@@ -1,25 +1,25 @@
 package gql
 
 import (
-	"github.com/enuesaa/taskhop/commander/gql/mutation"
-	"github.com/enuesaa/taskhop/commander/gql/query"
-	"github.com/enuesaa/taskhop/internal"
+	"github.com/enuesaa/taskhop/app/commander/gql/mutation"
+	"github.com/enuesaa/taskhop/app/commander/gql/query"
+	"github.com/enuesaa/taskhop/lib"
 )
 
 type Resolver struct {
-	internal.Container
+	lib.Lib
 }
 
 func (r *Resolver) Query() QueryResolver {
 	resolver := query.QueryResolver{
-		Container: r.Container,
+		Lib: r.Lib,
 	}
 	return &resolver
 }
 
 func (r *Resolver) Mutation() MutationResolver {
 	resolver := mutation.MutationResolver{
-		Container: r.Container,
+		Lib: r.Lib,
 	}
 	return &resolver
 }
