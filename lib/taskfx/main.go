@@ -1,13 +1,13 @@
 package taskfx
 
 import (
-	"github.com/enuesaa/taskhop/internal/cli"
-	"github.com/enuesaa/taskhop/internal/taskfx/repository"
+	"github.com/enuesaa/taskhop/cli"
+	"github.com/enuesaa/taskhop/lib/taskfx/repository"
 )
 
-func New(config cli.Config, repo repository.I) I {
+func New(cl cli.ICli, repo repository.I) I {
 	return &Impl{
-		config: config,
+		cli: cl,
 		status: StatusWaiting,
 		ch: make(chan Status, 1),
 		repo: repo,
@@ -24,7 +24,7 @@ type I interface {
 }
 
 type Impl struct{
-	config cli.Config
+	cli cli.ICli
 	status Status
 	ch chan Status
 	repo repository.I

@@ -1,7 +1,7 @@
 package archivefx
 
 import (
-	"github.com/enuesaa/taskhop/internal/archivefx/repository"
+	"github.com/enuesaa/taskhop/lib/archivefx/repository"
 	"go.uber.org/fx"
 )
 

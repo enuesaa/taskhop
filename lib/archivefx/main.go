@@ -3,13 +3,13 @@ package archivefx
 import (
 	"io"
 
-	"github.com/enuesaa/taskhop/internal/archivefx/repository"
-	"github.com/enuesaa/taskhop/internal/cli"
+	"github.com/enuesaa/taskhop/lib/archivefx/repository"
+	"github.com/enuesaa/taskhop/cli"
 )
 
-func New(config cli.Config, repo repository.I) I {
+func New(cl cli.ICli, repo repository.I) I {
 	return &Impl{
-		config: config,
+		cli: cl,
 		repo: repo,
 	}
 }
@@ -19,6 +19,6 @@ type I interface {
 	UnArchive(r io.Reader, dest string) error
 }
 type Impl struct {
-	config cli.Config
+	cli cli.ICli
 	repo repository.I
 }

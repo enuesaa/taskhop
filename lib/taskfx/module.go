@@ -1,7 +1,7 @@
 package taskfx
 
 import (
-	"github.com/enuesaa/taskhop/internal/taskfx/repository"
+	"github.com/enuesaa/taskhop/lib/taskfx/repository"
 	"go.uber.org/fx"
 )
 

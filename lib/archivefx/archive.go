@@ -13,7 +13,7 @@ func (i *Impl) Archive() (io.Reader, error) {
 	zipw := zip.NewWriter(zipb)
 	defer zipw.Close()
 
-	err := filepath.Walk(i.config.Workdir, func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk(i.cli.GetWorkdir(), func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -27,7 +27,7 @@ func (i *Impl) Archive() (io.Reader, error) {
 		}
 		defer f.Close()
 
-		fpath, err := filepath.Rel(i.config.Workdir, path)
+		fpath, err := filepath.Rel(i.cli.GetWorkdir(), path)
 		if err != nil {
 			return err
 		}

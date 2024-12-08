@@ -4,7 +4,7 @@ import (
 	"io"
 	"os/exec"
 
-	"github.com/enuesaa/taskhop/internal/cmdfx/repository"
+	"github.com/enuesaa/taskhop/lib/cmdfx/repository"
 )
 
 func New(repo repository.I) I {

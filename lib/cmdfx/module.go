@@ -1,7 +1,7 @@
 package cmdfx
 
 import (
-	"github.com/enuesaa/taskhop/internal/cmdfx/repository"
+	"github.com/enuesaa/taskhop/lib/cmdfx/repository"
 	"go.uber.org/fx"
 )
 

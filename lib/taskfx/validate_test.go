@@ -3,8 +3,8 @@ package taskfx
 import (
 	"testing"
 
-	"github.com/enuesaa/taskhop/internal/cli"
-	"github.com/enuesaa/taskhop/internal/taskfx/repository"
+	"github.com/enuesaa/taskhop/cli"
+	"github.com/enuesaa/taskhop/lib/taskfx/repository"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxtest"
@@ -25,7 +25,7 @@ cmds:
 	fxtest.New(
 		t,
 		fx.Supply(
-			cli.Config{},
+			cli.Cli{}, // TODO
 			fx.Annotate(&mock, fx.As(new(repository.I))),
 		),
 		fx.Provide(New),
