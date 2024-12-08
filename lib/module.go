@@ -1,10 +1,10 @@
 package lib
 
 import (
-	"github.com/enuesaa/taskhop/internal/archivefx"
-	"github.com/enuesaa/taskhop/internal/cmdfx"
-	"github.com/enuesaa/taskhop/internal/logfx"
-	"github.com/enuesaa/taskhop/internal/taskfx"
+	"github.com/enuesaa/taskhop/lib/archivefx"
+	"github.com/enuesaa/taskhop/lib/cmdfx"
+	"github.com/enuesaa/taskhop/lib/logfx"
+	"github.com/enuesaa/taskhop/lib/taskfx"
 	"go.uber.org/fx"
 )
 
@@ -13,5 +13,5 @@ var Module = fx.Options(
 	cmdfx.Module,
 	taskfx.Module,
 	logfx.Module,
-	fx.Provide(NewContainer),
+	fx.Provide(New),
 )
