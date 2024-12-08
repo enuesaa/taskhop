@@ -1,17 +1,14 @@
 package cli
 
-import (
-	"flag"
-)
-
-func Launch() Config {
-	config := Config{
+func New() ICli {
+	cli := Cli{
 		Address: "",
-		Workdir: "",
+		Workdir: ".",		
 	}
-	flag.StringVar(&config.Address, "c", "", "commander address. Example: localhost:3000")
-	flag.StringVar(&config.Workdir, "w", ".", "workdir. Example: ./aaa")
-	flag.Parse()
+	return &cli
+}
 
-	return config
+type ICli interface {
+	Launch() error
+	IsCommander() bool
 }

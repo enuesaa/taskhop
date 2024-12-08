@@ -1,9 +1,9 @@
 package cli
 
-// import (
-// 	"go.uber.org/fx"
-// )
+import (
+	"go.uber.org/fx"
+)
 
-// var Module = fx.Options(
-// 	fx.Provide(CLI), // TODO
-// )
+var Module = fx.Options(
+	fx.Provide(New),
+)
