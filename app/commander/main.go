@@ -8,16 +8,17 @@ import (
 	"github.com/enuesaa/taskhop/internal"
 	"github.com/enuesaa/taskhop/internal/cli"
 	"github.com/enuesaa/taskhop/internal/taskfx"
+	"github.com/enuesaa/taskhop/lib"
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/fx"
 )
 
-func New(c cli.ICli, lc fx.Lifecycle) IApp {
+func New(c cli.ICli, l lib.ILib, lc fx.Lifecycle) IApp {
 	app := App{
 		cli: c,
+		lib: l,
 		lc: lc,
 	}
-
 	return &app
 }
 

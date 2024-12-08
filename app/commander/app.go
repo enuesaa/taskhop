@@ -2,6 +2,7 @@ package commander
 
 import (
 	"github.com/enuesaa/taskhop/cli"
+	"github.com/enuesaa/taskhop/lib"
 	"go.uber.org/fx"
 )
 
@@ -11,7 +12,7 @@ type IApp interface {
 
 type App struct {
 	cli cli.ICli
-	// lib lib.ILib
+	lib lib.ILib
 	lc fx.Lifecycle
 }
 

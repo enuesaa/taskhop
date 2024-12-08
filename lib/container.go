@@ -1,4 +1,4 @@
-package internal
+package lib
 
 import (
 	"github.com/enuesaa/taskhop/internal/archivefx"
