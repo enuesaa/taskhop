@@ -1,8 +1,17 @@
 package commander
 
 import (
+	"context"
+	"errors"
+	"net/http"
+
+	"github.com/enuesaa/taskhop/app/commander/gql"
+	"github.com/enuesaa/taskhop/app/commander/gqlplayground"
+	"github.com/enuesaa/taskhop/app/commander/storage"
+	"github.com/enuesaa/taskhop/app/commander/middleware"
 	"github.com/enuesaa/taskhop/cli"
 	"github.com/enuesaa/taskhop/lib"
+	"github.com/go-chi/chi/v5"
 	"go.uber.org/fx"
 )
 
@@ -15,61 +24,74 @@ func New(cl cli.ICli, li lib.Lib, lc fx.Lifecycle) App {
 	return app
 }
 
-// func NewOld(config cli.Config) *fx.App {
-// 	// see https://github.com/ankorstore/yokai
-// 	app := fx.New(
-// 		internal.Module,
-// 		fx.Supply(config),
-// 		fx.Provide(NewRouter),
-// 		fx.Invoke(func(c internal.Container) error {
-// 			task, err := c.Taski.Read()
-// 			if err != nil {
-// 				c.Logi.Info(context.Background(), "Error: %s", err.Error())
-// 				return err
-// 			}
-// 			if err := c.Taski.Validate(task); err != nil {
-// 				c.Logi.Info(context.Background(), "Error: %s", err.Error())
-// 				return err
-// 			}
-// 			c.Logi.Info(context.Background(), "started")
-// 			return nil
-// 		}),
-// 		// fx.Invoke(func(c internal.Container, shutdowner fx.Shutdowner) error {
-// 		// 	go func() {
-// 		// 		for status := range c.Taski.Subscribe() {
-// 		// 			if status == taskfx.StatusCompleted {
-// 		// 				shutdowner.Shutdown()
-// 		// 				break
-// 		// 			}
-// 		// 		}
-// 		// 	}()
-// 		// 	return nil
-// 		// }),
-// 		fx.Invoke(func(lc fx.Lifecycle, router *chi.Mux, c internal.Container) {
-// 			server := &http.Server{
-// 				Addr:    ":3000",
-// 				Handler: router,
-// 			}
-// 			lc.Append(fx.Hook{
-// 				OnStart: func(ctx context.Context) error {
-// 					go func() {
-// 						if err := server.ListenAndServe(); err != nil {
-// 							if errors.Is(err, http.ErrServerClosed) {
-// 								return
-// 							}
-// 							c.Logi.Info(context.Background(), "Error: %s", err.Error())
-// 						}
-// 					}()
-// 					return nil
-// 				},
-// 				OnStop: func(ctx context.Context) error {
-// 					c.Logi.Info(context.Background(), "stop app")
-// 					return server.Shutdown(ctx)
-// 				},
-// 			})
-// 		}),
-// 		// fx.NopLogger,
-// 	)
+type App struct {
+	cli cli.ICli
+	lib lib.Lib
+	lc fx.Lifecycle
+}
 
-// 	return app
-// }
+func (a *App) Run() error {
+	if err := a.load(); err != nil {
+		return err
+	}
+	if err := a.start(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *App) load() error {
+	task, err := a.lib.Task.Read()
+	if err != nil {
+		a.lib.Log.Info(context.Background(), "Error: %s", err.Error())
+		return err
+	}
+	if err := a.lib.Task.Validate(task); err != nil {
+		a.lib.Log.Info(context.Background(), "Error: %s", err.Error())
+		return err
+	}
+	a.lib.Log.Info(context.Background(), "started")
+	return nil
+}
+
+func (a *App) start() error {
+	server := &http.Server{
+		Addr:    ":3000",
+		Handler: a.router(),
+	}
+	a.lc.Append(fx.Hook{
+		OnStart: func(ctx context.Context) error {
+			go func() {
+				if err := server.ListenAndServe(); err != nil {
+					if errors.Is(err, http.ErrServerClosed) {
+						return
+					}
+					a.lib.Log.Info(context.Background(), "Error: %s", err.Error())
+				}
+			}()
+			return nil
+		},
+		OnStop: func(ctx context.Context) error {
+			a.lib.Log.Info(context.Background(), "stop app")
+			return server.Shutdown(ctx)
+		},
+	})
+	return nil
+}
+
+func (a *App) router() *chi.Mux {
+	router := chi.NewRouter()
+
+	// middleware
+	// router.Use(middleware.Logger(c))
+	router.Use(middleware.Recover())
+	router.Use(middleware.NoCache())
+	router.Use(middleware.Cors())
+
+	// routes
+	router.Handle("/graphql", gql.Handle(a.lib))
+	router.Handle("/graphql/playground", gqlplayground.Handle())
+	router.Handle("/storage/archive", storage.Handle(a.lib))
+
+	return router
+}

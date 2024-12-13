@@ -6,12 +6,6 @@ import (
 	"go.uber.org/fx/fxevent"
 )
 
-func NewLogger() fxevent.Logger {
-	return &Logger{
-		Debug: false,
-	}
-}
-
 type Logger struct{
 	Debug bool
 }
