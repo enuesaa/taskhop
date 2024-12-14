@@ -36,5 +36,9 @@ func (a *App) Run() error {
 		if err := a.run(task); err != nil {
 			return err
 		}
+		if a.cli.IsDebug() {
+			break
+		}
 	}
+	return nil
 }

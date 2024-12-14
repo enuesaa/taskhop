@@ -16,10 +16,10 @@ jobs:
       - run: go install
 
       - name: Run commander
-        run: nohup taskhop -w testdata &
+        run: nohup taskhop -w testdata -debug &
 
       - name: Run runner
         run: |
           mkdir testdata2;
           cd testdata2;
-          taskhop -c localhost:3000
+          taskhop -c localhost:3000 -debug
