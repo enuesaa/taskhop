@@ -6,8 +6,12 @@ import (
 	"github.com/enuesaa/taskhop/lib"
 )
 
-func New() App {
-	return App{}
+func New(cl cli.ICli, li lib.Lib) App {
+	return App{
+		cli: cl,
+		lib: li,
+		conn: connector.New(cl),
+	}
 }
 
 type App struct {
