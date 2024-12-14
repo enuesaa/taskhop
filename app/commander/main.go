@@ -7,19 +7,21 @@ import (
 
 	"github.com/enuesaa/taskhop/app/commander/gql"
 	"github.com/enuesaa/taskhop/app/commander/gqlplayground"
-	"github.com/enuesaa/taskhop/app/commander/storage"
 	"github.com/enuesaa/taskhop/app/commander/middleware"
+	"github.com/enuesaa/taskhop/app/commander/storage"
 	"github.com/enuesaa/taskhop/cli"
 	"github.com/enuesaa/taskhop/lib"
+	"github.com/enuesaa/taskhop/lib/taskfx"
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/fx"
 )
 
-func New(cl cli.ICli, li lib.Lib, lc fx.Lifecycle) App {
+func New(cl cli.ICli, li lib.Lib, lc fx.Lifecycle, shutdowner fx.Shutdowner) App {
 	app := App{
 		cli: cl,
 		lib: li,
 		lc: lc,
+		shutdowner: shutdowner,
 	}
 	return app
 }
@@ -28,9 +30,19 @@ type App struct {
 	cli cli.ICli
 	lib lib.Lib
 	lc fx.Lifecycle
+	shutdowner fx.Shutdowner
 }
 
 func (a *App) Run() error {
+	go func() {
+		for status := range a.lib.Task.Subscribe() {
+			if status == taskfx.StatusCompleted {
+				a.shutdowner.Shutdown()
+				break
+			}
+		}
+	}()
+
 	if err := a.load(); err != nil {
 		return err
 	}

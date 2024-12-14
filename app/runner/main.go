@@ -1,16 +1,20 @@
 package runner
 
 import (
+	"fmt"
+
 	"github.com/enuesaa/taskhop/app/runner/connector"
 	"github.com/enuesaa/taskhop/cli"
 	"github.com/enuesaa/taskhop/lib"
+	"go.uber.org/fx"
 )
 
-func New(cl cli.ICli, li lib.Lib) App {
+func New(cl cli.ICli, li lib.Lib, shutdowner fx.Shutdowner) App {
 	return App{
 		cli: cl,
 		lib: li,
 		conn: connector.New(cl),
+		shutdowner: shutdowner,
 	}
 }
 
@@ -18,6 +22,7 @@ type App struct {
 	cli cli.ICli
 	lib lib.Lib
 	conn connector.Connector
+	shutdowner fx.Shutdowner
 }
 
 func (a *App) Run() error {
@@ -36,9 +41,9 @@ func (a *App) Run() error {
 		if err := a.run(task); err != nil {
 			return err
 		}
+		fmt.Printf("%+v", a.cli)
 		if a.cli.IsDebug() {
-			break
+			return a.shutdowner.Shutdown()
 		}
 	}
-	return nil
 }
