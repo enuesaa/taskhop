@@ -2,14 +2,20 @@ package procfx
 
 import "errors"
 
+type Completed bool
+
 var ErrCompletedNotAvailable = errors.New("unregister not available")
 
-func (i *ProcSrv) Completed() error {
+func (i *ProcSrv) NotifyCompleted() error {
 	if i.status != StatusProceeding {
 		return ErrCompletedNotAvailable
 	}
 	i.status = StatusCompleted
-	i.ch <- StatusCompleted
+	i.completedCh <- Completed(true)
 
 	return nil
+}
+
+func (i *ProcSrv) SubscribeCompleted() <-chan Completed {
+	return i.completedCh
 }

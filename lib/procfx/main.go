@@ -1,29 +1,24 @@
 package procfx
 
-import (
-	"github.com/enuesaa/taskhop/cli"
-	"github.com/enuesaa/taskhop/lib/taskfx/repository"
-)
+import "github.com/enuesaa/taskhop/cli"
 
-func New(cl cli.ICli, repo repository.IRepository) IProcSrv {
+func New(cl cli.ICli) IProcSrv {
 	return &ProcSrv{
 		cli:    cl,
 		status: StatusWaiting,
-		ch:     make(chan Status, 1),
-		repo:   repo,
+		completedCh: make(chan Completed, 1),
 	}
 }
 
 type IProcSrv interface {
 	GetStatus() Status
 	Register() error
-	Completed() error
-	Subscribe() <-chan Status
+	NotifyCompleted() error
+	SubscribeCompleted() <-chan Completed
 }
 
 type ProcSrv struct {
 	cli    cli.ICli
 	status Status
-	ch     chan Status
-	repo   repository.IRepository
+	completedCh chan Completed
 }
