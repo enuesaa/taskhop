@@ -1,8 +1,6 @@
 package runner
 
 import (
-	"fmt"
-
 	"github.com/enuesaa/taskhop/app/runner/connector"
 	"github.com/enuesaa/taskhop/cli"
 	"github.com/enuesaa/taskhop/lib"
@@ -40,10 +38,6 @@ func (a *App) Run() error {
 		}
 		if err := a.run(task); err != nil {
 			return err
-		}
-		fmt.Printf("%+v", a.cli)
-		if a.cli.IsDebug() {
-			return a.shutdowner.Shutdown()
 		}
 	}
 }

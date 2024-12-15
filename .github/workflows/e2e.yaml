@@ -20,7 +20,7 @@ jobs:
         run: |
           mkdir testdata2;
           cd testdata2;
-          nohup taskhop -w localhost:3000 &
+          nohup taskhop -c localhost:3000 &
 
       - name: Run commander
         run: taskhop -w testdata
