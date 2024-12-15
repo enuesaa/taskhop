@@ -3,7 +3,7 @@ package logfx
 import (
 	"context"
 	"fmt"
-	"log/slog"
+	"log"
 )
 
 func (i *LogSrv) Info(ctx context.Context, format string, a ...any) {
@@ -13,5 +13,5 @@ func (i *LogSrv) Info(ctx context.Context, format string, a ...any) {
 	if ok {
 		message = fmt.Sprintf("[%s] %s", taskId, message)
 	}
-	slog.Info(message)
+	log.Println(message)
 }

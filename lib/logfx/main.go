@@ -2,7 +2,12 @@ package logfx
 
 import (
 	"context"
+	"log"
 )
+
+func init() {
+	log.SetFlags(log.Ltime)
+}
 
 func New() ILogSrv {
 	return &LogSrv{}

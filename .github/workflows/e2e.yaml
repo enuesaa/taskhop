@@ -18,11 +18,11 @@ jobs:
 
       - name: Run runner
         working-directory: ./testdata/runner
-        run: nohup taskhop -c localhost:3000 > nohup.out &
+        run: nohup taskhop -c localhost:3000 &
 
       - name: Run commander
         run: taskhop -w testdata/commander
 
-      - name: cat runner log
-        working-directory: ./testdata/runner
-        run: cat nohup.out
+      # - name: cat runner log
+      #   working-directory: ./testdata/runner
+      #   run: cat nohup.out
