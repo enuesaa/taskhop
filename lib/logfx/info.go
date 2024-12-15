@@ -13,5 +13,5 @@ func (i *LogSrv) Info(ctx context.Context, format string, a ...any) {
 	if ok {
 		message = fmt.Sprintf("[%s] %s", taskId, message)
 	}
-	log.Println(message)
+	log.Print(message)
 }

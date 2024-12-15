@@ -12,7 +12,7 @@ func New(cl cli.ICli) IProcSrv {
 
 type IProcSrv interface {
 	GetStatus() Status
-	Register() error
+	Register() (string, error)
 	NotifyCompleted() error
 	SubscribeCompleted() <-chan Completed
 }

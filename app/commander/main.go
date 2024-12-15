@@ -61,7 +61,7 @@ func (a *App) load() error {
 		a.lib.Log.Info(context.Background(), "Error: %s", err.Error())
 		return err
 	}
-	a.lib.Log.Info(context.Background(), "started")
+	a.lib.Log.Info(context.Background(), "commander started")
 	return nil
 }
 

@@ -1,14 +1,20 @@
 package procfx
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/oklog/ulid/v2"
+)
 
 var ErrRegisterNotAvailable = errors.New("register not available")
 
-func (i *ProcSrv) Register() error {
+func (i *ProcSrv) Register() (string, error) {
 	if i.status != StatusWaiting {
-		return ErrRegisterNotAvailable
+		return "", ErrRegisterNotAvailable
 	}
 	i.status = StatusProceeding
 
-	return nil
+	id := ulid.Make().String()
+
+	return id, nil
 }

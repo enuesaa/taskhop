@@ -1,12 +1,13 @@
 package mutation
 
-import (
-	"context"
-)
+import "context"
 
 func (r *MutationResolver) Register(ctx context.Context) (bool, error) {
-	r.Lib.Proc.Register()
-	r.Lib.Log.Info(context.Background(), "register!")
+	id, err := r.Lib.Proc.Register()
+	if err != nil {
+		return false, err
+	}
+	r.Lib.Log.Info(context.Background(), "runner registered %s", id)
 
 	return true, nil
 }
