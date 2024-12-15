@@ -34,18 +34,19 @@ type App struct {
 }
 
 func (a *App) Run() error {
-	go a.triggerShutdown()
+	go a.monitor2shutdown()
 
 	if err := a.load(); err != nil {
 		return err
 	}
-	if err := a.start(); err != nil {
+	if err := a.serve(); err != nil {
 		return err
 	}
+
 	return nil
 }
 
-func (a *App) triggerShutdown() {
+func (a *App) monitor2shutdown() {
 	for status := range a.lib.Task.Subscribe() {
 		if status == taskfx.StatusCompleted {
 			a.shutdowner.Shutdown()
@@ -68,28 +69,27 @@ func (a *App) load() error {
 	return nil
 }
 
-func (a *App) start() error {
-	server := &http.Server{
+func (a *App) serve() error {
+	server := http.Server{
 		Addr:    ":3000",
 		Handler: a.handle(),
 	}
+	go func() {
+		if err := server.ListenAndServe(); err != nil {
+			if errors.Is(err, http.ErrServerClosed) {
+				return
+			}
+			a.lib.Log.Info(context.Background(), "Error: %s", err.Error())
+		}
+	}()
+
 	a.lc.Append(fx.Hook{
-		OnStart: func(ctx context.Context) error {
-			go func() {
-				if err := server.ListenAndServe(); err != nil {
-					if errors.Is(err, http.ErrServerClosed) {
-						return
-					}
-					a.lib.Log.Info(context.Background(), "Error: %s", err.Error())
-				}
-			}()
-			return nil
-		},
 		OnStop: func(ctx context.Context) error {
-			a.lib.Log.Info(context.Background(), "stop app")
+			a.lib.Log.Info(ctx, "stop app")
 			return server.Shutdown(ctx)
 		},
 	})
+
 	return nil
 }
 
