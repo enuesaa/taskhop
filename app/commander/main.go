@@ -11,7 +11,7 @@ import (
 	"github.com/enuesaa/taskhop/app/commander/storage"
 	"github.com/enuesaa/taskhop/cli"
 	"github.com/enuesaa/taskhop/lib"
-	"github.com/enuesaa/taskhop/lib/taskfx"
+	"github.com/enuesaa/taskhop/lib/procfx"
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/fx"
 )
@@ -47,8 +47,8 @@ func (a *App) Run() error {
 }
 
 func (a *App) monitor2shutdown() {
-	for status := range a.lib.Task.Subscribe() {
-		if status == taskfx.StatusCompleted {
+	for status := range a.lib.Proc.Subscribe() {
+		if status == procfx.StatusCompleted {
 			a.shutdowner.Shutdown()
 			break
 		}

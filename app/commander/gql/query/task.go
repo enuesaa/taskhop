@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/enuesaa/taskhop/app/commander/gql/model"
-	"github.com/enuesaa/taskhop/lib/taskfx"
+	"github.com/enuesaa/taskhop/lib/procfx"
 )
 
 func (r *QueryResolver) Task(ctx context.Context) (*model.Task, error) {
@@ -13,15 +13,15 @@ func (r *QueryResolver) Task(ctx context.Context) (*model.Task, error) {
 		return nil, err
 	}
 
-	status := r.Lib.Task.GetStatus()
+	status := r.Lib.Proc.GetStatus()
 
 	var statusgql model.TaskStatus
 	switch status {
-	case taskfx.StatusWaiting:
+	case procfx.StatusWaiting:
 		statusgql = model.TaskStatusWaiting
-	case taskfx.StatusProceeding:
+	case procfx.StatusProceeding:
 		statusgql = model.TaskStatusProceeding
-	case taskfx.StatusCompleted:
+	case procfx.StatusCompleted:
 		statusgql = model.TaskStatusCompleted
 	}
 

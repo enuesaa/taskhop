@@ -1,10 +1,10 @@
-package taskfx
+package procfx
 
 import "errors"
 
 var ErrRegisterNotAvailable = errors.New("register not available")
 
-func (i *TaskSrv) Register() error {
+func (i *ProcSrv) Register() error {
 	if i.status != StatusWaiting {
 		return ErrRegisterNotAvailable
 	}

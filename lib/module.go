@@ -5,6 +5,7 @@ import (
 	"github.com/enuesaa/taskhop/lib/cmdfx"
 	"github.com/enuesaa/taskhop/lib/logfx"
 	"github.com/enuesaa/taskhop/lib/taskfx"
+	"github.com/enuesaa/taskhop/lib/procfx"
 	"go.uber.org/fx"
 )
 
@@ -13,6 +14,7 @@ var Module = fx.Module(
 	archivefx.Module,
 	cmdfx.Module,
 	taskfx.Module,
+	procfx.Module,
 	logfx.Module,
 	fx.Provide(New),
 )
