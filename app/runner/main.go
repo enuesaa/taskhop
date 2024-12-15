@@ -9,17 +9,17 @@ import (
 
 func New(cl cli.ICli, li lib.Lib, shutdowner fx.Shutdowner) App {
 	return App{
-		cli: cl,
-		lib: li,
-		conn: connector.New(cl),
+		cli:        cl,
+		lib:        li,
+		conn:       connector.New(cl),
 		shutdowner: shutdowner,
 	}
 }
 
 type App struct {
-	cli cli.ICli
-	lib lib.Lib
-	conn connector.Connector
+	cli        cli.ICli
+	lib        lib.Lib
+	conn       connector.Connector
 	shutdowner fx.Shutdowner
 }
 
@@ -32,7 +32,7 @@ func (a *App) Run() error {
 		if err != nil {
 			return err
 		}
-	
+
 		if err := a.UnArchive(); err != nil {
 			return err
 		}

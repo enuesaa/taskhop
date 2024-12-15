@@ -1,6 +1,5 @@
 package cli
 
-
 type CliMock struct {
 	Cli
 }

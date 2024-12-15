@@ -18,30 +18,23 @@ import (
 
 func New(cl cli.ICli, li lib.Lib, lc fx.Lifecycle, shutdowner fx.Shutdowner) App {
 	app := App{
-		cli: cl,
-		lib: li,
-		lc: lc,
+		cli:        cl,
+		lib:        li,
+		lc:         lc,
 		shutdowner: shutdowner,
 	}
 	return app
 }
 
 type App struct {
-	cli cli.ICli
-	lib lib.Lib
-	lc fx.Lifecycle
+	cli        cli.ICli
+	lib        lib.Lib
+	lc         fx.Lifecycle
 	shutdowner fx.Shutdowner
 }
 
 func (a *App) Run() error {
-	go func() {
-		for status := range a.lib.Task.Subscribe() {
-			if status == taskfx.StatusCompleted {
-				a.shutdowner.Shutdown()
-				break
-			}
-		}
-	}()
+	go a.triggerShutdown()
 
 	if err := a.load(); err != nil {
 		return err
@@ -50,6 +43,15 @@ func (a *App) Run() error {
 		return err
 	}
 	return nil
+}
+
+func (a *App) triggerShutdown() {
+	for status := range a.lib.Task.Subscribe() {
+		if status == taskfx.StatusCompleted {
+			a.shutdowner.Shutdown()
+			break
+		}
+	}
 }
 
 func (a *App) load() error {
@@ -69,7 +71,7 @@ func (a *App) load() error {
 func (a *App) start() error {
 	server := &http.Server{
 		Addr:    ":3000",
-		Handler: a.router(),
+		Handler: a.handle(),
 	}
 	a.lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
@@ -91,11 +93,10 @@ func (a *App) start() error {
 	return nil
 }
 
-func (a *App) router() *chi.Mux {
+func (a *App) handle() *chi.Mux {
 	router := chi.NewRouter()
 
 	// middleware
-	// router.Use(middleware.Logger(c))
 	router.Use(middleware.Recover())
 	router.Use(middleware.NoCache())
 	router.Use(middleware.Cors())

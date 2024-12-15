@@ -3,7 +3,7 @@ package cli
 func New() ICli {
 	cli := Cli{
 		Address: "",
-		Workdir: ".",		
+		Workdir: ".",
 	}
 	return &cli
 }

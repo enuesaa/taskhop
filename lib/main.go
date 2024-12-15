@@ -14,9 +14,9 @@ func New(
 	log logfx.I,
 ) Lib {
 	return Lib{
-		Arv: arv,
-		Cmd: cmd,
+		Arv:  arv,
+		Cmd:  cmd,
 		Task: task,
-		Log: log,
+		Log:  log,
 	}
 }

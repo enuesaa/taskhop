@@ -18,7 +18,7 @@ func Handle(li lib.Lib) http.HandlerFunc {
 
 		rw.Header().Set("Content-Type", "application/zip")
 		rw.Header().Set("Content-Disposition", "attachment; filename=\"archive.zip\"")
-	
+
 		if _, err := io.Copy(rw, archive); err != nil {
 			li.Log.Info(r.Context(), "failed to write archive to response: %s", err.Error())
 			http.Error(rw, "Internal Server Error", http.StatusInternalServerError)

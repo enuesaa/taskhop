@@ -7,9 +7,9 @@ import (
 	"github.com/enuesaa/taskhop/lib/taskfx"
 )
 
-type Lib struct{
-	Arv archivefx.I
-	Cmd cmdfx.I
-	Log logfx.I
+type Lib struct {
+	Arv  archivefx.I
+	Cmd  cmdfx.I
+	Log  logfx.I
 	Task taskfx.I
 }

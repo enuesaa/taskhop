@@ -3,13 +3,13 @@ package archivefx
 import (
 	"io"
 
-	"github.com/enuesaa/taskhop/lib/archivefx/repository"
 	"github.com/enuesaa/taskhop/cli"
+	"github.com/enuesaa/taskhop/lib/archivefx/repository"
 )
 
 func New(cl cli.ICli, repo repository.I) I {
 	return &Impl{
-		cli: cl,
+		cli:  cl,
 		repo: repo,
 	}
 }
@@ -19,6 +19,6 @@ type I interface {
 	UnArchive(r io.Reader, dest string) error
 }
 type Impl struct {
-	cli cli.ICli
+	cli  cli.ICli
 	repo repository.I
 }

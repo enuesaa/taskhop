@@ -7,10 +7,10 @@ import (
 
 func New(cl cli.ICli, repo repository.I) I {
 	return &Impl{
-		cli: cl,
+		cli:    cl,
 		status: StatusWaiting,
-		ch: make(chan Status, 1),
-		repo: repo,
+		ch:     make(chan Status, 1),
+		repo:   repo,
 	}
 }
 
@@ -23,9 +23,9 @@ type I interface {
 	Subscribe() <-chan Status
 }
 
-type Impl struct{
-	cli cli.ICli
+type Impl struct {
+	cli    cli.ICli
 	status Status
-	ch chan Status
-	repo repository.I
+	ch     chan Status
+	repo   repository.I
 }

@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/enuesaa/taskhop/lib/archivefx/repository"
-	"go.uber.org/mock/gomock"
 	"github.com/stretchr/testify/assert"
+	"go.uber.org/mock/gomock"
 )
 
 func TestArchive(t *testing.T) {

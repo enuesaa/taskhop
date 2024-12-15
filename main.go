@@ -15,10 +15,10 @@ func main() {
 		lib.Module,
 		commander.Module,
 		runner.Module,
-		fx.WithLogger(func (logger cli.FxLogger) fxevent.Logger {
+		fx.WithLogger(func(logger cli.FxLogger) fxevent.Logger {
 			return &logger
 		}),
-		fx.Invoke(func (cl cli.ICli) error {
+		fx.Invoke(func(cl cli.ICli) error {
 			return cl.Launch()
 		}),
 		fx.Invoke(func(cl cli.ICli, commanderApp commander.App, runnerApp runner.App) error {
