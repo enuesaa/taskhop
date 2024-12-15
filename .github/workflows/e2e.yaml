@@ -17,10 +17,12 @@ jobs:
       - run: go install
 
       - name: Run runner
-        run: |
-          mkdir testdata2;
-          cd testdata2;
-          nohup taskhop -c localhost:3000 &
+        working-directory: ./testdata/runner
+        run: nohup taskhop -c localhost:3000 &
 
       - name: Run commander
         run: taskhop -w testdata
+
+      - name: cat runner log
+        working-directory: ./testdata/runner
+        run: cat nohup.out
