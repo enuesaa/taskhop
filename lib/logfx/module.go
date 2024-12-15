@@ -2,7 +2,8 @@ package logfx
 
 import "go.uber.org/fx"
 
-var Module = fx.Options(
+var Module = fx.Module(
+	"logfx",
 	fx.Provide(
 		New,
 	),

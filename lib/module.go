@@ -8,7 +8,8 @@ import (
 	"go.uber.org/fx"
 )
 
-var Module = fx.Options(
+var Module = fx.Module(
+	"lib",
 	archivefx.Module,
 	cmdfx.Module,
 	taskfx.Module,
