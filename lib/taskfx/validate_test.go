@@ -6,17 +6,16 @@ import (
 
 	"github.com/enuesaa/taskhop/cli"
 	"github.com/enuesaa/taskhop/lib/taskfx/repository"
+	"github.com/enuesaa/taskhop/lib/testsuite"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/fx"
-	"go.uber.org/fx/fxtest"
-	"go.uber.org/mock/gomock"
 )
 
 func TestValidate(t *testing.T) {
-	ctl := gomock.NewController(t)
-	defer ctl.Finish()
+	suite := testsuite.New(t)
+	defer suite.End()
 
-	mockRepo := repository.NewMockI(ctl)
+	repo := repository.NewMockI(suite.Ctl())
 	cmdsyml := strings.NewReader(`
 title: Example
 
@@ -24,19 +23,17 @@ cmds:
   - echo hello!
   - pwd
 `)
-	mockRepo.EXPECT().Read("cmds.yml").Return(cmdsyml, nil)
+	repo.EXPECT().Read("cmds.yml").Return(cmdsyml, nil)
 
 	var i ITaskSrv
-	fxtest.New(
-		t,
+	suite.UseOptions(
 		fx.Supply(
 			fx.Annotate(&cli.Cli{}, fx.As(new(cli.ICli))),
-			fx.Annotate(mockRepo, fx.As(new(repository.IRepository))),
+			fx.Annotate(repo, fx.As(new(repository.IRepository))),
 		),
 		fx.Provide(New),
 		fx.Populate(&i),
-		fx.NopLogger,
-	).RequireStart().RequireStop()
+	)
 
 	task, err := i.Read()
 	assert.NoError(t, err)
