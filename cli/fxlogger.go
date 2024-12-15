@@ -6,19 +6,25 @@ import (
 	"go.uber.org/fx/fxevent"
 )
 
-type Logger struct {
-	Debug bool
+func NewFxLogger(cl ICli) FxLogger {
+	return FxLogger{
+		cli: cl,
+	}
 }
 
-func (l *Logger) LogEvent(event fxevent.Event) {
-	if l.Debug {
+type FxLogger struct {
+	cli ICli
+}
+
+func (l *FxLogger) LogEvent(event fxevent.Event) {
+	if l.cli.IsDebug() {
 		l.logEventDebug(event)
 	} else {
 		l.logEventNormal(event)
 	}
 }
 
-func (l *Logger) logEventDebug(event fxevent.Event) {
+func (l *FxLogger) logEventDebug(event fxevent.Event) {
 	switch e := event.(type) {
 	case *fxevent.Started:
 		log.Printf("Started: %s\n", e)
@@ -33,7 +39,7 @@ func (l *Logger) logEventDebug(event fxevent.Event) {
 	}
 }
 
-func (l *Logger) logEventNormal(event fxevent.Event) {
+func (l *FxLogger) logEventNormal(event fxevent.Event) {
 	switch e := event.(type) {
 	case *fxevent.Stopped:
 		if e.Err != nil {

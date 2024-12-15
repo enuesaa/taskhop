@@ -10,23 +10,16 @@ import (
 )
 
 func main() {
-	logger := cli.Logger{
-		Debug: false,
-	}
-
 	app := fx.New(
 		cli.Module,
 		lib.Module,
 		commander.Module,
 		runner.Module,
-		fx.WithLogger(func () fxevent.Logger {
+		fx.WithLogger(func (logger cli.FxLogger) fxevent.Logger {
 			return &logger
 		}),
 		fx.Invoke(func (cl cli.ICli) error {
 			return cl.Launch()
-		}),
-		fx.Invoke(func (cl cli.ICli) {
-			logger.Debug = cl.IsDebug()
 		}),
 		fx.Invoke(func(cl cli.ICli, commanderApp commander.App, runnerApp runner.App) error {
 			if cl.IsCommander() {
