@@ -6,7 +6,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-func (i *Impl) Validate(task Task) error {
+func (i *TaskSrv) Validate(task Task) error {
 	err := validator.New().Struct(task)
 	if err != nil {
 		for _, err := range err.(validator.ValidationErrors) {

@@ -2,7 +2,7 @@ package taskfx
 
 import "gopkg.in/yaml.v3"
 
-func (i *Impl) Read() (Task, error) {
+func (i *TaskSrv) Read() (Task, error) {
 	filename := i.getTaskFilePath()
 	var task Task
 

@@ -8,10 +8,10 @@ import (
 )
 
 func New(
-	arv archivefx.I,
-	cmd cmdfx.I,
-	task taskfx.I,
-	log logfx.I,
+	arv archivefx.IArvSrv,
+	cmd cmdfx.ICmdSrv,
+	task taskfx.ITaskSrv,
+	log logfx.ILogSrv,
 ) Lib {
 	return Lib{
 		Arv:  arv,

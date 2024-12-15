@@ -5,8 +5,8 @@ import (
 	"github.com/enuesaa/taskhop/lib/taskfx/repository"
 )
 
-func New(cl cli.ICli, repo repository.I) I {
-	return &Impl{
+func New(cl cli.ICli, repo repository.IRepository) ITaskSrv {
+	return &TaskSrv{
 		cli:    cl,
 		status: StatusWaiting,
 		ch:     make(chan Status, 1),
@@ -14,7 +14,7 @@ func New(cl cli.ICli, repo repository.I) I {
 	}
 }
 
-type I interface {
+type ITaskSrv interface {
 	Read() (Task, error)
 	Validate(task Task) error
 	GetStatus() Status
@@ -23,9 +23,9 @@ type I interface {
 	Subscribe() <-chan Status
 }
 
-type Impl struct {
+type TaskSrv struct {
 	cli    cli.ICli
 	status Status
 	ch     chan Status
-	repo   repository.I
+	repo   repository.IRepository
 }

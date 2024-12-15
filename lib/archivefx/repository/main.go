@@ -6,11 +6,11 @@ import (
 	"path/filepath"
 )
 
-func New() I {
-	return &Impl{}
+func New() IRepository {
+	return &Repository{}
 }
 
-type I interface {
+type IRepository interface {
 	IsExist(path string) bool
 	IsDir(path string) (bool, error)
 	CreateDir(path string) error
@@ -22,16 +22,16 @@ type I interface {
 	ListDirs(path string) ([]string, error)
 	ListFiles(path string) ([]string, error)
 }
-type Impl struct{}
+type Repository struct{}
 
-func (i *Impl) IsExist(path string) bool {
+func (i *Repository) IsExist(path string) bool {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return false
 	}
 	return true
 }
 
-func (i *Impl) IsDir(path string) (bool, error) {
+func (i *Repository) IsDir(path string) (bool, error) {
 	f, err := os.Stat(path)
 	if err != nil {
 		return false, err
@@ -39,11 +39,11 @@ func (i *Impl) IsDir(path string) (bool, error) {
 	return f.IsDir(), nil
 }
 
-func (i *Impl) CreateDir(path string) error {
+func (i *Repository) CreateDir(path string) error {
 	return os.MkdirAll(path, os.ModePerm)
 }
 
-func (i *Impl) Create(path string, body []byte) error {
+func (i *Repository) Create(path string, body []byte) error {
 	file, err := os.Create(path)
 	if err != nil {
 		return err
@@ -55,19 +55,19 @@ func (i *Impl) Create(path string, body []byte) error {
 	return nil
 }
 
-func (i *Impl) HomeDir() (string, error) {
+func (i *Repository) HomeDir() (string, error) {
 	return os.UserHomeDir()
 }
 
-func (i *Impl) WorkDir() (string, error) {
+func (i *Repository) WorkDir() (string, error) {
 	return os.Getwd()
 }
 
-func (i *Impl) Remove(path string) error {
+func (i *Repository) Remove(path string) error {
 	return os.RemoveAll(path)
 }
 
-func (i *Impl) Read(path string) ([]byte, error) {
+func (i *Repository) Read(path string) ([]byte, error) {
 	f, err := os.Open(path)
 	if err != nil {
 		return make([]byte, 0), err
@@ -76,7 +76,7 @@ func (i *Impl) Read(path string) ([]byte, error) {
 	return io.ReadAll(f)
 }
 
-func (i *Impl) ListDirs(path string) ([]string, error) {
+func (i *Repository) ListDirs(path string) ([]string, error) {
 	list := make([]string, 0)
 	err := filepath.Walk(path, func(fpath string, file os.FileInfo, err error) error {
 		if err != nil {
@@ -90,7 +90,7 @@ func (i *Impl) ListDirs(path string) ([]string, error) {
 	return list, err
 }
 
-func (i *Impl) ListFiles(path string) ([]string, error) {
+func (i *Repository) ListFiles(path string) ([]string, error) {
 	list := make([]string, 0)
 	err := filepath.Walk(path, func(fpath string, file os.FileInfo, err error) error {
 		if err != nil {

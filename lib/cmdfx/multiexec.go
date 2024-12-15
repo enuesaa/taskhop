@@ -5,7 +5,7 @@ import (
 	"os/exec"
 )
 
-func (i *Impl) MultiExec(writer io.Writer, commands []string, workdir string) error {
+func (i *CmdSrv) MultiExec(writer io.Writer, commands []string, workdir string) error {
 	for _, command := range commands {
 		cmd := exec.Command("bash", "-c", command)
 		cmd.Dir = workdir

@@ -4,13 +4,13 @@ import (
 	"context"
 )
 
-func New() I {
-	return &Impl{}
+func New() ILogSrv {
+	return &LogSrv{}
 }
 
-type I interface {
+type ILogSrv interface {
 	Use(ctx context.Context, id string) context.Context
 	Info(ctx context.Context, format string, a ...any)
 }
 
-type Impl struct{}
+type LogSrv struct{}

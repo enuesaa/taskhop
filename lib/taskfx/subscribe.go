@@ -1,5 +1,5 @@
 package taskfx
 
-func (i *Impl) Subscribe() <-chan Status {
+func (i *TaskSrv) Subscribe() <-chan Status {
 	return i.ch
 }

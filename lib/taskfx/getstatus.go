@@ -1,5 +1,5 @@
 package taskfx
 
-func (i *Impl) GetStatus() Status {
+func (i *TaskSrv) GetStatus() Status {
 	return i.status
 }

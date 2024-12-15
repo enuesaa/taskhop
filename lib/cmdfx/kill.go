@@ -1,9 +1,7 @@
 package cmdfx
 
-import (
-	"os/exec"
-)
+import "os/exec"
 
-func (i *Impl) Kill(cmd *exec.Cmd) error {
+func (i *CmdSrv) Kill(cmd *exec.Cmd) error {
 	return cmd.Process.Kill()
 }

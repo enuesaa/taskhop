@@ -8,8 +8,8 @@ import (
 )
 
 type Lib struct {
-	Arv  archivefx.I
-	Cmd  cmdfx.I
-	Log  logfx.I
-	Task taskfx.I
+	Arv  archivefx.IArvSrv
+	Cmd  cmdfx.ICmdSrv
+	Log  logfx.ILogSrv
+	Task taskfx.ITaskSrv
 }

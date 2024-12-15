@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 )
 
-func (i *Impl) UnArchive(r io.Reader, dest string) error {
+func (i *ArvSrv) UnArchive(r io.Reader, dest string) error {
 	buf, err := io.ReadAll(r)
 	if err != nil {
 		return err

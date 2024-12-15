@@ -26,12 +26,12 @@ cmds:
 `)
 	mockRepo.EXPECT().Read("cmds.yml").Return(cmdsyml, nil)
 
-	var i I
+	var i ITaskSrv
 	fxtest.New(
 		t,
 		fx.Supply(
 			fx.Annotate(&cli.Cli{}, fx.As(new(cli.ICli))),
-			fx.Annotate(mockRepo, fx.As(new(repository.I))),
+			fx.Annotate(mockRepo, fx.As(new(repository.IRepository))),
 		),
 		fx.Provide(New),
 		fx.Populate(&i),

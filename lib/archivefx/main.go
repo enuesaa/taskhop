@@ -7,18 +7,18 @@ import (
 	"github.com/enuesaa/taskhop/lib/archivefx/repository"
 )
 
-func New(cl cli.ICli, repo repository.I) I {
-	return &Impl{
+func New(cl cli.ICli, repo repository.IRepository) IArvSrv {
+	return &ArvSrv{
 		cli:  cl,
 		repo: repo,
 	}
 }
 
-type I interface {
+type IArvSrv interface {
 	Archive() (io.Reader, error)
 	UnArchive(r io.Reader, dest string) error
 }
-type Impl struct {
+type ArvSrv struct {
 	cli  cli.ICli
-	repo repository.I
+	repo repository.IRepository
 }

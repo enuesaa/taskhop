@@ -4,7 +4,7 @@ import "errors"
 
 var ErrCompletedNotAvailable = errors.New("unregister not available")
 
-func (i *Impl) Completed() error {
+func (i *TaskSrv) Completed() error {
 	if i.status != StatusProceeding {
 		return ErrCompletedNotAvailable
 	}

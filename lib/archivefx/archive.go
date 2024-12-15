@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 )
 
-func (i *Impl) Archive() (io.Reader, error) {
+func (i *ArvSrv) Archive() (io.Reader, error) {
 	zipb := bytes.NewBuffer([]byte{})
 	zipw := zip.NewWriter(zipb)
 	defer zipw.Close()

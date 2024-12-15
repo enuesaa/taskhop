@@ -6,16 +6,16 @@ import (
 	"os"
 )
 
-func New() I {
-	return &Impl{}
+func New() IRepository {
+	return &Repository{}
 }
 
-type I interface {
+type IRepository interface {
 	Read(path string) (io.Reader, error)
 }
-type Impl struct{}
+type Repository struct{}
 
-func (i *Impl) Read(path string) (io.Reader, error) {
+func (i *Repository) Read(path string) (io.Reader, error) {
 	f, err := os.Open(path)
 	if err != nil {
 		return nil, err

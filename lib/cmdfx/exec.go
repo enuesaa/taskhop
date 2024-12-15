@@ -5,7 +5,7 @@ import (
 	"os/exec"
 )
 
-func (i *Impl) Exec(writer io.Writer, command string) (*exec.Cmd, error) {
+func (i *CmdSrv) Exec(writer io.Writer, command string) (*exec.Cmd, error) {
 	cmd := exec.Command("bash", "-c", command)
 
 	cmd.Stdout = writer
