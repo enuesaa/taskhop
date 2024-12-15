@@ -1,4 +1,4 @@
-package main
+package cli
 
 import (
 	"log"
@@ -6,7 +6,7 @@ import (
 	"go.uber.org/fx/fxevent"
 )
 
-type Logger struct{
+type Logger struct {
 	Debug bool
 }
 

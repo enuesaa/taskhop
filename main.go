@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	logger := Logger{
+	logger := cli.Logger{
 		Debug: false,
 	}
 
