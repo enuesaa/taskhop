@@ -16,11 +16,11 @@ jobs:
       - uses: ./.github/actions/env
       - run: go install
 
-      - name: Run commander
-        run: nohup taskhop -w testdata -debug &
-
       - name: Run runner
         run: |
           mkdir testdata2;
           cd testdata2;
-          taskhop -c localhost:3000 -debug
+          nohup taskhop -w localhost:3000 &
+
+      - name: Run commander
+        run: taskhop -w testdata
