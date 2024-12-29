@@ -4,8 +4,8 @@ import (
 	"github.com/enuesaa/taskhop/lib/archivefx"
 	"github.com/enuesaa/taskhop/lib/cmdfx"
 	"github.com/enuesaa/taskhop/lib/logfx"
-	"github.com/enuesaa/taskhop/lib/taskfx"
 	"github.com/enuesaa/taskhop/lib/procfx"
+	"github.com/enuesaa/taskhop/lib/taskfx"
 )
 
 type Lib struct {

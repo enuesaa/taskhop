@@ -4,8 +4,8 @@ import "github.com/enuesaa/taskhop/cli"
 
 func New(cl cli.ICli) IProcSrv {
 	return &ProcSrv{
-		cli:    cl,
-		status: StatusWaiting,
+		cli:         cl,
+		status:      StatusWaiting,
 		completedCh: make(chan Completed, 1),
 	}
 }
@@ -18,7 +18,7 @@ type IProcSrv interface {
 }
 
 type ProcSrv struct {
-	cli    cli.ICli
-	status Status
+	cli         cli.ICli
+	status      Status
 	completedCh chan Completed
 }

@@ -15,7 +15,7 @@ func New(t *testing.T) TestSuite {
 }
 
 type TestSuite struct {
-	t *testing.T
+	t   *testing.T
 	ctl *gomock.Controller
 }
 
@@ -31,7 +31,6 @@ func (ts *TestSuite) UseOptions(options ...fx.Option) {
 		fx.NopLogger,
 	).RequireStart().RequireStop()
 }
-
 
 func (ts *TestSuite) End() {
 	if ts.ctl != nil {

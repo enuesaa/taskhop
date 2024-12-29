@@ -12,7 +12,7 @@ func (a *App) run(task connector.GetTask_Task) error {
 	a.lib.Log.AppInfo(context.Background(), "started")
 	for _, command := range task.Cmds {
 		input := model.LogInput{
-			Type: model.LogTypeCommand,
+			Type:   model.LogTypeCommand,
 			Output: command,
 		}
 		if _, err := a.conn.Log(context.Background(), input); err != nil {

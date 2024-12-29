@@ -7,8 +7,8 @@ import (
 
 func New(cl cli.ICli, repo repository.IRepository) ITaskSrv {
 	return &TaskSrv{
-		cli:    cl,
-		repo:   repo,
+		cli:  cl,
+		repo: repo,
 	}
 }
 
@@ -18,6 +18,6 @@ type ITaskSrv interface {
 }
 
 type TaskSrv struct {
-	cli    cli.ICli
-	repo   repository.IRepository
+	cli  cli.ICli
+	repo repository.IRepository
 }
