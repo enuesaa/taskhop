@@ -24,24 +24,12 @@ else
 fi
 
 URL="https://github.com/enuesaa/taskhop/releases/download/v${VERSION_NUMBER}/taskhop_${VERSION_NUMBER}_${OS}_${ARCH}.tar.gz";
-TMP_OUT_DIR="taskhop_${VERSION_NUMBER}_${OS}_${ARCH}";
 
 echo "Downloading $URL";
-echo "And the archive file will be extracted to ${TMP_OUT_DIR}";
 echo "";
 
-if [ -d "$TMP_OUT_DIR" ]; then
-  echo "Error: Installation stopped because the directory ${TMP_OUT_DIR} already exists"
-  exit 1;
-fi
-
-mkdir $TMP_OUT_DIR;
-
 # download and install
-curl -L "$URL" | tar -xz -C $TMP_OUT_DIR;
-mv $TMP_OUT_DIR/taskhop /usr/local/bin/taskhop;
-
-rm -rf $TMP_OUT_DIR;
+curl -L "$URL" | tar -xz -C /usr/local/bin;
 
 echo "";
 echo "Installation completed!";
