@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"net/url"
+	"os"
 )
 
 type ICli interface {
@@ -23,10 +24,18 @@ type Cli struct {
 
 	// debug
 	Debug bool
+
+	// version
+	Version bool
 }
 
 func (c *Cli) Launch() error {
 	c.parse()
+
+	if c.Version {
+		fmt.Printf("0.0.3\n")
+		os.Exit(0)
+	}
 
 	if err := c.validate(); err != nil {
 		return err
@@ -38,6 +47,7 @@ func (c *Cli) parse() {
 	flag.StringVar(&c.Address, "c", "", "commander address. Example: localhost:3000")
 	flag.StringVar(&c.Workdir, "w", ".", "workdir. Example: ./aaa")
 	flag.BoolVar(&c.Debug, "debug", false, "debug")
+	flag.BoolVar(&c.Version, "version", false, "Print app version")
 	flag.Parse()
 }
 
