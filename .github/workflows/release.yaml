@@ -21,7 +21,7 @@ jobs:
         run: envsubst '${VERSION}' < ./install.template.sh > ./install.sh
         env:
           VERSION: ${{ github.ref_name }}
-      
+
       - uses: goreleaser/goreleaser-action@v6
         with:
           version: latest

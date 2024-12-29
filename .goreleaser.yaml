@@ -10,5 +10,4 @@ release:
     # Install
     ```bash
     curl -sL https://github.com/enuesaa/taskhop/releases/download/{{ .Tag }}/install.sh | bash
-    mv taskhop /usr/local/bin/taskhop
     ```
