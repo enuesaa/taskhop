@@ -1,3 +1,9 @@
 input LogInput {
+  type: LogType!
   output: String!
+}
+
+enum LogType {
+  COMMAND_OUTPUT
+  COMMAND
 }

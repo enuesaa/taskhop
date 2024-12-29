@@ -3,12 +3,10 @@ package runner
 import "context"
 
 func (a *App) Connect() error {
-	a.lib.Log.Info(context.Background(), "start polling")
+	a.lib.Log.AppInfo(context.Background(), "polling...")
 	if err := a.conn.DialPolling(); err != nil {
 		return err
 	}
-
-	a.lib.Log.Info(context.Background(), "check health")
 	if _, err := a.conn.GetHealth(context.Background()); err != nil {
 		return err
 	}

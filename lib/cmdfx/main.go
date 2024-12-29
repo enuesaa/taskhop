@@ -10,8 +10,7 @@ func New() ICmdSrv {
 }
 
 type ICmdSrv interface {
-	Exec(writer io.Writer, command string) (*exec.Cmd, error)
-	MultiExec(writer io.Writer, commands []string, workdir string) error
+	Exec(writer io.Writer, command string, workdir string) error
 	Kill(cmd *exec.Cmd) error
 }
 type CmdSrv struct {}

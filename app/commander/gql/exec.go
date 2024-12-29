@@ -328,7 +328,7 @@ func (ec *executionContext) field_Mutation_log_argsInput(
 
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNLogInput2githubᚗcomᚋenuesaaᚋtaskhopᚋcommanderᚋgqlᚋmodelᚐLogInput(ctx, tmp)
+		return ec.unmarshalNLogInput2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋcommanderᚋgqlᚋmodelᚐLogInput(ctx, tmp)
 	}
 
 	var zeroVal model.LogInput
@@ -742,7 +742,7 @@ func (ec *executionContext) _Query_health(ctx context.Context, field graphql.Col
 	}
 	res := resTmp.(*model.Health)
 	fc.Result = res
-	return ec.marshalNHealth2ᚖgithubᚗcomᚋenuesaaᚋtaskhopᚋcommanderᚋgqlᚋmodelᚐHealth(ctx, field.Selections, res)
+	return ec.marshalNHealth2ᚖgithubᚗcomᚋenuesaaᚋtaskhopᚋappᚋcommanderᚋgqlᚋmodelᚐHealth(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_health(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -794,7 +794,7 @@ func (ec *executionContext) _Query_task(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.(*model.Task)
 	fc.Result = res
-	return ec.marshalNTask2ᚖgithubᚗcomᚋenuesaaᚋtaskhopᚋcommanderᚋgqlᚋmodelᚐTask(ctx, field.Selections, res)
+	return ec.marshalNTask2ᚖgithubᚗcomᚋenuesaaᚋtaskhopᚋappᚋcommanderᚋgqlᚋmodelᚐTask(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_task(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -973,7 +973,7 @@ func (ec *executionContext) _Task_status(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.(model.TaskStatus)
 	fc.Result = res
-	return ec.marshalNTaskStatus2githubᚗcomᚋenuesaaᚋtaskhopᚋcommanderᚋgqlᚋmodelᚐTaskStatus(ctx, field.Selections, res)
+	return ec.marshalNTaskStatus2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋcommanderᚋgqlᚋmodelᚐTaskStatus(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Task_status(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -2813,13 +2813,20 @@ func (ec *executionContext) unmarshalInputLogInput(ctx context.Context, obj inte
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"output"}
+	fieldsInOrder := [...]string{"type", "output"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
+		case "type":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
+			data, err := ec.unmarshalNLogType2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋcommanderᚋgqlᚋmodelᚐLogType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Type = data
 		case "output":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("output"))
 			data, err := ec.unmarshalNString2string(ctx, v)
@@ -3432,11 +3439,11 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNHealth2githubᚗcomᚋenuesaaᚋtaskhopᚋcommanderᚋgqlᚋmodelᚐHealth(ctx context.Context, sel ast.SelectionSet, v model.Health) graphql.Marshaler {
+func (ec *executionContext) marshalNHealth2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋcommanderᚋgqlᚋmodelᚐHealth(ctx context.Context, sel ast.SelectionSet, v model.Health) graphql.Marshaler {
 	return ec._Health(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNHealth2ᚖgithubᚗcomᚋenuesaaᚋtaskhopᚋcommanderᚋgqlᚋmodelᚐHealth(ctx context.Context, sel ast.SelectionSet, v *model.Health) graphql.Marshaler {
+func (ec *executionContext) marshalNHealth2ᚖgithubᚗcomᚋenuesaaᚋtaskhopᚋappᚋcommanderᚋgqlᚋmodelᚐHealth(ctx context.Context, sel ast.SelectionSet, v *model.Health) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -3446,9 +3453,19 @@ func (ec *executionContext) marshalNHealth2ᚖgithubᚗcomᚋenuesaaᚋtaskhop�
 	return ec._Health(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNLogInput2githubᚗcomᚋenuesaaᚋtaskhopᚋcommanderᚋgqlᚋmodelᚐLogInput(ctx context.Context, v interface{}) (model.LogInput, error) {
+func (ec *executionContext) unmarshalNLogInput2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋcommanderᚋgqlᚋmodelᚐLogInput(ctx context.Context, v interface{}) (model.LogInput, error) {
 	res, err := ec.unmarshalInputLogInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNLogType2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋcommanderᚋgqlᚋmodelᚐLogType(ctx context.Context, v interface{}) (model.LogType, error) {
+	var res model.LogType
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNLogType2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋcommanderᚋgqlᚋmodelᚐLogType(ctx context.Context, sel ast.SelectionSet, v model.LogType) graphql.Marshaler {
+	return v
 }
 
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
@@ -3498,11 +3515,11 @@ func (ec *executionContext) marshalNString2ᚕstringᚄ(ctx context.Context, sel
 	return ret
 }
 
-func (ec *executionContext) marshalNTask2githubᚗcomᚋenuesaaᚋtaskhopᚋcommanderᚋgqlᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v model.Task) graphql.Marshaler {
+func (ec *executionContext) marshalNTask2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋcommanderᚋgqlᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v model.Task) graphql.Marshaler {
 	return ec._Task(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNTask2ᚖgithubᚗcomᚋenuesaaᚋtaskhopᚋcommanderᚋgqlᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v *model.Task) graphql.Marshaler {
+func (ec *executionContext) marshalNTask2ᚖgithubᚗcomᚋenuesaaᚋtaskhopᚋappᚋcommanderᚋgqlᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v *model.Task) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -3512,13 +3529,13 @@ func (ec *executionContext) marshalNTask2ᚖgithubᚗcomᚋenuesaaᚋtaskhopᚋc
 	return ec._Task(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNTaskStatus2githubᚗcomᚋenuesaaᚋtaskhopᚋcommanderᚋgqlᚋmodelᚐTaskStatus(ctx context.Context, v interface{}) (model.TaskStatus, error) {
+func (ec *executionContext) unmarshalNTaskStatus2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋcommanderᚋgqlᚋmodelᚐTaskStatus(ctx context.Context, v interface{}) (model.TaskStatus, error) {
 	var res model.TaskStatus
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNTaskStatus2githubᚗcomᚋenuesaaᚋtaskhopᚋcommanderᚋgqlᚋmodelᚐTaskStatus(ctx context.Context, sel ast.SelectionSet, v model.TaskStatus) graphql.Marshaler {
+func (ec *executionContext) marshalNTaskStatus2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋcommanderᚋgqlᚋmodelᚐTaskStatus(ctx context.Context, sel ast.SelectionSet, v model.TaskStatus) graphql.Marshaler {
 	return v
 }
 

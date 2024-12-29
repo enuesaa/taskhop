@@ -61,7 +61,6 @@ func (a *App) load() error {
 		a.lib.Log.Info(context.Background(), "Error: %s", err.Error())
 		return err
 	}
-	a.lib.Log.Info(context.Background(), "commander started")
 	return nil
 }
 
@@ -81,7 +80,6 @@ func (a *App) serve() error {
 
 	a.lc.Append(fx.Hook{
 		OnStop: func(ctx context.Context) error {
-			a.lib.Log.Info(ctx, "stop app")
 			return server.Shutdown(ctx)
 		},
 	})

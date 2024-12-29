@@ -15,7 +15,9 @@ func New() ILogSrv {
 
 type ILogSrv interface {
 	Use(ctx context.Context, id string) context.Context
+	AppInfo(ctx context.Context, format string, a ...any)
 	Info(ctx context.Context, format string, a ...any)
+	Faint(ctx context.Context, format string, a ...any)
 }
 
 type LogSrv struct{}
