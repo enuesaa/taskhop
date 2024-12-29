@@ -1,0 +1,13 @@
+builds:
+  - goos:
+      - darwin
+      - linux
+
+archives:
+  - format: tar.gz
+    # Remove README.md to simplify install.sh
+    files: []
+
+release:
+  extra_files:
+    - glob: ./install.sh

@@ -8,3 +8,6 @@
 *.zip
 testdata/runner/*
 !testdata/runner/.gitkeep
+
+# installer
+install.sh

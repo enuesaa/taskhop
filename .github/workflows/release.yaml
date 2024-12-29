@@ -17,6 +17,14 @@ jobs:
 
       - run: go test ./...
 
+      # strip `v`
+      - run: echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+        env:
+          TAG: ${{ github.ref_name }}
+      
+      - name: Generate install.sh
+        run: envsubst < ./install.template.sh > ./install.sh
+
       - uses: goreleaser/goreleaser-action@v6
         with:
           version: latest
