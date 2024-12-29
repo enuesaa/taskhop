@@ -3,11 +3,11 @@ builds:
       - darwin
       - linux
 
-archives:
-  - format: tar.gz
-    # Remove README.md to simplify install.sh
-    files: []
-
 release:
   extra_files:
     - glob: ./install.sh
+  header: |
+    # Install
+    ```bash
+    curl -sL https://github.com/enuesaa/taskhop/releases/download/{{ .Tag }}/install.sh | bash
+    ```
