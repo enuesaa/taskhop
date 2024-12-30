@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+
+	"github.com/enuesaa/taskhop/conf"
 )
 
 type ICli interface {
 	Launch() error
-	IsCommander() bool
-	GetAddress() string
-	IsDebug() bool
+	GetConfig() conf.Config
 }
 
 type Cli struct {
@@ -45,10 +45,6 @@ func (c *Cli) parse() {
 	flag.Parse()
 }
 
-func (c *Cli) IsCommander() bool {
-	return c.Address == ""
-}
-
 func (c *Cli) validate() error {
 	endpoint := fmt.Sprintf("http://%s/graphql", c.Address)
 	_, err := url.Parse(endpoint)
@@ -56,12 +52,4 @@ func (c *Cli) validate() error {
 		return err
 	}
 	return nil
-}
-
-func (c *Cli) GetAddress() string {
-	return c.Address
-}
-
-func (c *Cli) IsDebug() bool {
-	return c.Debug
 }
