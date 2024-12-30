@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/enuesaa/taskhop/cli"
+	"github.com/enuesaa/taskhop/conf"
 	"github.com/enuesaa/taskhop/lib/taskfx/repository"
 	"github.com/enuesaa/taskhop/lib/testsuite"
 	"github.com/stretchr/testify/assert"
@@ -28,7 +28,7 @@ cmds:
 	var i ITaskSrv
 	suite.UseOptions(
 		fx.Supply(
-			fx.Annotate(&cli.Cli{}, fx.As(new(cli.ICli))),
+			fx.Annotate(&conf.Config{}, fx.As(new(conf.Config))),
 			fx.Annotate(repo, fx.As(new(repository.IRepository))),
 		),
 		fx.Provide(New),

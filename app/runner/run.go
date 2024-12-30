@@ -18,7 +18,7 @@ func (a *App) run(task connector.GetTask_Task) error {
 		if _, err := a.conn.Log(context.Background(), input); err != nil {
 			return err
 		}
-		if err := a.lib.Cmd.Exec(&a.conn, command, a.cli.GetWorkdir()); err != nil {
+		if err := a.lib.Cmd.Exec(&a.conn, command, a.config.Workdir); err != nil {
 			return err
 		}
 	}

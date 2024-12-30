@@ -2,22 +2,22 @@ package runner
 
 import (
 	"github.com/enuesaa/taskhop/app/runner/connector"
-	"github.com/enuesaa/taskhop/cli"
+	"github.com/enuesaa/taskhop/conf"
 	"github.com/enuesaa/taskhop/lib"
 	"go.uber.org/fx"
 )
 
-func New(cl cli.ICli, li lib.Lib, shutdowner fx.Shutdowner) App {
+func New(config conf.Config, li lib.Lib, shutdowner fx.Shutdowner) App {
 	return App{
-		cli:        cl,
+		config:     config,
 		lib:        li,
-		conn:       connector.New(cl),
+		conn:       connector.New(config),
 		shutdowner: shutdowner,
 	}
 }
 
 type App struct {
-	cli        cli.ICli
+	config     conf.Config
 	lib        lib.Lib
 	conn       connector.Connector
 	shutdowner fx.Shutdowner

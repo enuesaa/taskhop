@@ -7,7 +7,7 @@ import (
 )
 
 func (c *Connector) GetStorageArchive(dest io.Writer) error {
-	url := fmt.Sprintf("http://%s/storage/archive", c.cli.GetAddress())
+	url := fmt.Sprintf("http://%s/storage/archive", c.config.Address)
 
 	res, err := http.Get(url)
 	if err != nil {

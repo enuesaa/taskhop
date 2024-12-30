@@ -1,10 +1,10 @@
 package procfx
 
-import "github.com/enuesaa/taskhop/cli"
+import "github.com/enuesaa/taskhop/conf"
 
-func New(cl cli.ICli) IProcSrv {
+func New(config conf.Config) IProcSrv {
 	return &ProcSrv{
-		cli:         cl,
+		config:      config,
 		status:      StatusWaiting,
 		completedCh: make(chan Completed, 1),
 	}
@@ -18,7 +18,7 @@ type IProcSrv interface {
 }
 
 type ProcSrv struct {
-	cli         cli.ICli
+	config      conf.Config
 	status      Status
 	completedCh chan Completed
 }
