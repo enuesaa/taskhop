@@ -3,22 +3,21 @@ package main
 import (
 	"log"
 
-	"github.com/enuesaa/taskhop/conf"
 	"go.uber.org/fx/fxevent"
 )
 
-func NewFxLogger(config conf.Config) FxLogger {
+func NewFxLogger() FxLogger {
 	return FxLogger{
-		config: config,
+		Debug: false,
 	}
 }
 
 type FxLogger struct {
-	config conf.Config
+	Debug bool
 }
 
 func (l *FxLogger) LogEvent(event fxevent.Event) {
-	if l.config.Debug {
+	if l.Debug {
 		l.logEventDebug(event)
 	} else {
 		l.logEventNormal(event)

@@ -3,6 +3,8 @@ package main
 import (
 	// "github.com/enuesaa/taskhop/app/commander"
 	// "github.com/enuesaa/taskhop/app/runner"
+	"os"
+
 	"github.com/enuesaa/taskhop/conf"
 	// "github.com/enuesaa/taskhop/lib"
 	"go.uber.org/fx"
@@ -10,6 +12,8 @@ import (
 )
 
 func main() {
+	isDebugMode := os.Getenv("TASKHOP_DEBUG") == "true"
+
 	app := fx.New(
 		Module,
 		conf.Module,
@@ -17,6 +21,7 @@ func main() {
 		// commander.Module,
 		// runner.Module,
 		fx.WithLogger(func(logger FxLogger) fxevent.Logger {
+			logger.Debug = isDebugMode
 			return &logger
 		}),
 		fx.Invoke(func(cli ICli) error {
