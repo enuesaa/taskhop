@@ -1,18 +1,18 @@
 # run `gqlgenc`
 
 model:
-  filename: app/commander/gql/model/main.go
+  filename: app/gql/model/main.go
   package: model
 
 client:
   package: connector
-  filename: app/runner/connector/client.go
+  filename: app/connector/client.go
 
 schema:
-  - app/commander/gql/schema/*.graphql
+  - app/gql/schema/*.graphql
 
 query:
-  - app/runner/documents/*.graphql
+  - app/documents/*.graphql
 
 generate:
   clientInterfaceName: GraphQLClient

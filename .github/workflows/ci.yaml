@@ -12,7 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/env
-      - run: go install
+      - run: go install ./cmd/taskhop
+      - run: go install ./cmd/taskhop-runner
 
   test:
     runs-on: ubuntu-latest
