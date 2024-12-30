@@ -1,10 +1,10 @@
-package runner
+package app
 
 import (
 	"context"
 
-	"github.com/enuesaa/taskhop/app/commander/gql/model"
-	"github.com/enuesaa/taskhop/app/runner/connector"
+	"github.com/enuesaa/taskhop/app/gql/model"
+	"github.com/enuesaa/taskhop/app/connector"
 )
 
 // TODO refactor

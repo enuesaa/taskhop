@@ -3,7 +3,7 @@ package query
 import (
 	"context"
 
-	"github.com/enuesaa/taskhop/app/commander/gql/model"
+	"github.com/enuesaa/taskhop/app/gql/model"
 	"github.com/enuesaa/taskhop/lib/procfx"
 )
 

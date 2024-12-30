@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/enuesaa/taskhop/app/commander"
+	"github.com/enuesaa/taskhop/app"
 	"github.com/enuesaa/taskhop/conf"
 	"github.com/enuesaa/taskhop/lib"
 
@@ -14,11 +14,11 @@ import (
 func main() {
 	isDebugMode := os.Getenv("TASKHOP_DEBUG") == "true"
 
-	app := fx.New(
+	fxapp := fx.New(
 		Module,
 		conf.Module,
 		lib.Module,
-		commander.Module,
+		app.Module,
 		fx.WithLogger(func(logger FxLogger) fxevent.Logger {
 			logger.Debug = isDebugMode
 			return &logger
@@ -26,9 +26,9 @@ func main() {
 		fx.Invoke(func(cli ICli) error {
 			return cli.Launch()
 		}),
-		fx.Invoke(func(commanderApp commander.Commander) error {
-			return commanderApp.Run()
+		fx.Invoke(func(commander app.Commander) error {
+			return commander.Run()
 		}),
 	)
-	app.Run()
+	fxapp.Run()
 }

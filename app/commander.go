@@ -1,14 +1,14 @@
-package commander
+package app
 
 import (
 	"context"
 	"errors"
 	"net/http"
 
-	"github.com/enuesaa/taskhop/app/commander/gql"
-	"github.com/enuesaa/taskhop/app/commander/gqlplayground"
-	"github.com/enuesaa/taskhop/app/commander/middleware"
-	"github.com/enuesaa/taskhop/app/commander/storage"
+	"github.com/enuesaa/taskhop/app/gql"
+	"github.com/enuesaa/taskhop/app/gqlplayground"
+	"github.com/enuesaa/taskhop/app/middleware"
+	"github.com/enuesaa/taskhop/app/storage"
 	"github.com/enuesaa/taskhop/conf"
 	"github.com/enuesaa/taskhop/lib"
 	"github.com/go-chi/chi/v5"

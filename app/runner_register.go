@@ -1,11 +1,11 @@
-package runner
+package app
 
 import (
 	"context"
 	"errors"
 
-	"github.com/enuesaa/taskhop/app/commander/gql/model"
-	"github.com/enuesaa/taskhop/app/runner/connector"
+	"github.com/enuesaa/taskhop/app/gql/model"
+	"github.com/enuesaa/taskhop/app/connector"
 )
 
 var ErrTaskNotAvailable = errors.New("task not available")

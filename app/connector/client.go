@@ -6,7 +6,7 @@ import (
 	"context"
 
 	"github.com/Yamashou/gqlgenc/clientv2"
-	"github.com/enuesaa/taskhop/app/commander/gql/model"
+	"github.com/enuesaa/taskhop/app/gql/model"
 )
 
 type GraphQLClient interface {

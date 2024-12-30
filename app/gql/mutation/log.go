@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/enuesaa/taskhop/app/commander/gql/model"
+	"github.com/enuesaa/taskhop/app/gql/model"
 )
 
 func (r *MutationResolver) Log(ctx context.Context, input model.LogInput) (bool, error) {

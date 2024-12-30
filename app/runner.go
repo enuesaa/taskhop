@@ -1,7 +1,7 @@
-package runner
+package app
 
 import (
-	"github.com/enuesaa/taskhop/app/runner/connector"
+	"github.com/enuesaa/taskhop/app/connector"
 	"github.com/enuesaa/taskhop/conf"
 	"github.com/enuesaa/taskhop/lib"
 	"go.uber.org/fx"

@@ -3,7 +3,7 @@ package connector
 import (
 	"context"
 
-	"github.com/enuesaa/taskhop/app/commander/gql/model"
+	"github.com/enuesaa/taskhop/app/gql/model"
 )
 
 // send logs
