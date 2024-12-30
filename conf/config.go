@@ -1,10 +1,14 @@
 package conf
 
+import "os"
+
 func New() Config {
+	isDebugMode := os.Getenv("TASKHOP_DEBUG") == "true"
+
 	return Config{
 		Address: "",
 		Workdir: "",
-		Debug: false,
+		Debug: isDebugMode,
 		Version: "0.0.4",
 		VersionFlag: false,
 	}
