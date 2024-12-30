@@ -4,6 +4,7 @@ import (
 	"github.com/enuesaa/taskhop/app/commander"
 	"github.com/enuesaa/taskhop/app/runner"
 	"github.com/enuesaa/taskhop/cli"
+	"github.com/enuesaa/taskhop/conf"
 	"github.com/enuesaa/taskhop/lib"
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxevent"
@@ -11,6 +12,7 @@ import (
 
 func main() {
 	app := fx.New(
+		conf.Module,
 		cli.Module,
 		lib.Module,
 		commander.Module,

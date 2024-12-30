@@ -2,8 +2,8 @@ package conf
 
 func New() Config {
 	return Config{
-		Address: "localhost:3000",
-		Workdir: ".",
+		Address: "",
+		Workdir: "",
 		Debug: false,
 		Version: "0.0.4",
 		VersionFlag: false,

@@ -4,47 +4,37 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
+	"github.com/enuesaa/taskhop/conf"
 )
+
+func New(config conf.Config) ICli {
+	cli := Cli{
+		config: config,
+	}
+	return &cli
+}
 
 type ICli interface {
 	Launch() error
-	IsCommander() bool
-	GetAddress() string
-	GetWorkdir() string
-	IsDebug() bool
 }
 
 type Cli struct {
-	// workdir
-	Workdir string
-
-	// debug
-	Debug bool
-
-	// version
-	Version bool
+	config conf.Config
 }
 
 func (c *Cli) Launch() error {
 	c.parse()
 
-	if c.Version {
-		fmt.Printf("0.0.3\n")
+	if c.config.VersionFlag {
+		fmt.Printf("%s\n", c.config.Version)
 		os.Exit(0)
 	}
 	return nil
 }
 
 func (c *Cli) parse() {
-	flag.StringVar(&c.Workdir, "w", ".", "workdir. Example: ./aaa")
-	flag.BoolVar(&c.Version, "version", false, "Print app version")
+	flag.StringVar(&c.config.Workdir, "w", ".", "workdir. Example: ./aaa")
+	flag.BoolVar(&c.config.VersionFlag, "version", false, "Print taskhop version")
 	flag.Parse()
-}
-
-func (c *Cli) GetWorkdir() string {
-	return c.Workdir
-}
-
-func (c *Cli) IsDebug() bool {
-	return c.Debug
 }
