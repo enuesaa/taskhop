@@ -7,7 +7,7 @@ import (
 	"go.uber.org/fx"
 )
 
-func New(config conf.Config, li lib.Lib, shutdowner fx.Shutdowner) App {
+func New(config *conf.Config, li lib.Lib, shutdowner fx.Shutdowner) App {
 	return App{
 		config:     config,
 		lib:        li,
@@ -17,7 +17,7 @@ func New(config conf.Config, li lib.Lib, shutdowner fx.Shutdowner) App {
 }
 
 type App struct {
-	config     conf.Config
+	config     *conf.Config
 	lib        lib.Lib
 	conn       connector.Connector
 	shutdowner fx.Shutdowner

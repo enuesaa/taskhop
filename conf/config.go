@@ -1,7 +1,7 @@
 package conf
 
-func New() Config {
-	return Config{
+func New() *Config {
+	return &Config{
 		Address: "",
 		Workdir: "",
 		Version: "0.0.4",

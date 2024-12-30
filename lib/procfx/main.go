@@ -2,7 +2,7 @@ package procfx
 
 import "github.com/enuesaa/taskhop/conf"
 
-func New(config conf.Config) IProcSrv {
+func New(config *conf.Config) IProcSrv {
 	return &ProcSrv{
 		config:      config,
 		status:      StatusWaiting,
@@ -18,7 +18,7 @@ type IProcSrv interface {
 }
 
 type ProcSrv struct {
-	config      conf.Config
+	config      *conf.Config
 	status      Status
 	completedCh chan Completed
 }

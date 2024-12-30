@@ -9,7 +9,7 @@ import (
 	"github.com/enuesaa/taskhop/conf"
 )
 
-func New(config conf.Config) ICli {
+func New(config *conf.Config) ICli {
 	cli := Cli{
 		config: config,
 	}
@@ -21,7 +21,7 @@ type ICli interface {
 }
 
 type Cli struct {
-	config conf.Config
+	config *conf.Config
 }
 
 func (c *Cli) Launch() error {

@@ -7,7 +7,7 @@ import (
 	"github.com/enuesaa/taskhop/lib/archivefx/repository"
 )
 
-func New(config conf.Config, repo repository.IRepository) IArvSrv {
+func New(config *conf.Config, repo repository.IRepository) IArvSrv {
 	return &ArvSrv{
 		config: config,
 		repo: repo,
@@ -19,6 +19,6 @@ type IArvSrv interface {
 	UnArchive(r io.Reader, dest string) error
 }
 type ArvSrv struct {
-	config conf.Config
+	config *conf.Config
 	repo repository.IRepository
 }

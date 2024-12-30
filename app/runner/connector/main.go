@@ -7,7 +7,7 @@ import (
 	"github.com/enuesaa/taskhop/conf"
 )
 
-func New(config conf.Config) Connector {
+func New(config *conf.Config) Connector {
 	url := fmt.Sprintf("http://%s/graphql", config.Address)
 	client := NewClient(http.DefaultClient, url, nil)
 	connector := Connector{
@@ -20,5 +20,5 @@ func New(config conf.Config) Connector {
 
 type Connector struct {
 	GraphQLClient
-	config conf.Config
+	config *conf.Config
 }

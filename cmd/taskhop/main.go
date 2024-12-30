@@ -1,12 +1,12 @@
 package main
 
 import (
-	// "github.com/enuesaa/taskhop/app/commander"
-	// "github.com/enuesaa/taskhop/app/runner"
 	"os"
 
+	"github.com/enuesaa/taskhop/app/commander"
 	"github.com/enuesaa/taskhop/conf"
-	// "github.com/enuesaa/taskhop/lib"
+	"github.com/enuesaa/taskhop/lib"
+
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxevent"
 )
@@ -17,9 +17,8 @@ func main() {
 	app := fx.New(
 		Module,
 		conf.Module,
-		// lib.Module,
-		// commander.Module,
-		// runner.Module,
+		lib.Module,
+		commander.Module,
 		fx.WithLogger(func(logger FxLogger) fxevent.Logger {
 			logger.Debug = isDebugMode
 			return &logger
@@ -27,9 +26,9 @@ func main() {
 		fx.Invoke(func(cli ICli) error {
 			return cli.Launch()
 		}),
-		// fx.Invoke(func(cl cli.ICli, commanderApp commander.App) error {
-		// 	return commanderApp.Run()
-		// }),
+		fx.Invoke(func(commanderApp commander.App) error {
+			return commanderApp.Run()
+		}),
 	)
 	app.Run()
 }

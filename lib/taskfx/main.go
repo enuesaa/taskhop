@@ -5,7 +5,7 @@ import (
 	"github.com/enuesaa/taskhop/lib/taskfx/repository"
 )
 
-func New(config conf.Config, repo repository.IRepository) ITaskSrv {
+func New(config *conf.Config, repo repository.IRepository) ITaskSrv {
 	return &TaskSrv{
 		config: config,
 		repo: repo,
@@ -18,6 +18,6 @@ type ITaskSrv interface {
 }
 
 type TaskSrv struct {
-	config conf.Config
+	config *conf.Config
 	repo repository.IRepository
 }
