@@ -15,24 +15,24 @@ import (
 	"go.uber.org/fx"
 )
 
-func New(config *conf.Config, li lib.Lib, lc fx.Lifecycle, shutdowner fx.Shutdowner) App {
-	app := App{
+func NewCommander(config *conf.Config, li lib.Lib, lc fx.Lifecycle, shutdowner fx.Shutdowner) Commander {
+	commander := Commander{
 		config:     config,
 		lib:        li,
 		lc:         lc,
 		shutdowner: shutdowner,
 	}
-	return app
+	return commander
 }
 
-type App struct {
+type Commander struct {
 	config     *conf.Config
 	lib        lib.Lib
 	lc         fx.Lifecycle
 	shutdowner fx.Shutdowner
 }
 
-func (a *App) Run() error {
+func (a *Commander) Run() error {
 	go a.monitor2shutdown()
 
 	if err := a.load(); err != nil {
@@ -45,13 +45,13 @@ func (a *App) Run() error {
 	return nil
 }
 
-func (a *App) monitor2shutdown() {
+func (a *Commander) monitor2shutdown() {
 	for range a.lib.Proc.SubscribeCompleted() {
 		a.shutdowner.Shutdown()
 	}
 }
 
-func (a *App) load() error {
+func (a *Commander) load() error {
 	task, err := a.lib.Task.Read()
 	if err != nil {
 		a.lib.Log.Info(context.Background(), "Error: %s", err.Error())
@@ -64,7 +64,7 @@ func (a *App) load() error {
 	return nil
 }
 
-func (a *App) serve() error {
+func (a *Commander) serve() error {
 	server := http.Server{
 		Addr:    ":3000",
 		Handler: a.handle(),
@@ -87,7 +87,7 @@ func (a *App) serve() error {
 	return nil
 }
 
-func (a *App) handle() *chi.Mux {
+func (a *Commander) handle() *chi.Mux {
 	router := chi.NewRouter()
 
 	// middleware

@@ -7,23 +7,24 @@ import (
 	"go.uber.org/fx"
 )
 
-func New(config *conf.Config, li lib.Lib, shutdowner fx.Shutdowner) App {
-	return App{
+func NewRunner(config *conf.Config, li lib.Lib, shutdowner fx.Shutdowner) Runner {
+	runner := Runner{
 		config:     config,
 		lib:        li,
 		conn:       connector.New(config),
 		shutdowner: shutdowner,
 	}
+	return runner
 }
 
-type App struct {
+type Runner struct {
 	config     *conf.Config
 	lib        lib.Lib
 	conn       connector.Connector
 	shutdowner fx.Shutdowner
 }
 
-func (a *App) Run() error {
+func (a *Runner) Run() error {
 	for {
 		if err := a.Connect(); err != nil {
 			return err

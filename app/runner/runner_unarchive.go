@@ -2,7 +2,7 @@ package runner
 
 import "bytes"
 
-func (a *App) UnArchive() error {
+func (a *Runner) UnArchive() error {
 	var buf bytes.Buffer
 	a.conn.GetStorageArchive(&buf)
 

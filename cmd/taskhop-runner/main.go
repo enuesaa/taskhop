@@ -25,7 +25,7 @@ func main() {
 		fx.Invoke(func(cli ICli) error {
 			return cli.Launch()
 		}),
-		fx.Invoke(func(runnerApp runner.App) error {
+		fx.Invoke(func(runnerApp runner.Runner) error {
 			return runnerApp.Run()
 		}),
 	)

@@ -10,7 +10,7 @@ import (
 
 var ErrTaskNotAvailable = errors.New("task not available")
 
-func (a *App) Register() (connector.GetTask_Task, error) {
+func (a *Runner) Register() (connector.GetTask_Task, error) {
 	taskres, err := a.conn.GetTask(context.Background())
 	if err != nil {
 		return connector.GetTask_Task{}, err

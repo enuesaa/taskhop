@@ -6,5 +6,5 @@ import (
 
 var Module = fx.Module(
 	"commander",
-	fx.Provide(New),
+	fx.Provide(NewCommander),
 )
