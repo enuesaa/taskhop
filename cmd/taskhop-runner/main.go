@@ -1,7 +1,29 @@
 package main
 
-import "fmt"
+import (
+	"github.com/enuesaa/taskhop/app/commander"
+	"github.com/enuesaa/taskhop/app/runner"
+	"github.com/enuesaa/taskhop/cli"
+	"github.com/enuesaa/taskhop/lib"
+	"go.uber.org/fx"
+	"go.uber.org/fx/fxevent"
+)
 
 func main() {
-	fmt.Println("this is runner")
+	app := fx.New(
+		cli.Module,
+		lib.Module,
+		commander.Module,
+		runner.Module,
+		fx.WithLogger(func(logger cli.FxLogger) fxevent.Logger {
+			return &logger
+		}),
+		fx.Invoke(func(cl cli.ICli) error {
+			return cl.Launch()
+		}),
+		fx.Invoke(func(cl cli.ICli, runnerApp runner.App) error {
+			return runnerApp.Run()
+		}),
+	)
+	app.Run()
 }
