@@ -10,7 +10,7 @@ import (
 func New(config *conf.Config, repo repository.IRepository) IArvSrv {
 	return &ArvSrv{
 		config: config,
-		repo: repo,
+		repo:   repo,
 	}
 }
 
@@ -20,5 +20,5 @@ type IArvSrv interface {
 }
 type ArvSrv struct {
 	config *conf.Config
-	repo repository.IRepository
+	repo   repository.IRepository
 }

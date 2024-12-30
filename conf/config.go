@@ -2,9 +2,9 @@ package conf
 
 func New() *Config {
 	return &Config{
-		Address: "",
-		Workdir: "",
-		Version: "0.0.4",
+		Address:     "",
+		Workdir:     "",
+		Version:     "0.0.4",
 		VersionFlag: false,
 	}
 }
@@ -17,6 +17,6 @@ type Config struct {
 	Workdir string
 
 	// version
-	Version string
+	Version     string
 	VersionFlag bool
 }

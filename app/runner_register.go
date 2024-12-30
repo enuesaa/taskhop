@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/enuesaa/taskhop/app/gql/model"
 	"github.com/enuesaa/taskhop/app/connector"
+	"github.com/enuesaa/taskhop/app/gql/model"
 )
 
 var ErrTaskNotAvailable = errors.New("task not available")

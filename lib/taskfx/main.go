@@ -8,7 +8,7 @@ import (
 func New(config *conf.Config, repo repository.IRepository) ITaskSrv {
 	return &TaskSrv{
 		config: config,
-		repo: repo,
+		repo:   repo,
 	}
 }
 
@@ -19,5 +19,5 @@ type ITaskSrv interface {
 
 type TaskSrv struct {
 	config *conf.Config
-	repo repository.IRepository
+	repo   repository.IRepository
 }

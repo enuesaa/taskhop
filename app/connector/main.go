@@ -12,7 +12,7 @@ func New(config *conf.Config) Connector {
 	client := NewClient(http.DefaultClient, url, nil)
 	connector := Connector{
 		GraphQLClient: client,
-		config: config,
+		config:        config,
 	}
 
 	return connector

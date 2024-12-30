@@ -3,8 +3,8 @@ package app
 import (
 	"context"
 
-	"github.com/enuesaa/taskhop/app/gql/model"
 	"github.com/enuesaa/taskhop/app/connector"
+	"github.com/enuesaa/taskhop/app/gql/model"
 )
 
 // TODO refactor
