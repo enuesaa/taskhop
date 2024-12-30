@@ -1,5 +1,15 @@
 builds:
-  - goos:
+  - id: taskhop
+    main: ./cmd/taskhop
+    binary: taskhop
+    goos:
+      - darwin
+      - linux
+
+  - id: taskhop-runner
+    main: ./cmd/taskhop-runner
+    binary: taskhop-runner
+    goos:
       - darwin
       - linux
 
