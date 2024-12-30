@@ -28,7 +28,9 @@ cmds:
 	var i ITaskSrv
 	suite.UseOptions(
 		fx.Supply(
-			fx.Annotate(&conf.Config{}, fx.As(new(conf.Config))),
+			&conf.Config{
+				Workdir: ".",
+			},
 			fx.Annotate(repo, fx.As(new(repository.IRepository))),
 		),
 		fx.Provide(New),
