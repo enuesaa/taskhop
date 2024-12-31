@@ -1,23 +1,19 @@
 package logfx
 
-import (
-	"context"
-	"log"
-)
+import "context"
 
-func init() {
-	log.SetFlags(0)
-}
-
-func New() ILogSrv {
-	return &LogSrv{}
+func New(repository IRepository) ILogSrv {
+	return &LogSrv{
+		repository: repository,
+	}
 }
 
 type ILogSrv interface {
-	Use(ctx context.Context, id string) context.Context
 	AppInfo(ctx context.Context, format string, a ...any)
 	Info(ctx context.Context, format string, a ...any)
 	Faint(ctx context.Context, format string, a ...any)
 }
 
-type LogSrv struct{}
+type LogSrv struct{
+	repository IRepository
+}

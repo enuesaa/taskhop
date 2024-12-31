@@ -6,5 +6,6 @@ var Module = fx.Module(
 	"logfx",
 	fx.Provide(
 		New,
+		NewRepository,
 	),
 )

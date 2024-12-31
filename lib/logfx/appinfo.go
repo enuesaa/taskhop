@@ -2,12 +2,14 @@ package logfx
 
 import (
 	"context"
-	"log"
+	"fmt"
 
 	"github.com/fatih/color"
 )
 
 func (i *LogSrv) AppInfo(ctx context.Context, format string, a ...any) {
-	message := color.YellowString("*** "+format, a...)
-	log.Print(message)
+	text := fmt.Sprintf(format, a...)
+	message := color.YellowString(text)
+
+	i.repository.Print(message)
 }
