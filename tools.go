@@ -6,10 +6,11 @@ package main
 
 import (
 	_ "github.com/99designs/gqlgen"
+	_ "github.com/Yamashou/gqlgenc"
 )
 
 // Run following command to generate code:
 //   go generate tools.go
 
 //go:generate go run github.com/99designs/gqlgen generate
-//go:generate gqlgenc
+//go:generate go run github.com/Yamashou/gqlgenc
