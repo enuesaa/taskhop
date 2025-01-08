@@ -54,7 +54,7 @@ func (e LogType) String() string {
 	return string(e)
 }
 
-func (e *LogType) UnmarshalGQL(v interface{}) error {
+func (e *LogType) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
@@ -97,7 +97,7 @@ func (e TaskStatus) String() string {
 	return string(e)
 }
 
-func (e *TaskStatus) UnmarshalGQL(v interface{}) error {
+func (e *TaskStatus) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")

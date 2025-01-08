@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/enuesaa/taskhop/app/connector"
+	"github.com/enuesaa/taskhop/app/gql/connector"
 	"github.com/enuesaa/taskhop/app/gql/model"
 )
 

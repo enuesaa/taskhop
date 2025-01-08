@@ -34,14 +34,12 @@ jobs:
       - run: echo '# staticcheck' >> $GITHUB_STEP_SUMMARY
       - run: staticcheck ./... >> $GITHUB_STEP_SUMMARY
 
-  run-go-generate:
+  gogenerate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/env
 
-      - run: |
-          echo "::error::Uncommitted changes found. Please run go generate tools.go";
       - run: go generate tools.go
 
       - run: |

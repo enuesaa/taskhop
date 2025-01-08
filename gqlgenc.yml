@@ -12,7 +12,7 @@ schema:
   - app/gql/schema/*.graphql
 
 query:
-  - app/documents/*.graphql
+  - app/gql/documents/*.graphql
 
 generate:
   clientInterfaceName: GraphQLClient
