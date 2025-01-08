@@ -33,3 +33,20 @@ jobs:
 
       - run: echo '# staticcheck' >> $GITHUB_STEP_SUMMARY
       - run: staticcheck ./... >> $GITHUB_STEP_SUMMARY
+
+  run-go-generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/env
+
+      - run: |
+          echo "::error::Uncommitted changes found. Please run go generate tools.go";
+      - run: go generate tools.go
+
+      - run: |
+          if [[ -n "$(git diff --name-only)" ]]; then
+            git diff --name-only;
+            echo "::error::Uncommitted changes found. Please run go generate tools.go";
+            exit 1;
+          fi
