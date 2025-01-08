@@ -14,6 +14,6 @@ type ILogSrv interface {
 	Faint(ctx context.Context, format string, a ...any)
 }
 
-type LogSrv struct{
+type LogSrv struct {
 	repository IRepository
 }

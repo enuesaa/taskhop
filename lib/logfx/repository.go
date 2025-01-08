@@ -14,7 +14,7 @@ type IRepository interface {
 	Print(text string)
 }
 
-type Repository struct {}
+type Repository struct{}
 
 func (r *Repository) Print(text string) {
 	log.Print(text)
