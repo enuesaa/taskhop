@@ -1,4 +1,4 @@
-package repository
+package archivefx
 
 import (
 	"io"
@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-func New() IRepository {
+func NewRepository() IRepository {
 	return &Repository{}
 }
 

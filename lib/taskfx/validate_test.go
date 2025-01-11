@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/enuesaa/taskhop/conf"
-	"github.com/enuesaa/taskhop/lib/taskfx/repository"
 	"github.com/enuesaa/taskhop/lib/testsuite"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/fx"
@@ -15,7 +14,7 @@ func TestValidate(t *testing.T) {
 	suite := testsuite.New(t)
 	defer suite.End()
 
-	repo := repository.NewMockI(suite.Ctl())
+	repo := NewMockIRepository(suite.Ctl())
 	cmdsyml := strings.NewReader(`
 title: Example
 
@@ -31,7 +30,7 @@ cmds:
 			&conf.Config{
 				Workdir: ".",
 			},
-			fx.Annotate(repo, fx.As(new(repository.IRepository))),
+			fx.Annotate(repo, fx.As(new(IRepository))),
 		),
 		fx.Provide(New),
 		fx.Populate(&i),

@@ -4,10 +4,9 @@ import (
 	"io"
 
 	"github.com/enuesaa/taskhop/conf"
-	"github.com/enuesaa/taskhop/lib/archivefx/repository"
 )
 
-func New(config *conf.Config, repo repository.IRepository) IArvSrv {
+func New(config *conf.Config, repo IRepository) IArvSrv {
 	return &ArvSrv{
 		config: config,
 		repo:   repo,
@@ -20,5 +19,5 @@ type IArvSrv interface {
 }
 type ArvSrv struct {
 	config *conf.Config
-	repo   repository.IRepository
+	repo   IRepository
 }

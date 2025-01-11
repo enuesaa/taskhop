@@ -1,11 +1,8 @@
 package taskfx
 
-import (
-	"github.com/enuesaa/taskhop/conf"
-	"github.com/enuesaa/taskhop/lib/taskfx/repository"
-)
+import "github.com/enuesaa/taskhop/conf"
 
-func New(config *conf.Config, repo repository.IRepository) ITaskSrv {
+func New(config *conf.Config, repo IRepository) ITaskSrv {
 	return &TaskSrv{
 		config: config,
 		repo:   repo,
@@ -19,5 +16,5 @@ type ITaskSrv interface {
 
 type TaskSrv struct {
 	config *conf.Config
-	repo   repository.IRepository
+	repo   IRepository
 }

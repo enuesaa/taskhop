@@ -1,4 +1,4 @@
-package repository
+package taskfx
 
 import (
 	"bytes"
@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func New() IRepository {
+func NewRepository() IRepository {
 	return &Repository{}
 }
 
