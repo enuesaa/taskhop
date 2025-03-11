@@ -1,4 +1,4 @@
 package main
 
-//go:generate go tool github.com/99designs/gqlgen generate
-//go:generate go tool github.com/Yamashou/gqlgenc
+//go:generate go tool gqlgen generate
+//go:generate go tool gqlgenc
