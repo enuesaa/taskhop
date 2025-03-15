@@ -6,15 +6,21 @@ func New(config *conf.Config, repo IRepository) ITaskSrv {
 	return &TaskSrv{
 		config: config,
 		repo:   repo,
+		current: Task{
+			Title: "",
+			Cmds: []string{},
+		},
 	}
 }
 
 type ITaskSrv interface {
-	Read() (Task, error)
-	Validate(task Task) error
+	Wait() error
+	Get() (Task, error)
 }
 
 type TaskSrv struct {
 	config *conf.Config
 	repo   IRepository
+
+	current Task
 }

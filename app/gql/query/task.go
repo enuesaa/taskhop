@@ -8,7 +8,7 @@ import (
 )
 
 func (r *QueryResolver) Task(ctx context.Context) (*model.Task, error) {
-	f, err := r.Lib.Task.Read()
+	f, err := r.Lib.Task.Get()
 	if err != nil {
 		return nil, err
 	}

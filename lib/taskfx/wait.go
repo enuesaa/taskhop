@@ -1,4 +1,4 @@
-package app
+package taskfx
 
 import (
 	"bufio"
@@ -6,17 +6,19 @@ import (
 	"os"
 )
 
-func Prompt() (string, error) {
+func (i *TaskSrv) Wait() error {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	fmt.Printf("> ")
 	if !scanner.Scan() {
-		return "", fmt.Errorf("end")
+		return fmt.Errorf("end")
 	}
 
 	text := scanner.Text()
 	if text == "exit" {
-		return "", fmt.Errorf("end")
+		return fmt.Errorf("end")
 	}
-	return text, nil
+	i.current.Cmds = []string{text}
+
+	return nil
 }

@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/enuesaa/taskhop/app/gql"
@@ -34,41 +33,18 @@ type Commander struct {
 }
 
 func (a *Commander) Run() error {
-	go a.monitor2shutdown()
+	// go a.monitor2shutdown()
 
-	text, err := Prompt()
-	if err != nil {
-		return err
-	}
-	fmt.Printf("input: %s\n", text)
+	a.lib.Task.Wait()
 
-	if err := a.load(); err != nil {
-		return err
-	}
-	if err := a.serve(); err != nil {
-		return err
-	}
-	return nil
+	return a.serve()
 }
 
-func (a *Commander) monitor2shutdown() {
-	for range a.lib.Proc.SubscribeCompleted() {
-		a.shutdowner.Shutdown()
-	}
-}
-
-func (a *Commander) load() error {
-	task, err := a.lib.Task.Read()
-	if err != nil {
-		a.lib.Log.Info(context.Background(), "Error: %s", err.Error())
-		return err
-	}
-	if err := a.lib.Task.Validate(task); err != nil {
-		a.lib.Log.Info(context.Background(), "Error: %s", err.Error())
-		return err
-	}
-	return nil
-}
+// func (a *Commander) monitor2shutdown() {
+// 	for range a.lib.Proc.SubscribeCompleted() {
+// 		a.shutdowner.Shutdown()
+// 	}
+// }
 
 func (a *Commander) serve() error {
 	server := http.Server{
