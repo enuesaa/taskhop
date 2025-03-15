@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/enuesaa/taskhop/app/gql"
@@ -35,13 +36,18 @@ type Commander struct {
 func (a *Commander) Run() error {
 	go a.monitor2shutdown()
 
+	text, err := Prompt()
+	if err != nil {
+		return err
+	}
+	fmt.Printf("input: %s\n", text)
+
 	if err := a.load(); err != nil {
 		return err
 	}
 	if err := a.serve(); err != nil {
 		return err
 	}
-
 	return nil
 }
 

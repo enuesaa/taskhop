@@ -13,6 +13,5 @@ func (i *TaskSrv) Validate(task Task) error {
 			return fmt.Errorf("%s: %s", err.Field(), err.Tag())
 		}
 	}
-
 	return nil
 }
