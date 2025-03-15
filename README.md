@@ -18,3 +18,15 @@ taskhop
 # runner
 taskhop-runner
 ```
+
+## Future plan
+- cmds.yml を用意するのが面倒なので、廃止
+- 代わりに prompt にする
+- Session Manager ライクに。
+
+```bash
+taskhop -transfer
+# show address
+
+taskhop-runner -connect localhost:3000
+```
