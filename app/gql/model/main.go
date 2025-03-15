@@ -74,20 +74,22 @@ func (e LogType) MarshalGQL(w io.Writer) {
 type TaskStatus string
 
 const (
-	TaskStatusWaiting    TaskStatus = "WAITING"
-	TaskStatusProceeding TaskStatus = "PROCEEDING"
-	TaskStatusCompleted  TaskStatus = "COMPLETED"
+	TaskStatusRegistration TaskStatus = "REGISTRATION"
+	TaskStatusPrompt       TaskStatus = "PROMPT"
+	TaskStatusProceeding   TaskStatus = "PROCEEDING"
+	TaskStatusCompleted    TaskStatus = "COMPLETED"
 )
 
 var AllTaskStatus = []TaskStatus{
-	TaskStatusWaiting,
+	TaskStatusRegistration,
+	TaskStatusPrompt,
 	TaskStatusProceeding,
 	TaskStatusCompleted,
 }
 
 func (e TaskStatus) IsValid() bool {
 	switch e {
-	case TaskStatusWaiting, TaskStatusProceeding, TaskStatusCompleted:
+	case TaskStatusRegistration, TaskStatusPrompt, TaskStatusProceeding, TaskStatusCompleted:
 		return true
 	}
 	return false

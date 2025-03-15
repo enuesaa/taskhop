@@ -7,15 +7,15 @@ func New(config *conf.Config, repo IRepository) ITaskSrv {
 		config: config,
 		repo:   repo,
 		current: Task{
-			Status: StatusWaiting,
+			Status: StatusRegistration,
 			Cmds: []string{},
 		},
 	}
 }
 
 type ITaskSrv interface {
-	Wait() error
-	Get() (Task, error)
+	Prompt() error
+	Get() Task
 	Register() (string, error)
 	NotifyCompleted() error
 }

@@ -17,7 +17,7 @@ func (a *Runner) Register() (connector.GetTask_Task, error) {
 	}
 	task := taskres.Task
 
-	if task.Status != model.TaskStatusWaiting {
+	if task.Status != model.TaskStatusRegistration {
 		return connector.GetTask_Task{}, ErrTaskNotAvailable
 	}
 

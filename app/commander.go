@@ -35,8 +35,6 @@ type Commander struct {
 func (a *Commander) Run() error {
 	// go a.monitor2shutdown()
 
-	a.lib.Task.Wait()
-
 	return a.serve()
 }
 

@@ -1,5 +1,6 @@
 enum TaskStatus {
-  WAITING
+  REGISTRATION
+  PROMPT
   PROCEEDING
   COMPLETED
 }

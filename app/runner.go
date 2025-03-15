@@ -34,9 +34,9 @@ func (a *Runner) Run() error {
 			return err
 		}
 
-		if err := a.UnArchive(); err != nil {
-			return err
-		}
+		// if err := a.UnArchive(); err != nil {
+		// 	return err
+		// }
 		if err := a.run(task); err != nil {
 			return err
 		}

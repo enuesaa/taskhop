@@ -8,15 +8,14 @@ import (
 )
 
 func (r *QueryResolver) Task(ctx context.Context) (*model.Task, error) {
-	f, err := r.Lib.Task.Get()
-	if err != nil {
-		return nil, err
-	}
+	f := r.Lib.Task.Get()
 
 	var statusgql model.TaskStatus
 	switch f.Status {
-	case taskfx.StatusWaiting:
-		statusgql = model.TaskStatusWaiting
+	case taskfx.StatusRegistration:
+		statusgql = model.TaskStatusRegistration
+	case taskfx.StatusPrompt:
+		statusgql = model.TaskStatusPrompt
 	case taskfx.StatusProceeding:
 		statusgql = model.TaskStatusProceeding
 	case taskfx.StatusCompleted:

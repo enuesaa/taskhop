@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func (i *TaskSrv) Wait() error {
+func (i *TaskSrv) Prompt() error {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	fmt.Printf("> ")

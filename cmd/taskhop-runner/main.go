@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"github.com/enuesaa/taskhop/app"
@@ -24,7 +25,11 @@ func main() {
 			return cli.Launch()
 		}),
 		fx.Invoke(func(runner app.Runner) error {
-			return runner.Run()
+			if err := runner.Run(); err != nil {
+				log.Println(err)
+				return err
+			}
+			return nil
 		}),
 	)
 	fxapp.Run()

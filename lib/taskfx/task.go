@@ -3,7 +3,8 @@ package taskfx
 type Status int
 
 const (
-	StatusWaiting Status = iota
+	StatusRegistration Status = iota
+	StatusPrompt
 	StatusProceeding
 	StatusCompleted
 )

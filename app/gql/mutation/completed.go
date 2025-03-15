@@ -7,7 +7,7 @@ func (r *MutationResolver) Completed(ctx context.Context) (bool, error) {
 		return false, err
 	}
 
-	go r.Lib.Task.Wait()
+	go r.Lib.Task.Prompt()
 
 	return true, nil
 }

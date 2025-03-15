@@ -9,7 +9,7 @@ import (
 var ErrRegisterNotAvailable = errors.New("register not available")
 
 func (i *TaskSrv) Register() (string, error) {
-	if i.current.Status != StatusWaiting {
+	if i.current.Status != StatusRegistration {
 		return "", ErrRegisterNotAvailable
 	}
 	i.current.Status = StatusProceeding
