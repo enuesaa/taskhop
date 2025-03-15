@@ -7,10 +7,10 @@ type Completed bool
 var ErrCompletedNotAvailable = errors.New("unregister not available")
 
 func (i *TaskSrv) NotifyCompleted() error {
-	if i.status != StatusProceeding {
+	if i.current.Status != StatusProceeding {
 		return ErrCompletedNotAvailable
 	}
-	i.status = StatusCompleted
+	i.current.Status = StatusCompleted
 
 	return nil
 }

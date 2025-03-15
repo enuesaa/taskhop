@@ -1,6 +1,14 @@
 package taskfx
 
+type Status int
+
+const (
+	StatusWaiting Status = iota
+	StatusProceeding
+	StatusCompleted
+)
+
 type Task struct {
-	Title string   `yaml:"title" validate:"required"`
-	Cmds  []string `yaml:"cmds" validate:"required,min=1,dive,required"`
+	Status Status
+	Cmds  []string
 }

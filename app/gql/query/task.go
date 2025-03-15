@@ -13,10 +13,8 @@ func (r *QueryResolver) Task(ctx context.Context) (*model.Task, error) {
 		return nil, err
 	}
 
-	status := r.Lib.Task.GetStatus()
-
 	var statusgql model.TaskStatus
-	switch status {
+	switch f.Status {
 	case taskfx.StatusWaiting:
 		statusgql = model.TaskStatusWaiting
 	case taskfx.StatusProceeding:

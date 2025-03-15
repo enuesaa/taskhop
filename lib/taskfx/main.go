@@ -7,7 +7,7 @@ func New(config *conf.Config, repo IRepository) ITaskSrv {
 		config: config,
 		repo:   repo,
 		current: Task{
-			Title: "",
+			Status: StatusWaiting,
 			Cmds: []string{},
 		},
 	}
@@ -16,7 +16,6 @@ func New(config *conf.Config, repo IRepository) ITaskSrv {
 type ITaskSrv interface {
 	Wait() error
 	Get() (Task, error)
-	GetStatus() Status
 	Register() (string, error)
 	NotifyCompleted() error
 }
@@ -26,5 +25,4 @@ type TaskSrv struct {
 	repo   IRepository
 
 	current Task
-	status  Status
 }
