@@ -5,7 +5,7 @@ func New() *Config {
 		Address:      "",
 		Workdir:      "",
 		TransferFlag: false,
-		Version:      "0.0.4",
+		Version:      "0.1.0",
 		VersionFlag:  false,
 	}
 }

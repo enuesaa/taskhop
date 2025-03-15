@@ -25,7 +25,7 @@ func (a *Runner) Register() error {
 		return err
 	}
 	if !regires.Register {
-		return err
+		return ErrTaskNotAvailable
 	}
 	return nil
 }
