@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/enuesaa/taskhop/app/gql/model"
@@ -10,26 +11,33 @@ import (
 func (a *Runner) run() error {
 	ctx := context.Background()
 
+	waitingCount := 0
+
 	for {
+		time.Sleep(1 * time.Second)
+		if waitingCount > 5 {
+			time.Sleep(5 * time.Second)
+		}
+		if waitingCount > 50 {
+			return fmt.Errorf("reset")
+		}
+	
 		taskres, err := a.conn.GetTask(ctx)
 		if err != nil {
 			return err
 		}
 		task := taskres.Task
 
-		if task.Status == model.TaskStatusPrompt {
-			a.lib.Log.AppInfo(ctx, "waiting prompt...")
-			time.Sleep(5 * time.Second)
-			continue
-		}
-		if task.Status == model.TaskStatusCompleted {
-			time.Sleep(5 * time.Second)
-			continue
-		}
-
 		switch task.Status {
+		case model.TaskStatusPrompt:
+			a.lib.Log.AppInfo(ctx, "waiting prompt...")
+			waitingCount++
 		case model.TaskStatusDownloadAssets:
+			a.lib.Log.AppInfo(ctx, "download assets...")
 			if err := a.UnArchive(); err != nil {
+				return err
+			}
+			if _, err := a.conn.Completed(ctx); err != nil {
 				return err
 			}
 		case model.TaskStatusProceeding:
@@ -47,11 +55,10 @@ func (a *Runner) run() error {
 				}
 				a.lib.Log.AppInfo(ctx, "completed: %s", command)
 			}
+			if _, err := a.conn.Completed(ctx); err != nil {
+				return err
+			}
+			waitingCount = 0
 		}
-		if _, err := a.conn.Completed(ctx); err != nil {
-			return err
-		}
-
-		time.Sleep(2 * time.Second)
 	}
 }

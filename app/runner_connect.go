@@ -4,6 +4,7 @@ import "context"
 
 func (a *Runner) Connect() error {
 	a.lib.Log.AppInfo(context.Background(), "polling...")
+
 	if err := a.conn.DialPolling(); err != nil {
 		return err
 	}

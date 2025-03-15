@@ -17,6 +17,7 @@ func (i *TaskSrv) Register() (string, error) {
 		i.current.Status = StatusDownloadAssets
 	} else {
 		i.current.Status = StatusPrompt
+		go i.Prompt()
 	}
 
 	id := ulid.Make().String()
