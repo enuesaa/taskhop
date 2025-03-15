@@ -1,11 +1,11 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"net/url"
 	"os"
 
+	flag "github.com/spf13/pflag"
 	"github.com/enuesaa/taskhop/conf"
 )
 
@@ -38,7 +38,7 @@ func (c *Cli) Launch() error {
 }
 
 func (c *Cli) parse() {
-	flag.StringVar(&c.config.Address, "c", "localhost:3000", "Commander address")
+	flag.StringVarP(&c.config.Address, "connect", "c", "localhost:3000", "Commander address")
 	flag.BoolVar(&c.config.VersionFlag, "version", false, "Print taskhop version")
 	flag.Parse()
 }
