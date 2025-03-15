@@ -11,11 +11,13 @@ func (i *TaskSrv) Prompt() error {
 
 	fmt.Printf("> ")
 	if !scanner.Scan() {
+		i.endCh <- true
 		return fmt.Errorf("end")
 	}
 
 	text := scanner.Text()
 	if text == "exit" {
+		i.endCh <- true
 		return fmt.Errorf("end")
 	}
 	i.current.Cmds = []string{text}

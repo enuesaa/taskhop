@@ -8,6 +8,7 @@ const (
 	StatusPrompt
 	StatusProceeding
 	StatusCompleted
+	StatusEnd // TODO
 )
 
 type Task struct {

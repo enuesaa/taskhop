@@ -33,6 +33,8 @@ type Commander struct {
 }
 
 func (a *Commander) Run() error {
+	go a.monitor2shutdown()
+
 	server := http.Server{
 		Addr:    ":3000",
 		Handler: a.handle(),
@@ -52,6 +54,12 @@ func (a *Commander) Run() error {
 		},
 	})
 	return nil
+}
+
+func (a *Commander) monitor2shutdown() {
+	for range a.lib.Task.SubscribeEnd() {
+		a.shutdowner.Shutdown()
+	}
 }
 
 func (a *Commander) handle() *chi.Mux {

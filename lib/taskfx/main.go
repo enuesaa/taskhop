@@ -11,6 +11,7 @@ func New(config *conf.Config, repo IRepository) ITaskSrv {
 			Cmds: []string{},
 		},
 		assetsDownloaded: false,
+		endCh: make(chan bool, 1),
 	}
 }
 
@@ -19,6 +20,7 @@ type ITaskSrv interface {
 	Get() Task
 	Register() (string, error)
 	MakeCompleted() error
+	SubscribeEnd() <-chan bool
 }
 
 type TaskSrv struct {
@@ -27,4 +29,5 @@ type TaskSrv struct {
 
 	current Task
 	assetsDownloaded bool
+	endCh chan bool
 }
