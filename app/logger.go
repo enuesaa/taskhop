@@ -1,4 +1,4 @@
-package main
+package app
 
 import (
 	"log"
@@ -6,17 +6,17 @@ import (
 	"go.uber.org/fx/fxevent"
 )
 
-func NewFxLogger() FxLogger {
-	return FxLogger{
+func NewLogger() Logger {
+	return Logger{
 		Debug: false,
 	}
 }
 
-type FxLogger struct {
+type Logger struct {
 	Debug bool
 }
 
-func (l *FxLogger) LogEvent(event fxevent.Event) {
+func (l *Logger) LogEvent(event fxevent.Event) {
 	if l.Debug {
 		l.logEventDebug(event)
 	} else {
@@ -24,7 +24,7 @@ func (l *FxLogger) LogEvent(event fxevent.Event) {
 	}
 }
 
-func (l *FxLogger) logEventDebug(event fxevent.Event) {
+func (l *Logger) logEventDebug(event fxevent.Event) {
 	switch e := event.(type) {
 	case *fxevent.Started:
 		log.Printf("Started: %s\n", e)
@@ -39,7 +39,7 @@ func (l *FxLogger) logEventDebug(event fxevent.Event) {
 	}
 }
 
-func (l *FxLogger) logEventNormal(event fxevent.Event) {
+func (l *Logger) logEventNormal(event fxevent.Event) {
 	switch e := event.(type) {
 	case *fxevent.Stopped:
 		if e.Err != nil {

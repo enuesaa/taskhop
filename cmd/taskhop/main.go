@@ -12,15 +12,13 @@ import (
 )
 
 func main() {
-	isDebugMode := os.Getenv("TASKHOP_DEBUG") == "true"
-
 	fxapp := fx.New(
-		Module,
+		fx.Provide(New),
 		conf.Module,
 		lib.Module,
 		app.Module,
-		fx.WithLogger(func(logger FxLogger) fxevent.Logger {
-			logger.Debug = isDebugMode
+		fx.WithLogger(func(logger app.Logger) fxevent.Logger {
+			logger.Debug = os.Getenv("TASKHOP_DEBUG") == "true"
 			return &logger
 		}),
 		fx.Invoke(func(cli ICli) error {
