@@ -1,8 +1,6 @@
 package app
 
 import (
-	"time"
-
 	"github.com/enuesaa/taskhop/app/gql/connector"
 	"github.com/enuesaa/taskhop/conf"
 	"github.com/enuesaa/taskhop/lib"
@@ -27,23 +25,16 @@ type Runner struct {
 }
 
 func (a *Runner) Run() error {
-	if err := a.Connect(); err != nil {
-		return err
-	}
-	if err := a.Register(); err != nil {
-		return err
-	}
-
-	// if err := a.UnArchive(); err != nil {
-	// 	return err
-	// }
-
 	for {
+		if err := a.Connect(); err != nil {
+			return err
+		}
+		if err := a.Register(); err != nil {
+			return err
+		}
 		if err := a.run(); err != nil {
 			return err
 		}
-		time.Sleep(2 * time.Second)
 	}
-
 	// TODO: connection refused.
 }

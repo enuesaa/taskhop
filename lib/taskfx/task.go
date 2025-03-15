@@ -4,6 +4,7 @@ type Status int
 
 const (
 	StatusRegistration Status = iota
+	StatusDownloadAssets
 	StatusPrompt
 	StatusProceeding
 	StatusCompleted

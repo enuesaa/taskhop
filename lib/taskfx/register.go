@@ -12,7 +12,12 @@ func (i *TaskSrv) Register() (string, error) {
 	if i.current.Status != StatusRegistration {
 		return "", ErrRegisterNotAvailable
 	}
-	i.current.Status = StatusPrompt
+
+	if i.config.TransferFlag && !i.assetsDownloaded {
+		i.current.Status = StatusDownloadAssets
+	} else {
+		i.current.Status = StatusPrompt
+	}
 
 	id := ulid.Make().String()
 

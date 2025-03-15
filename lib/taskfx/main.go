@@ -10,6 +10,7 @@ func New(config *conf.Config, repo IRepository) ITaskSrv {
 			Status: StatusRegistration,
 			Cmds: []string{},
 		},
+		assetsDownloaded: false,
 	}
 }
 
@@ -17,7 +18,7 @@ type ITaskSrv interface {
 	Prompt() error
 	Get() Task
 	Register() (string, error)
-	NotifyCompleted() error
+	MakeCompleted() error
 }
 
 type TaskSrv struct {
@@ -25,4 +26,5 @@ type TaskSrv struct {
 	repo   IRepository
 
 	current Task
+	assetsDownloaded bool
 }
