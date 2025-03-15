@@ -25,8 +25,8 @@ taskhop-runner
 - Session Manager ライクに。
 
 ```bash
-taskhop -transfer
+taskhop --transfer
 # show address
 
-taskhop-runner -connect localhost:3000
+taskhop-runner --connect localhost:3000
 ```
