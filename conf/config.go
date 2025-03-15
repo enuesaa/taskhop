@@ -19,4 +19,7 @@ type Config struct {
 	// version
 	Version     string
 	VersionFlag bool
+
+	// help
+	HelpFlag bool
 }
