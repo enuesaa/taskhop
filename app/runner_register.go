@@ -4,30 +4,28 @@ import (
 	"context"
 	"errors"
 
-	"github.com/enuesaa/taskhop/app/gql/connector"
 	"github.com/enuesaa/taskhop/app/gql/model"
 )
 
 var ErrTaskNotAvailable = errors.New("task not available")
 
-func (a *Runner) Register() (connector.GetTask_Task, error) {
+func (a *Runner) Register() error {
 	taskres, err := a.conn.GetTask(context.Background())
 	if err != nil {
-		return connector.GetTask_Task{}, err
+		return err
 	}
 	task := taskres.Task
 
 	if task.Status != model.TaskStatusRegistration {
-		return connector.GetTask_Task{}, ErrTaskNotAvailable
+		return ErrTaskNotAvailable
 	}
 
 	regires, err := a.conn.Register(context.Background())
 	if err != nil {
-		return connector.GetTask_Task{}, err
+		return err
 	}
 	if !regires.Register {
-		return connector.GetTask_Task{}, err
+		return err
 	}
-
-	return task, nil
+	return nil
 }

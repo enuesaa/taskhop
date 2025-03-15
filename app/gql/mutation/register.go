@@ -9,5 +9,7 @@ func (r *MutationResolver) Register(ctx context.Context) (bool, error) {
 	}
 	r.Lib.Log.AppInfo(context.Background(), "started: %s", id)
 
+	go r.Lib.Task.Prompt()
+
 	return true, nil
 }

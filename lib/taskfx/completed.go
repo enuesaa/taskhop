@@ -10,7 +10,9 @@ func (i *TaskSrv) NotifyCompleted() error {
 	if i.current.Status != StatusProceeding {
 		return ErrCompletedNotAvailable
 	}
-	i.current.Status = StatusCompleted
+	i.current.Status = StatusPrompt
+
+	go i.Prompt()
 
 	return nil
 }

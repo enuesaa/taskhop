@@ -19,6 +19,7 @@ func (i *TaskSrv) Prompt() error {
 		return fmt.Errorf("end")
 	}
 	i.current.Cmds = []string{text}
+	i.current.Status = StatusProceeding
 
 	return nil
 }

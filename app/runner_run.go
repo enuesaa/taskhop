@@ -3,12 +3,20 @@ package app
 import (
 	"context"
 
-	"github.com/enuesaa/taskhop/app/gql/connector"
 	"github.com/enuesaa/taskhop/app/gql/model"
 )
 
-// TODO refactor
-func (a *Runner) run(task connector.GetTask_Task) error {
+func (a *Runner) run() error {
+	taskres, err := a.conn.GetTask(context.Background())
+	if err != nil {
+		return err
+	}
+	task := taskres.Task
+
+	if task.Status != model.TaskStatusProceeding {
+		a.lib.Log.AppInfo(context.Background(), "waiting")
+		return nil
+	}
 	a.lib.Log.AppInfo(context.Background(), "started")
 
 	for _, command := range task.Cmds {
@@ -26,8 +34,8 @@ func (a *Runner) run(task connector.GetTask_Task) error {
 
 	a.lib.Log.AppInfo(context.Background(), "complete!")
 	a.lib.Log.AppInfo(context.Background(), "")
-	_, err := a.conn.Completed(context.Background())
-	if err != nil {
+
+	if _, err := a.conn.Completed(context.Background()); err != nil {
 		return err
 	}
 	return nil
