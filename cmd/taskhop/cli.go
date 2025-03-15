@@ -24,12 +24,6 @@ type Cli struct {
 }
 
 func (c *Cli) Launch() error {
-	flag.Usage = func ()  {
-		fmt.Fprintf(os.Stderr, "taskhop\n\n")
-		fmt.Fprintf(os.Stderr, "Usage:\n")
-		flag.PrintDefaults()
-	}
-
 	c.parse()
 
 	if c.config.VersionFlag {
@@ -44,6 +38,11 @@ func (c *Cli) Launch() error {
 }
 
 func (c *Cli) parse() {
+	flag.Usage = func ()  {
+		fmt.Fprintf(os.Stderr, "taskhop\n\n")
+		fmt.Fprintf(os.Stderr, "Usage:\n")
+		flag.PrintDefaults()
+	}
 	flag.BoolVarP(&c.config.TransferFlag, "transfer", "t", false, "Transfer assets in workdir to the runner")
 	flag.StringVar(&c.config.Workdir, "w", ".", "workdir. Example: ./aaa")
 	flag.BoolVar(&c.config.VersionFlag, "version", false, "Print version")

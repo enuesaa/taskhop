@@ -25,12 +25,6 @@ type Cli struct {
 }
 
 func (c *Cli) Launch() error {
-	flag.Usage = func ()  {
-		fmt.Fprintf(os.Stderr, "taskhop-runner\n\n")
-		fmt.Fprintf(os.Stderr, "Usage:\n")
-		flag.PrintDefaults()
-	}
-
 	c.parse()
 
 	if c.config.VersionFlag {
@@ -48,6 +42,11 @@ func (c *Cli) Launch() error {
 }
 
 func (c *Cli) parse() {
+	flag.Usage = func ()  {
+		fmt.Fprintf(os.Stderr, "taskhop-runner\n\n")
+		fmt.Fprintf(os.Stderr, "Usage:\n")
+		flag.PrintDefaults()
+	}
 	flag.StringVarP(&c.config.Address, "connect", "c", "localhost:3000", "Commander address")
 	flag.BoolVar(&c.config.VersionFlag, "version", false, "Print version")
 	flag.BoolVarP(&c.config.HelpFlag, "help", "h", false, "Print help message")
@@ -56,8 +55,7 @@ func (c *Cli) parse() {
 
 func (c *Cli) validate() error {
 	endpoint := fmt.Sprintf("http://%s/graphql", c.config.Address)
-	_, err := url.Parse(endpoint)
-	if err != nil {
+	if _, err := url.Parse(endpoint); err != nil {
 		return err
 	}
 	return nil
