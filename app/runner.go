@@ -36,5 +36,4 @@ func (a *Runner) Run() error {
 			return err
 		}
 	}
-	// TODO: connection refused.
 }

@@ -33,18 +33,6 @@ type Commander struct {
 }
 
 func (a *Commander) Run() error {
-	// go a.monitor2shutdown()
-
-	return a.serve()
-}
-
-// func (a *Commander) monitor2shutdown() {
-// 	for range a.lib.Proc.SubscribeCompleted() {
-// 		a.shutdowner.Shutdown()
-// 	}
-// }
-
-func (a *Commander) serve() error {
 	server := http.Server{
 		Addr:    ":3000",
 		Handler: a.handle(),
@@ -63,7 +51,6 @@ func (a *Commander) serve() error {
 			return server.Shutdown(ctx)
 		},
 	})
-
 	return nil
 }
 

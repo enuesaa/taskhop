@@ -14,14 +14,6 @@ func (a *Runner) run() error {
 	waitingCount := 0
 
 	for {
-		time.Sleep(1 * time.Second)
-		if waitingCount > 5 {
-			time.Sleep(5 * time.Second)
-		}
-		if waitingCount > 50 {
-			return fmt.Errorf("reset")
-		}
-	
 		taskres, err := a.conn.GetTask(ctx)
 		if err != nil {
 			return err
@@ -59,6 +51,11 @@ func (a *Runner) run() error {
 				return err
 			}
 			waitingCount = 0
+		}
+
+		time.Sleep(2 * time.Second)
+		if waitingCount > 100 {
+			return fmt.Errorf("reset")
 		}
 	}
 }
