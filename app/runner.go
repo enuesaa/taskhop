@@ -1,6 +1,8 @@
 package app
 
 import (
+	"fmt"
+
 	"github.com/enuesaa/taskhop/app/gql/connector"
 	"github.com/enuesaa/taskhop/conf"
 	"github.com/enuesaa/taskhop/lib"
@@ -27,13 +29,13 @@ type Runner struct {
 func (a *Runner) Run() error {
 	for {
 		if err := a.Connect(); err != nil {
-			return err
+			return fmt.Errorf("stop: %s", err.Error())
 		}
 		if err := a.Register(); err != nil {
-			return err
+			return fmt.Errorf("stop: %s", err.Error())
 		}
 		if err := a.run(); err != nil {
-			return err
+			return fmt.Errorf("stop: %s", err.Error())
 		}
 	}
 }
