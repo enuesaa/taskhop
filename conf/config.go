@@ -2,11 +2,11 @@ package conf
 
 func New() *Config {
 	return &Config{
-		Address:     "",
-		Workdir:     "",
+		Address:      "",
+		Workdir:      "",
 		TransferFlag: false,
-		Version:     "0.0.4",
-		VersionFlag: false,
+		Version:      "0.0.4",
+		VersionFlag:  false,
 	}
 }
 

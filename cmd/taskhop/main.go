@@ -22,6 +22,7 @@ func main() {
 			return &logger
 		}),
 		fx.Invoke(func(cli ICli) error {
+			Prompt()
 			return cli.Launch()
 		}),
 		fx.Invoke(func(commander app.Commander) error {

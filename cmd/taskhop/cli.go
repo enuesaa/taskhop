@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	flag "github.com/spf13/pflag"
 	"github.com/enuesaa/taskhop/conf"
+	flag "github.com/spf13/pflag"
 )
 
 func New(config *conf.Config) ICli {
@@ -38,7 +38,7 @@ func (c *Cli) Launch() error {
 }
 
 func (c *Cli) parse() {
-	flag.Usage = func ()  {
+	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "taskhop\n\n")
 		fmt.Fprintf(os.Stderr, "Usage:\n")
 		flag.PrintDefaults()
