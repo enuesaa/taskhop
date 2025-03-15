@@ -3,7 +3,7 @@ package mutation
 import "context"
 
 func (r *MutationResolver) Register(ctx context.Context) (bool, error) {
-	id, err := r.Lib.Proc.Register()
+	id, err := r.Lib.Task.Register()
 	if err != nil {
 		return false, err
 	}

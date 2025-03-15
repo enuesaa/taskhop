@@ -1,4 +1,4 @@
-package procfx
+package taskfx
 
 type Status int
 
@@ -8,6 +8,6 @@ const (
 	StatusCompleted
 )
 
-func (i *ProcSrv) GetStatus() Status {
+func (i *TaskSrv) GetStatus() Status {
 	return i.status
 }

@@ -16,6 +16,9 @@ func New(config *conf.Config, repo IRepository) ITaskSrv {
 type ITaskSrv interface {
 	Wait() error
 	Get() (Task, error)
+	GetStatus() Status
+	Register() (string, error)
+	NotifyCompleted() error
 }
 
 type TaskSrv struct {
@@ -23,4 +26,5 @@ type TaskSrv struct {
 	repo   IRepository
 
 	current Task
+	status  Status
 }

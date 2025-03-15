@@ -3,7 +3,7 @@ package mutation
 import "context"
 
 func (r *MutationResolver) Completed(ctx context.Context) (bool, error) {
-	if err := r.Lib.Proc.NotifyCompleted(); err != nil {
+	if err := r.Lib.Task.NotifyCompleted(); err != nil {
 		return false, err
 	}
 

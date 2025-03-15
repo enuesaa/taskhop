@@ -1,4 +1,4 @@
-package procfx
+package taskfx
 
 import (
 	"errors"
@@ -8,7 +8,7 @@ import (
 
 var ErrRegisterNotAvailable = errors.New("register not available")
 
-func (i *ProcSrv) Register() (string, error) {
+func (i *TaskSrv) Register() (string, error) {
 	if i.status != StatusWaiting {
 		return "", ErrRegisterNotAvailable
 	}

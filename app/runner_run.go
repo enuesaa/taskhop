@@ -10,6 +10,7 @@ import (
 // TODO refactor
 func (a *Runner) run(task connector.GetTask_Task) error {
 	a.lib.Log.AppInfo(context.Background(), "started")
+
 	for _, command := range task.Cmds {
 		input := model.LogInput{
 			Type:   model.LogTypeCommand,
