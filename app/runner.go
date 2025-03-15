@@ -37,10 +37,13 @@ func (a *Runner) Run() error {
 	// if err := a.UnArchive(); err != nil {
 	// 	return err
 	// }
+
 	for {
-		time.Sleep(5 * time.Second)
 		if err := a.run(); err != nil {
 			return err
 		}
+		time.Sleep(2 * time.Second)
 	}
+
+	// TODO: connection refused.
 }

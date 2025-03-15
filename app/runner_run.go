@@ -14,12 +14,12 @@ func (a *Runner) run() error {
 	task := taskres.Task
 
 	if task.Status != model.TaskStatusProceeding {
-		a.lib.Log.AppInfo(context.Background(), "waiting")
+		a.lib.Log.AppInfo(context.Background(), "waiting prompt...")
 		return nil
 	}
-	a.lib.Log.AppInfo(context.Background(), "started")
 
 	for _, command := range task.Cmds {
+		a.lib.Log.AppInfo(context.Background(), "started: %s", command)
 		input := model.LogInput{
 			Type:   model.LogTypeCommand,
 			Output: command,
@@ -30,10 +30,8 @@ func (a *Runner) run() error {
 		if err := a.lib.Cmd.Exec(&a.conn, command, a.config.Workdir); err != nil {
 			return err
 		}
+		a.lib.Log.AppInfo(context.Background(), "completed: %s", command)
 	}
-
-	a.lib.Log.AppInfo(context.Background(), "complete!")
-	a.lib.Log.AppInfo(context.Background(), "")
 
 	if _, err := a.conn.Completed(context.Background()); err != nil {
 		return err
