@@ -1,6 +1,7 @@
 package app
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"time"
@@ -14,7 +15,7 @@ func (a *Runner) run() error {
 	waitingCount := 0
 
 	for {
-		taskres, err := a.conn.GetTask(ctx)
+		taskres, err := a.conn.Gql.GetTask(ctx)
 		if err != nil {
 			return err
 		}
@@ -29,7 +30,7 @@ func (a *Runner) run() error {
 			if err := a.UnArchive(); err != nil {
 				return err
 			}
-			if _, err := a.conn.Completed(ctx); err != nil {
+			if _, err := a.conn.Gql.Completed(ctx); err != nil {
 				return err
 			}
 		case model.TaskStatusProceeding:
@@ -38,14 +39,14 @@ func (a *Runner) run() error {
 				Type:   model.LogTypeCommand,
 				Output: task.Cmd,
 			}
-			if _, err := a.conn.Log(ctx, input); err != nil {
+			if _, err := a.conn.Gql.Log(ctx, input); err != nil {
 				return err
 			}
 			if err := a.lib.Cmd.Exec(&a.conn, task.Cmd, a.config.Workdir); err != nil {
 				return err
 			}
 			a.lib.Log.AppInfo(ctx, "completed: %s", task.Cmd)
-			if _, err := a.conn.Completed(ctx); err != nil {
+			if _, err := a.conn.Gql.Completed(ctx); err != nil {
 				return err
 			}
 			waitingCount = 0
@@ -56,4 +57,12 @@ func (a *Runner) run() error {
 			return fmt.Errorf("reset")
 		}
 	}
+}
+
+func (a *Runner) UnArchive() error {
+	var buf bytes.Buffer
+	if err := a.conn.GetStorageArchive(&buf); err != nil {
+		return err
+	}
+	return a.lib.Arv.UnArchive(&buf, a.config.Workdir)
 }

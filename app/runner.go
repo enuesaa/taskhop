@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"bytes"
 
 	"github.com/enuesaa/taskhop/app/gql/connector"
 	"github.com/enuesaa/taskhop/conf"
@@ -28,23 +27,22 @@ type Runner struct {
 }
 
 func (a *Runner) Run() error {
+	ctx := context.Background()
+
 	for {
-		if err := a.Connect(); err != nil {
+		a.lib.Log.AppInfo(ctx, "polling...")
+
+		if err := a.conn.DialPolling(); err != nil {
 			return err
 		}
-		if err := a.Register(); err != nil {
+		if _, err := a.conn.Gql.GetHealth(ctx); err != nil {
+			return err
+		}
+		if _, err := a.conn.Gql.Register(ctx); err != nil {
 			return err
 		}
 		if err := a.run(); err != nil {
-			a.lib.Log.AppInfo(context.Background(), "reset: %s", err.Error())
+			a.lib.Log.AppInfo(ctx, "reset: %s", err.Error())
 		}
 	}
-}
-
-func (a *Runner) UnArchive() error {
-	var buf bytes.Buffer
-	if err := a.conn.GetStorageArchive(&buf); err != nil {
-		return err
-	}
-	return a.lib.Arv.UnArchive(&buf, a.config.Workdir)
 }

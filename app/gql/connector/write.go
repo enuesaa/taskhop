@@ -14,7 +14,7 @@ func (c *Connector) Write(b []byte) (int, error) {
 		Type:   model.LogTypeCommandOutput,
 		Output: data,
 	}
-	_, err := c.Log(context.Background(), input)
+	_, err := c.Gql.Log(context.Background(), input)
 	if err != nil {
 		return 0, err
 	}
