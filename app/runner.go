@@ -32,16 +32,10 @@ func (a *Runner) Run() error {
 	for {
 		a.lib.Log.AppInfo(ctx, "polling...")
 
-		if err := a.conn.DialPolling(); err != nil {
+		if err := a.conn.Connect(ctx); err != nil {
 			return err
 		}
-		if _, err := a.conn.Gql.GetHealth(ctx); err != nil {
-			return err
-		}
-		if _, err := a.conn.Gql.Register(ctx); err != nil {
-			return err
-		}
-		if err := a.run(); err != nil {
+		if err := a.run(ctx); err != nil {
 			a.lib.Log.AppInfo(ctx, "reset: %s", err.Error())
 		}
 	}

@@ -9,9 +9,7 @@ import (
 	"github.com/enuesaa/taskhop/app/gql/model"
 )
 
-func (a *Runner) run() error {
-	ctx := context.Background()
-
+func (a *Runner) run(ctx context.Context) error {
 	waitingCount := 0
 
 	for {
@@ -35,13 +33,6 @@ func (a *Runner) run() error {
 			}
 		case model.TaskStatusProceeding:
 			a.lib.Log.AppInfo(ctx, "started: %s", task.Cmd)
-			input := model.LogInput{
-				Type:   model.LogTypeCommand,
-				Output: task.Cmd,
-			}
-			if _, err := a.conn.Gql.Log(ctx, input); err != nil {
-				return err
-			}
 			if err := a.lib.Cmd.Exec(&a.conn, task.Cmd, a.config.Workdir); err != nil {
 				return err
 			}
