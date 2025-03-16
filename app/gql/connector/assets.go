@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func (c *Connector) GetStorageArchive(dest io.Writer) error {
+func (c *Connector) DownloadAssets(dest io.Writer) error {
 	url := fmt.Sprintf("http://%s/storage/archive", c.config.Address)
 
 	res, err := http.Get(url)
@@ -21,6 +21,5 @@ func (c *Connector) GetStorageArchive(dest io.Writer) error {
 	if _, err := io.Copy(dest, res.Body); err != nil {
 		return err
 	}
-
 	return nil
 }

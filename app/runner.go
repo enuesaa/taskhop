@@ -1,6 +1,7 @@
 package app
 
 import (
+	"bytes"
 	"context"
 
 	"github.com/enuesaa/taskhop/app/gql/connector"
@@ -28,7 +29,6 @@ type Runner struct {
 
 func (a *Runner) Run() error {
 	ctx := context.Background()
-
 	for {
 		a.lib.Log.AppInfo(ctx, "polling...")
 
@@ -39,4 +39,32 @@ func (a *Runner) Run() error {
 			a.lib.Log.AppInfo(ctx, "reset: %s", err.Error())
 		}
 	}
+}
+
+func (a *Runner) run(ctx context.Context) error {
+	for task := range a.conn.SubscribeTask(ctx) {
+		if task.Err != nil {
+			return task.Err
+		}
+		if task.IsDownload {
+			a.lib.Log.AppInfo(ctx, "download assets...")
+			var buf bytes.Buffer
+			if err := a.conn.DownloadAssets(&buf); err != nil {
+				return err
+			}
+			if err := a.lib.Arv.UnArchive(&buf, a.config.Workdir); err != nil {
+				return err
+			}
+		}
+		if task.IsCmd {
+			a.lib.Log.AppInfo(ctx, "started: %s", task.Cmd)
+			if err := a.lib.Cmd.Exec(&a.conn, task.Cmd, a.config.Workdir); err != nil {
+				return err
+			}
+		}
+		if _, err := a.conn.Gql.Completed(ctx); err != nil {
+			return err
+		}
+	}
+	return nil
 }
