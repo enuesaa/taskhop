@@ -1,16 +1,24 @@
 # taskhop
 Prototype. Remote Task Runner
 
-## 目的
-ubuntu on wsl2 でプログラミングをしたいが windows のキー配置に慣れてなく捗らない。そのため mac から ubuntu にアクセスしたい
+[![ci](https://github.com/enuesaa/taskhop/actions/workflows/ci.yaml/badge.svg)](https://github.com/enuesaa/taskhop/actions/workflows/ci.yaml)
 
-## 方法
-- mac でバイナリを実行 (commander)
-- ubuntu on wsl2 でバイナリを実行 (runner)
+## 動機
+Ubuntu on WSL2 で開発したいが Windows のキー配置に慣れてなく捗らない。そのため Mac から Ubuntu へアクセスしたい
 
-commander はWebサーバを立ち上げる。runner は commander のアドレスをポーリングする。commander は「実行命令」をレスポンスするので runner はそれを実行する
+## 仕組み
+2つのコマンドを用意
 
-## Commands
+```bash
+taskhop
+taskhop-runner
+```
+
+1. Mac で `taskhop` を実行しWebサーバを立ち上げる。
+2. Ubuntu on WSL2 で `taskhop-runner` を実行し 1 のアドレスをポーリングする
+3. `taskhop-runner` は `taskhop` より実行命令を受け取り、実行する
+
+## Example
 ```bash
 # commander
 taskhop
