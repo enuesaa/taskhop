@@ -65,7 +65,7 @@ type ComplexityRoot struct {
 	}
 
 	Task struct {
-		Cmds   func(childComplexity int) int
+		Cmd    func(childComplexity int) int
 		Status func(childComplexity int) int
 	}
 }
@@ -160,12 +160,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Task(childComplexity), true
 
-	case "Task.cmds":
-		if e.complexity.Task.Cmds == nil {
+	case "Task.cmd":
+		if e.complexity.Task.Cmd == nil {
 			break
 		}
 
-		return e.complexity.Task.Cmds(childComplexity), true
+		return e.complexity.Task.Cmd(childComplexity), true
 
 	case "Task.status":
 		if e.complexity.Task.Status == nil {
@@ -847,8 +847,8 @@ func (ec *executionContext) fieldContext_Query_task(_ context.Context, field gra
 			switch field.Name {
 			case "status":
 				return ec.fieldContext_Task_status(ctx, field)
-			case "cmds":
-				return ec.fieldContext_Task_cmds(ctx, field)
+			case "cmd":
+				return ec.fieldContext_Task_cmd(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Task", field.Name)
 		},
@@ -1031,8 +1031,8 @@ func (ec *executionContext) fieldContext_Task_status(_ context.Context, field gr
 	return fc, nil
 }
 
-func (ec *executionContext) _Task_cmds(ctx context.Context, field graphql.CollectedField, obj *model.Task) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Task_cmds(ctx, field)
+func (ec *executionContext) _Task_cmd(ctx context.Context, field graphql.CollectedField, obj *model.Task) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Task_cmd(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1045,7 +1045,7 @@ func (ec *executionContext) _Task_cmds(ctx context.Context, field graphql.Collec
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Cmds, nil
+		return obj.Cmd, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1057,12 +1057,12 @@ func (ec *executionContext) _Task_cmds(ctx context.Context, field graphql.Collec
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]string)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalNString2ᚕstringᚄ(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Task_cmds(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Task_cmd(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Task",
 		Field:      field,
@@ -3290,8 +3290,8 @@ func (ec *executionContext) _Task(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "cmds":
-			out.Values[i] = ec._Task_cmds(ctx, field, obj)
+		case "cmd":
+			out.Values[i] = ec._Task_cmd(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -3710,38 +3710,6 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 		}
 	}
 	return res
-}
-
-func (ec *executionContext) unmarshalNString2ᚕstringᚄ(ctx context.Context, v any) ([]string, error) {
-	var vSlice []any
-	if v != nil {
-		vSlice = graphql.CoerceList(v)
-	}
-	var err error
-	res := make([]string, len(vSlice))
-	for i := range vSlice {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNString2string(ctx, vSlice[i])
-		if err != nil {
-			return nil, err
-		}
-	}
-	return res, nil
-}
-
-func (ec *executionContext) marshalNString2ᚕstringᚄ(ctx context.Context, sel ast.SelectionSet, v []string) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	for i := range v {
-		ret[i] = ec.marshalNString2string(ctx, sel, v[i])
-	}
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
 }
 
 func (ec *executionContext) marshalNTask2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋgqlᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v model.Task) graphql.Marshaler {

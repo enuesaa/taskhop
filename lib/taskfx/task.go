@@ -13,5 +13,5 @@ const (
 
 type Task struct {
 	Status Status
-	Cmds  []string
+	Cmd    string
 }

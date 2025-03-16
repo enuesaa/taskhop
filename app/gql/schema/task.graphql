@@ -1,4 +1,4 @@
 type Task {
   status: TaskStatus!
-  cmds: [String!]!
+  cmd: String!
 }

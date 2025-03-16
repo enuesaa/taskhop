@@ -16,7 +16,7 @@ taskhop-runner
 
 1. Mac で `taskhop` を実行しWebサーバを立ち上げる。
 2. Ubuntu on WSL2 で `taskhop-runner` を実行し 1 のアドレスをポーリングする
-3. `taskhop-runner` は `taskhop` より実行命令を受け取り、実行する
+3. `taskhop-runner` は `taskhop` より実行命令を受け取り実行する
 
 ## Example
 ```bash

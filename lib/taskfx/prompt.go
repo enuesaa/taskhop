@@ -20,7 +20,7 @@ func (i *TaskSrv) Prompt() error {
 		i.endCh <- true
 		return fmt.Errorf("end")
 	}
-	i.current.Cmds = []string{text}
+	i.current.Cmd = text
 	i.current.Status = StatusProceeding
 
 	return nil

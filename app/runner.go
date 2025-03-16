@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"bytes"
 
 	"github.com/enuesaa/taskhop/app/gql/connector"
 	"github.com/enuesaa/taskhop/conf"
@@ -38,4 +39,12 @@ func (a *Runner) Run() error {
 			a.lib.Log.AppInfo(context.Background(), "reset: %s", err.Error())
 		}
 	}
+}
+
+func (a *Runner) UnArchive() error {
+	var buf bytes.Buffer
+	if err := a.conn.GetStorageArchive(&buf); err != nil {
+		return err
+	}
+	return a.lib.Arv.UnArchive(&buf, a.config.Workdir)
 }

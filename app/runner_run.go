@@ -33,20 +33,18 @@ func (a *Runner) run() error {
 				return err
 			}
 		case model.TaskStatusProceeding:
-			for _, command := range task.Cmds {
-				a.lib.Log.AppInfo(ctx, "started: %s", command)
-				input := model.LogInput{
-					Type:   model.LogTypeCommand,
-					Output: command,
-				}
-				if _, err := a.conn.Log(ctx, input); err != nil {
-					return err
-				}
-				if err := a.lib.Cmd.Exec(&a.conn, command, a.config.Workdir); err != nil {
-					return err
-				}
-				a.lib.Log.AppInfo(ctx, "completed: %s", command)
+			a.lib.Log.AppInfo(ctx, "started: %s", task.Cmd)
+			input := model.LogInput{
+				Type:   model.LogTypeCommand,
+				Output: task.Cmd,
 			}
+			if _, err := a.conn.Log(ctx, input); err != nil {
+				return err
+			}
+			if err := a.lib.Cmd.Exec(&a.conn, task.Cmd, a.config.Workdir); err != nil {
+				return err
+			}
+			a.lib.Log.AppInfo(ctx, "completed: %s", task.Cmd)
 			if _, err := a.conn.Completed(ctx); err != nil {
 				return err
 			}

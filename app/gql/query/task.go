@@ -26,7 +26,7 @@ func (r *QueryResolver) Task(ctx context.Context) (*model.Task, error) {
 
 	res := model.Task{
 		Status: statusgql,
-		Cmds:   f.Cmds,
+		Cmd:    f.Cmd,
 	}
 	return &res, nil
 }

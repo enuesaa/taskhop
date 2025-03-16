@@ -27,7 +27,7 @@ type Query struct {
 
 type Task struct {
 	Status TaskStatus `json:"status"`
-	Cmds   []string   `json:"cmds"`
+	Cmd    string     `json:"cmd"`
 }
 
 type LogType string

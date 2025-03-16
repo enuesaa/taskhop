@@ -8,7 +8,7 @@ func New(config *conf.Config, repo IRepository) ITaskSrv {
 		repo:   repo,
 		current: Task{
 			Status: StatusRegistration,
-			Cmds: []string{},
+			Cmd: "",
 		},
 		assetsDownloaded: false,
 		endCh: make(chan bool, 1),

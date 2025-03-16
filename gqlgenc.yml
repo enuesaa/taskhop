@@ -6,7 +6,7 @@ model:
 
 client:
   package: connector
-  filename: app/connector/client.go
+  filename: app/gql/connector/client.go
 
 schema:
   - app/gql/schema/*.graphql

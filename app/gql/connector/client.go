@@ -37,21 +37,21 @@ func (t *GetHealth_Health) GetOk() bool {
 }
 
 type GetTask_Task struct {
+	Cmd    string           "json:\"cmd\" graphql:\"cmd\""
 	Status model.TaskStatus "json:\"status\" graphql:\"status\""
-	Cmds   []string         "json:\"cmds\" graphql:\"cmds\""
 }
 
+func (t *GetTask_Task) GetCmd() string {
+	if t == nil {
+		t = &GetTask_Task{}
+	}
+	return t.Cmd
+}
 func (t *GetTask_Task) GetStatus() *model.TaskStatus {
 	if t == nil {
 		t = &GetTask_Task{}
 	}
 	return &t.Status
-}
-func (t *GetTask_Task) GetCmds() []string {
-	if t == nil {
-		t = &GetTask_Task{}
-	}
-	return t.Cmds
 }
 
 type Completed struct {
@@ -154,7 +154,7 @@ func (c *Client) GetHealth(ctx context.Context, interceptors ...clientv2.Request
 const GetTaskDocument = `query getTask {
 	task {
 		status
-		cmds
+		cmd
 	}
 }
 `
