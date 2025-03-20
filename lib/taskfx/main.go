@@ -1,6 +1,10 @@
 package taskfx
 
-import "github.com/enuesaa/taskhop/conf"
+import (
+	"time"
+
+	"github.com/enuesaa/taskhop/conf"
+)
 
 func New(config *conf.Config, repo IRepository) ITaskSrv {
 	return &TaskSrv{
@@ -11,16 +15,17 @@ func New(config *conf.Config, repo IRepository) ITaskSrv {
 			Cmd: "",
 		},
 		assetsDownloaded: false,
-		endCh: make(chan bool, 1),
+		errch: make(chan error, 1),
+		lastHealthy: time.Now(),
 	}
 }
 
 type ITaskSrv interface {
-	Prompt() error
+	Prompt()
 	Get() Task
 	Register() (string, error)
 	MakeCompleted() error
-	SubscribeEnd() <-chan bool
+	Subscribe() <-chan error
 }
 
 type TaskSrv struct {
@@ -29,5 +34,6 @@ type TaskSrv struct {
 
 	current Task
 	assetsDownloaded bool
-	endCh chan bool
+	errch chan error
+	lastHealthy time.Time
 }

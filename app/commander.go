@@ -55,7 +55,8 @@ func (a *Commander) Run() error {
 }
 
 func (a *Commander) monitor2shutdown() {
-	for range a.lib.Task.SubscribeEnd() {
+	for err := range a.lib.Task.Subscribe() {
+		a.lib.Log.Info(context.Background(), "\n%s\n", err.Error())
 		a.shutdowner.Shutdown()
 	}
 }
