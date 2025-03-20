@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"context"
 
-	"github.com/enuesaa/taskhop/app/gql/connector"
+	"github.com/enuesaa/taskhop/app/gqlclient"
 	"github.com/enuesaa/taskhop/conf"
 	"github.com/enuesaa/taskhop/lib"
 	"go.uber.org/fx"
@@ -14,7 +14,7 @@ func NewRunner(config *conf.Config, li lib.Lib, shutdowner fx.Shutdowner) Runner
 	runner := Runner{
 		config:     config,
 		lib:        li,
-		conn:       connector.New(config),
+		conn:       gqlclient.New(config),
 		shutdowner: shutdowner,
 	}
 	return runner
@@ -23,7 +23,7 @@ func NewRunner(config *conf.Config, li lib.Lib, shutdowner fx.Shutdowner) Runner
 type Runner struct {
 	config     *conf.Config
 	lib        lib.Lib
-	conn       connector.Connector
+	conn       gqlclient.Connector
 	shutdowner fx.Shutdowner
 }
 
