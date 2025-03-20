@@ -13,10 +13,10 @@ func (c *Connector) Connect(ctx context.Context) error {
 	if err := c.dialPolling(); err != nil {
 		return err
 	}
-	if _, err := c.Gql.GetHealth(ctx); err != nil {
+	if _, err := c.gql.GetHealth(ctx); err != nil {
 		return err
 	}
-	if _, err := c.Gql.Register(ctx); err != nil {
+	if _, err := c.gql.Register(ctx); err != nil {
 		return err
 	}
 	return nil

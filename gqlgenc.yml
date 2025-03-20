@@ -15,5 +15,5 @@ query:
   - app/gqlclient/documents/*.graphql
 
 generate:
-  clientInterfaceName: GraphQLClient
+  clientInterfaceName: GQLClient
   structFieldsAlwaysPointers: true

@@ -23,7 +23,7 @@ func (c *Connector) SubscribeTask(ctx context.Context) <-chan Task {
 		times := 0
 
 		for {
-			taskres, err := c.Gql.GetTask(ctx)
+			taskres, err := c.gql.GetTask(ctx)
 			if err != nil {
 				ch <- Task{
 					Err: err,

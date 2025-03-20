@@ -12,13 +12,13 @@ func New(config *conf.Config) Connector {
 	client := NewClient(http.DefaultClient, url, nil)
 
 	connector := Connector{
-		Gql: client,
+		gql: client,
 		config: config,
 	}
 	return connector
 }
 
 type Connector struct {
-	Gql GraphQLClient
+	gql GQLClient
 	config *conf.Config
 }

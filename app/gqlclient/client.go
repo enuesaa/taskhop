@@ -9,7 +9,7 @@ import (
 	"github.com/enuesaa/taskhop/app/gqlserver/model"
 )
 
-type GraphQLClient interface {
+type GQLClient interface {
 	Completed(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*Completed, error)
 	GetHealth(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*GetHealth, error)
 	GetTask(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*GetTask, error)
@@ -21,7 +21,7 @@ type Client struct {
 	Client *clientv2.Client
 }
 
-func NewClient(cli clientv2.HttpClient, baseURL string, options *clientv2.Options, interceptors ...clientv2.RequestInterceptor) GraphQLClient {
+func NewClient(cli clientv2.HttpClient, baseURL string, options *clientv2.Options, interceptors ...clientv2.RequestInterceptor) GQLClient {
 	return &Client{Client: clientv2.NewClient(cli, baseURL, options, interceptors...)}
 }
 

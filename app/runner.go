@@ -62,7 +62,7 @@ func (a *Runner) run(ctx context.Context) error {
 				return err
 			}
 		}
-		if _, err := a.conn.Gql.Completed(ctx); err != nil {
+		if err := a.conn.MarkCompleted(ctx); err != nil {
 			return err
 		}
 	}
