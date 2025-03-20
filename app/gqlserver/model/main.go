@@ -15,8 +15,7 @@ type Health struct {
 }
 
 type LogInput struct {
-	Type   LogType `json:"type"`
-	Output string  `json:"output"`
+	Output string `json:"output"`
 }
 
 type Mutation struct {
@@ -28,47 +27,6 @@ type Query struct {
 type Task struct {
 	Status TaskStatus `json:"status"`
 	Cmd    string     `json:"cmd"`
-}
-
-type LogType string
-
-const (
-	LogTypeCommandOutput LogType = "COMMAND_OUTPUT"
-	LogTypeCommand       LogType = "COMMAND"
-)
-
-var AllLogType = []LogType{
-	LogTypeCommandOutput,
-	LogTypeCommand,
-}
-
-func (e LogType) IsValid() bool {
-	switch e {
-	case LogTypeCommandOutput, LogTypeCommand:
-		return true
-	}
-	return false
-}
-
-func (e LogType) String() string {
-	return string(e)
-}
-
-func (e *LogType) UnmarshalGQL(v any) error {
-	str, ok := v.(string)
-	if !ok {
-		return fmt.Errorf("enums must be strings")
-	}
-
-	*e = LogType(str)
-	if !e.IsValid() {
-		return fmt.Errorf("%s is not a valid LogType", str)
-	}
-	return nil
-}
-
-func (e LogType) MarshalGQL(w io.Writer) {
-	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
 type TaskStatus string

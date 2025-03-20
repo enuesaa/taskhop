@@ -11,7 +11,6 @@ func (c *Connector) Write(b []byte) (int, error) {
 	data := string(b)
 
 	input := model.LogInput{
-		Type:   model.LogTypeCommandOutput,
 		Output: data,
 	}
 	_, err := c.gql.Log(context.Background(), input)

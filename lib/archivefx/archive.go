@@ -21,11 +21,10 @@ func (i *ArvSrv) Archive() (io.Reader, error) {
 			return nil
 		}
 
-		f, err := os.Open(path)
+		fbytes, err := i.repo.Read(path)
 		if err != nil {
 			return err
 		}
-		defer f.Close()
 
 		fpath, err := filepath.Rel(i.config.Workdir, path)
 		if err != nil {
@@ -36,7 +35,7 @@ func (i *ArvSrv) Archive() (io.Reader, error) {
 			return err
 		}
 
-		_, err = io.Copy(w, f)
+		_, err = io.Copy(w, bytes.NewReader(fbytes))
 		return err
 	})
 

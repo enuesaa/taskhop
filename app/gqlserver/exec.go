@@ -3033,20 +3033,13 @@ func (ec *executionContext) unmarshalInputLogInput(ctx context.Context, obj any)
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"type", "output"}
+	fieldsInOrder := [...]string{"output"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "type":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
-			data, err := ec.unmarshalNLogType2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋgqlserverᚋmodelᚐLogType(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Type = data
 		case "output":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("output"))
 			data, err := ec.unmarshalNString2string(ctx, v)
@@ -3685,16 +3678,6 @@ func (ec *executionContext) marshalNHealth2ᚖgithubᚗcomᚋenuesaaᚋtaskhop�
 func (ec *executionContext) unmarshalNLogInput2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋgqlserverᚋmodelᚐLogInput(ctx context.Context, v any) (model.LogInput, error) {
 	res, err := ec.unmarshalInputLogInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) unmarshalNLogType2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋgqlserverᚋmodelᚐLogType(ctx context.Context, v any) (model.LogType, error) {
-	var res model.LogType
-	err := res.UnmarshalGQL(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNLogType2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋgqlserverᚋmodelᚐLogType(ctx context.Context, sel ast.SelectionSet, v model.LogType) graphql.Marshaler {
-	return v
 }
 
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v any) (string, error) {

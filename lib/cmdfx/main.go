@@ -1,9 +1,6 @@
 package cmdfx
 
-import (
-	"io"
-	"os/exec"
-)
+import "io"
 
 func New() ICmdSrv {
 	return &CmdSrv{}
@@ -11,6 +8,5 @@ func New() ICmdSrv {
 
 type ICmdSrv interface {
 	Exec(writer io.Writer, command string, workdir string) error
-	Kill(cmd *exec.Cmd) error
 }
 type CmdSrv struct{}

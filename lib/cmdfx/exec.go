@@ -18,7 +18,6 @@ func (i *CmdSrv) Exec(writer io.Writer, command string, workdir string) error {
 			writer.Write([]byte(""))
 		}
 	}()
-
 	cmd.Stdout = multiwriter
 	cmd.Stderr = multiwriter
 
