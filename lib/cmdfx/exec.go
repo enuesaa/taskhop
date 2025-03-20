@@ -1,6 +1,7 @@
 package cmdfx
 
 import (
+	"bytes"
 	"errors"
 	"io"
 	"os/exec"
@@ -10,8 +11,16 @@ func (i *CmdSrv) Exec(writer io.Writer, command string, workdir string) error {
 	cmd := exec.Command("bash", "-c", command)
 	cmd.Dir = workdir
 
-	cmd.Stdout = writer
-	cmd.Stderr = writer
+	var buf bytes.Buffer
+	multiwriter := io.MultiWriter(writer, &buf)
+	defer func() {
+		if buf.Len() == 0 {
+			writer.Write([]byte(""))
+		}
+	}()
+
+	cmd.Stdout = multiwriter
+	cmd.Stderr = multiwriter
 
 	if err := cmd.Start(); err != nil {
 		return err
