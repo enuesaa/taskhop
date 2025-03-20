@@ -4,7 +4,7 @@ schema:
   - app/gqlserver/schema/*.graphql
 
 exec:
-  filename: app/gqlserver/exec.go
+  filename: app/gqlserver/gqlexec.go
   package: gqlserver
 
 model:

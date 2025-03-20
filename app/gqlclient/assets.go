@@ -7,7 +7,7 @@ import (
 )
 
 func (c *Connector) DownloadAssets(dest io.Writer) error {
-	url := fmt.Sprintf("http://%s/storage/archive", c.config.Address)
+	url := fmt.Sprintf("http://%s/assets", c.config.Address)
 
 	res, err := http.Get(url)
 	if err != nil {

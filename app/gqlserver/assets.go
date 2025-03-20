@@ -7,7 +7,7 @@ import (
 	"github.com/enuesaa/taskhop/lib"
 )
 
-func HandleStorage(li lib.Lib) http.HandlerFunc {
+func HandleAssets(li lib.Lib) http.HandlerFunc {
 	handle := func(rw http.ResponseWriter, r *http.Request) {
 		archive, err := li.Arv.Archive()
 		if err != nil {

@@ -69,9 +69,9 @@ func (a *Commander) handle() *chi.Mux {
 	router.Use(middleware.Cors())
 
 	// routes
-	router.Handle("/graphql", gqlserver.Handle(a.lib))
+	router.Handle("/graphql", gqlserver.HandleGQL(a.lib))
 	router.Handle("/graphql/playground", gqlserver.HandlePlayground())
-	router.Handle("/storage/archive", gqlserver.HandleStorage(a.lib))
+	router.Handle("/assets", gqlserver.HandleAssets(a.lib))
 
 	return router
 }
