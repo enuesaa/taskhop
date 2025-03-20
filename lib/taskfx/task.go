@@ -26,7 +26,7 @@ func (i *TaskSrv) Get() Task {
 
 func (i *TaskSrv) MakeCompleted() error {
 	i.current.Status = StatusPrompt
-	go i.Prompt()
+	i.completedch <- true
 
 	return nil
 }

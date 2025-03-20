@@ -12,16 +12,20 @@ var ErrPromptExit = errors.New("exit")
 func (i *TaskSrv) Prompt() {
 	scanner := bufio.NewScanner(os.Stdin)
 
-	fmt.Printf("> ")
-	if !scanner.Scan() {
-		return
-	}
+	for {
+		fmt.Printf("> ") 
+		if !scanner.Scan() {
+			break
+		}
 
-	text := scanner.Text()
-	if text == "exit" {
-		i.errch <- ErrPromptExit
-		return
+		text := scanner.Text()
+		if text == "exit" {
+			i.errch <- ErrPromptExit
+			return
+		}
+		i.current.Cmd = text
+		i.current.Status = StatusProceeding
+
+		<-i.completedch
 	}
-	i.current.Cmd = text
-	i.current.Status = StatusProceeding
 }

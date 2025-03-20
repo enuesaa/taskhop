@@ -16,6 +16,7 @@ func New(config *conf.Config, repo IRepository) ITaskSrv {
 		},
 		assetsDownloaded: false,
 		errch: make(chan error, 1),
+		completedch: make(chan bool, 1),
 		lastHealthy: time.Now(),
 	}
 }
@@ -35,5 +36,6 @@ type TaskSrv struct {
 	current Task
 	assetsDownloaded bool
 	errch chan error
+	completedch chan bool
 	lastHealthy time.Time
 }
