@@ -14,6 +14,9 @@ func New(config *conf.Config) Connector {
 	connector := Connector{
 		gql: client,
 		config: config,
+		LogWriter: LogWriter{
+			gql: client,
+		},
 	}
 	return connector
 }
@@ -21,4 +24,6 @@ func New(config *conf.Config) Connector {
 type Connector struct {
 	gql GQLClient
 	config *conf.Config
+
+	LogWriter LogWriter
 }

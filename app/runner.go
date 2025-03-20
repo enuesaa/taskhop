@@ -58,7 +58,7 @@ func (a *Runner) run(ctx context.Context) error {
 		}
 		if task.IsCmd {
 			a.lib.Log.AppInfo(ctx, "started: %s", task.Cmd)
-			if err := a.lib.Cmd.Exec(&a.conn, task.Cmd, a.config.Workdir); err != nil {
+			if err := a.lib.Cmd.Exec(&a.conn.LogWriter, task.Cmd, a.config.Workdir); err != nil {
 				return err
 			}
 		}
