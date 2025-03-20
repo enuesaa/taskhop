@@ -1,7 +1,7 @@
 # run `go tool gqlgenc`
 
 model:
-  filename: app/gql/model/main.go
+  filename: app/gqlserver/model/main.go
   package: model
 
 client:
@@ -9,7 +9,7 @@ client:
   filename: app/gqlclient/client.go
 
 schema:
-  - app/gql/schema/*.graphql
+  - app/gqlserver/schema/*.graphql
 
 query:
   - app/gqlclient/documents/*.graphql

@@ -1,8 +1,8 @@
-package gql
+package gqlserver
 
 import (
-	"github.com/enuesaa/taskhop/app/gql/mutation"
-	"github.com/enuesaa/taskhop/app/gql/query"
+	"github.com/enuesaa/taskhop/app/gqlserver/mutation"
+	"github.com/enuesaa/taskhop/app/gqlserver/query"
 	"github.com/enuesaa/taskhop/lib"
 )
 

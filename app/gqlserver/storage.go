@@ -1,4 +1,4 @@
-package storage
+package gqlserver
 
 import (
 	"io"
@@ -7,7 +7,7 @@ import (
 	"github.com/enuesaa/taskhop/lib"
 )
 
-func Handle(li lib.Lib) http.HandlerFunc {
+func HandleStorage(li lib.Lib) http.HandlerFunc {
 	handle := func(rw http.ResponseWriter, r *http.Request) {
 		archive, err := li.Arv.Archive()
 		if err != nil {

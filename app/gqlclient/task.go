@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/enuesaa/taskhop/app/gql/model"
+	"github.com/enuesaa/taskhop/app/gqlserver/model"
 )
 
 type Task struct {

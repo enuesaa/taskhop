@@ -1,4 +1,4 @@
-package gqlplayground
+package gqlserver
 
 import (
 	"net/http"
@@ -6,6 +6,6 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 )
 
-func Handle() http.HandlerFunc {
+func HandlePlayground() http.HandlerFunc {
 	return playground.Handler("graphql", "/graphql")
 }

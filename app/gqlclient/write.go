@@ -3,7 +3,7 @@ package gqlclient
 import (
 	"context"
 
-	"github.com/enuesaa/taskhop/app/gql/model"
+	"github.com/enuesaa/taskhop/app/gqlserver/model"
 )
 
 // send logs

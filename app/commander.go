@@ -5,10 +5,8 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/enuesaa/taskhop/app/gql"
-	"github.com/enuesaa/taskhop/app/gqlplayground"
-	"github.com/enuesaa/taskhop/app/middleware"
-	"github.com/enuesaa/taskhop/app/storage"
+	"github.com/enuesaa/taskhop/app/gqlserver"
+	"github.com/enuesaa/taskhop/app/gqlserver/middleware"
 	"github.com/enuesaa/taskhop/conf"
 	"github.com/enuesaa/taskhop/lib"
 	"github.com/go-chi/chi/v5"
@@ -71,9 +69,9 @@ func (a *Commander) handle() *chi.Mux {
 	router.Use(middleware.Cors())
 
 	// routes
-	router.Handle("/graphql", gql.Handle(a.lib))
-	router.Handle("/graphql/playground", gqlplayground.Handle())
-	router.Handle("/storage/archive", storage.Handle(a.lib))
+	router.Handle("/graphql", gqlserver.Handle(a.lib))
+	router.Handle("/graphql/playground", gqlserver.HandlePlayground())
+	router.Handle("/storage/archive", gqlserver.HandleStorage(a.lib))
 
 	return router
 }

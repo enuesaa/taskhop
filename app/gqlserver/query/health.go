@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/enuesaa/taskhop/app/gql/model"
+	"github.com/enuesaa/taskhop/app/gqlserver/model"
 )
 
 func (r *QueryResolver) Health(ctx context.Context) (*model.Health, error) {

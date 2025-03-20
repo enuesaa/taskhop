@@ -3,7 +3,7 @@ package query
 import (
 	"context"
 
-	"github.com/enuesaa/taskhop/app/gql/model"
+	"github.com/enuesaa/taskhop/app/gqlserver/model"
 	"github.com/enuesaa/taskhop/lib/taskfx"
 )
 

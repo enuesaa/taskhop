@@ -1,4 +1,4 @@
-package gql
+package gqlserver
 
 import (
 	"net/http"
