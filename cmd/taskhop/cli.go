@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net"
 	"os"
 
 	"github.com/enuesaa/taskhop/conf"
@@ -34,6 +35,8 @@ func (c *Cli) Launch() error {
 		flag.Usage()
 		os.Exit(0)
 	}
+	c.printBanner()
+
 	return nil
 }
 
@@ -48,4 +51,25 @@ func (c *Cli) parse() {
 	flag.BoolVar(&c.config.VersionFlag, "version", false, "Print version")
 	flag.BoolVarP(&c.config.HelpFlag, "help", "h", false, "Print help message")
 	flag.Parse()
+}
+
+func (c *Cli) printBanner() {
+	addr, err := c.getLocalIpAddress()
+	if err != nil {
+		addr = "localhosr"
+	}
+	fmt.Printf("Addr: %s:3000\n", addr)
+}
+
+// see https://stackoverflow.com/questions/23558425
+func (c *Cli) getLocalIpAddress() (string, error) {
+	conn, err := net.Dial("udp", "8.8.8.8:80")
+	if err != nil {
+		return "", err
+	}
+	defer conn.Close()
+
+	addr := conn.LocalAddr().(*net.UDPAddr)
+
+	return addr.IP.To4().String(), nil
 }
