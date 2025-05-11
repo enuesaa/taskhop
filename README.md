@@ -29,3 +29,21 @@ taskhop --transfer
 # runner
 taskhop-runner --connect localhost:3000
 ```
+
+## Feature Plan
+
+- runner と commander を connect するときに、両方のコマンドをいくつか操作する必要があり、ちょっと頭が混乱する
+- 大きな仕組みは変えず、CLI のフラグなど見直して改善したい
+- デフォルトでファイル転送する (--transfer フラグの廃止)
+
+```bash
+$ taskhop
+Taskhop Commander started!
+┌─────────────────────────────────────────────────────────────────
+│ Please start Taskhop Agent with following command:
+│   taskhop-agent -c localhost:3000
+└─────────────────────────────────────────────────────────────────
+
+$ taskhop-agent -c localhost:3000
+```
+
