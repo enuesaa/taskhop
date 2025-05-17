@@ -4,7 +4,7 @@ func New() *Config {
 	return &Config{
 		Address:      "",
 		Workdir:      "",
-		TransferFlag: false,
+		TransferFlag: true,
 		Version:      "0.1.1",
 		VersionFlag:  false,
 	}

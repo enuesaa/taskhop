@@ -46,7 +46,7 @@ func (c *Cli) parse() {
 		fmt.Fprintf(os.Stderr, "Usage:\n")
 		flag.PrintDefaults()
 	}
-	flag.BoolVarP(&c.config.TransferFlag, "transfer", "t", false, "Transfer assets in workdir to the runner")
+	// flag.BoolVar(&c.config.TransferFlag, "transfer", false, "DO NOT transfer assets in workdir to the agent")
 	flag.StringVarP(&c.config.Workdir, "workdir", "w", ".", "workdir. Example: ./aaa")
 	flag.BoolVar(&c.config.VersionFlag, "version", false, "Print version")
 	flag.BoolVarP(&c.config.HelpFlag, "help", "h", false, "Print help message")
