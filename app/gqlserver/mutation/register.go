@@ -3,13 +3,10 @@ package mutation
 import "context"
 
 func (r *MutationResolver) Register(ctx context.Context) (bool, error) {
-	id, err := r.Lib.Task.Register()
-	if err != nil {
+	if err := r.Lib.Task.StartPrompt(); err != nil {
 		return false, err
 	}
-	r.Lib.Log.AppInfo(ctx, "started: %s", id)
-
-	go r.Lib.Task.Prompt()
+	r.Lib.Log.AppInfo(ctx, "started")
 
 	return true, nil
 }

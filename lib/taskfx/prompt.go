@@ -5,11 +5,39 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"time"
 )
+
+var ErrRegisterNotAvailable = errors.New("register not available")
+var ErrAgentUnHealthy = errors.New("agent unhealthy")
+
+func (i *TaskSrv) StartPrompt() error {
+	if i.current.Status != StatusRegistration {
+		return ErrRegisterNotAvailable
+	}
+	i.current.Status = StatusPrompt
+
+	go i.monitor()
+	go i.prompt()
+
+	return nil
+}
+
+func (i *TaskSrv) monitor() error {
+	for {
+		time.Sleep(5 * time.Second)
+
+		if time.Since(i.lastHealthy) > 5*time.Second {
+			i.errch <- ErrAgentUnHealthy
+			break
+		}
+	}
+	return nil
+}
 
 var ErrPromptExit = errors.New("exit")
 
-func (i *TaskSrv) Prompt() {
+func (i *TaskSrv) prompt() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
@@ -23,7 +51,7 @@ func (i *TaskSrv) Prompt() {
 			i.errch <- ErrPromptExit
 			return
 		}
-		i.current.Cmd = text
+		i.current.Text = text
 		i.current.Status = StatusProceeding
 
 		<-i.completedch

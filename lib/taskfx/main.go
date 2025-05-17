@@ -12,7 +12,7 @@ func New(config *conf.Config, repo IRepository) ITaskSrv {
 		repo:   repo,
 		current: Task{
 			Status: StatusRegistration,
-			Cmd:    "",
+			Text:   "",
 		},
 		assetsDownloaded: false,
 		errch:            make(chan error, 1),
@@ -22,9 +22,8 @@ func New(config *conf.Config, repo IRepository) ITaskSrv {
 }
 
 type ITaskSrv interface {
-	Prompt()
+	StartPrompt() error
 	Get() Task
-	Register() (string, error)
 	MakeCompleted() error
 	Subscribe() <-chan error
 }

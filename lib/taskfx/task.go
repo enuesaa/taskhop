@@ -12,7 +12,7 @@ const (
 
 type Task struct {
 	Status Status
-	Cmd    string
+	Text   string
 }
 
 func (i *TaskSrv) Get() Task {
