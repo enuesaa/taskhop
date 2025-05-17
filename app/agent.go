@@ -10,8 +10,8 @@ import (
 	"go.uber.org/fx"
 )
 
-func NewAgent(config *conf.Config, li lib.Lib, shutdowner fx.Shutdowner) Agent {
-	agent := Agent{
+func NewAgent(config *conf.Config, li lib.Lib, shutdowner fx.Shutdowner) *Agent {
+	agent := &Agent{
 		config:     config,
 		lib:        li,
 		conn:       gqlclient.New(config),
