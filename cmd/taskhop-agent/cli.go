@@ -43,7 +43,7 @@ func (c *Cli) Launch() error {
 
 func (c *Cli) parse() {
 	flag.Usage = func() {
-		fmt.Fprintf(os.Stderr, "taskhop-runner\n\n")
+		fmt.Fprintf(os.Stderr, "taskhop-agent\n\n")
 		fmt.Fprintf(os.Stderr, "Usage:\n")
 		flag.PrintDefaults()
 	}
