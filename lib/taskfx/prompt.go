@@ -45,13 +45,12 @@ func (i *TaskSrv) prompt() {
 		if !scanner.Scan() {
 			break
 		}
+		i.current.Text = scanner.Text()
 
-		text := scanner.Text()
-		if text == "exit" {
+		if i.current.Text == "exit" {
 			i.errch <- ErrPromptExit
-			return
+			break
 		}
-		i.current.Text = text
 		i.current.Status = StatusProceeding
 
 		<-i.completedch

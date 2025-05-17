@@ -20,17 +20,18 @@ func (r *QueryResolver) Task(ctx context.Context) (*model.Task, error) {
 		status = model.TaskStatusProceeding
 	}
 
-	method := model.TaskMethodCmd
-	cmd := f.Text
-	if cmd == "@push" {
-		method = model.TaskMethodDownloadAsset
-		cmd = ""
+	if f.Text == "@push" {
+		res := model.Task{
+			Status: status,
+			Method: model.TaskMethodDownloadAsset,
+		}
+		return &res, nil
 	}
 
 	res := model.Task{
 		Status: status,
-		Method: method,
-		Cmd:    cmd,
+		Method: model.TaskMethodCmd,
+		Cmd:    f.Text,
 	}
 	return &res, nil
 }
