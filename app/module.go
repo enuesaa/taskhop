@@ -6,7 +6,7 @@ var Module = fx.Module(
 	"app",
 	fx.Provide(
 		NewCommander,
-		NewRunner,
+		NewAgent,
 		NewLogger,
 	),
 )

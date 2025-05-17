@@ -10,24 +10,24 @@ import (
 	"go.uber.org/fx"
 )
 
-func NewRunner(config *conf.Config, li lib.Lib, shutdowner fx.Shutdowner) Runner {
-	runner := Runner{
+func NewAgent(config *conf.Config, li lib.Lib, shutdowner fx.Shutdowner) Agent {
+	agent := Agent{
 		config:     config,
 		lib:        li,
 		conn:       gqlclient.New(config),
 		shutdowner: shutdowner,
 	}
-	return runner
+	return agent
 }
 
-type Runner struct {
+type Agent struct {
 	config     *conf.Config
 	lib        lib.Lib
 	conn       gqlclient.Connector
 	shutdowner fx.Shutdowner
 }
 
-func (a *Runner) Run() error {
+func (a *Agent) Run() error {
 	ctx := context.Background()
 	for {
 		a.lib.Log.AppInfo(ctx, "polling...")
@@ -41,7 +41,7 @@ func (a *Runner) Run() error {
 	}
 }
 
-func (a *Runner) run(ctx context.Context) error {
+func (a *Agent) run(ctx context.Context) error {
 	for task := range a.conn.SubscribeTask(ctx) {
 		if task.Err != nil {
 			return task.Err

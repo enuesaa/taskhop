@@ -24,8 +24,8 @@ func main() {
 		fx.Invoke(func(cli ICli) error {
 			return cli.Launch()
 		}),
-		fx.Invoke(func(runner app.Runner) error {
-			if err := runner.Run(); err != nil {
+		fx.Invoke(func(agent app.Agent) error {
+			if err := agent.Run(); err != nil {
 				log.Println(err)
 				return err
 			}

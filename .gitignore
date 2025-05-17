@@ -5,8 +5,8 @@
 .vscode
 
 # app
-testdata/runner/*
-!testdata/runner/.gitkeep
+testdata/agent/*
+!testdata/agent/.gitkeep
 
 # installer
 install.sh

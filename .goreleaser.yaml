@@ -6,9 +6,9 @@ builds:
       - darwin
       - linux
 
-  - id: taskhop-runner
-    main: ./cmd/taskhop-runner
-    binary: taskhop-runner
+  - id: taskhop-agent
+    main: ./cmd/taskhop-agent
+    binary: taskhop-agent
     goos:
       - darwin
       - linux
