@@ -23,7 +23,7 @@ func (c *Connector) SubscribeTask(ctx context.Context) <-chan Task {
 		times := 0
 
 		for {
-			taskres, err := c.gql.GetTask(ctx)
+			t, err := c.gql.GetTask(ctx)
 			if err != nil {
 				ch <- Task{
 					Err: err,
@@ -31,19 +31,19 @@ func (c *Connector) SubscribeTask(ctx context.Context) <-chan Task {
 				break
 			}
 
-			switch taskres.Task.Status {
-			// case model.TaskStatusDownloadAssets:
-			// 	ch <- Task{
-			// 		IsDownload: true,
-			// 	}
-			// 	times = 0
-			case model.TaskStatusProceeding:
-				ch <- Task{
-					IsCmd: true,
-					Cmd:   taskres.Task.Cmd,
-				}
+			if t.Task.Status == model.TaskStatusProceeding {
 				times = 0
-			default:
+				if t.Task.Method == model.TaskMethodDownloadAsset {
+					ch <- Task{
+						IsDownload: true,
+					}					
+				} else {
+					ch <- Task{
+						IsCmd: true,
+						Cmd:   t.Task.Cmd,
+					}
+				}
+			} else {
 				times++
 			}
 

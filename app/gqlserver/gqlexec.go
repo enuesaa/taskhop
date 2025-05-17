@@ -66,14 +66,15 @@ type ComplexityRoot struct {
 
 	Task struct {
 		Cmd    func(childComplexity int) int
+		Method func(childComplexity int) int
 		Status func(childComplexity int) int
 	}
 }
 
 type MutationResolver interface {
 	Register(ctx context.Context) (bool, error)
-	Completed(ctx context.Context) (bool, error)
 	Log(ctx context.Context, input model.LogInput) (bool, error)
+	Completed(ctx context.Context) (bool, error)
 }
 type QueryResolver interface {
 	Health(ctx context.Context) (*model.Health, error)
@@ -166,6 +167,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Task.Cmd(childComplexity), true
+
+	case "Task.method":
+		if e.complexity.Task.Method == nil {
+			break
+		}
+
+		return e.complexity.Task.Method(childComplexity), true
 
 	case "Task.status":
 		if e.complexity.Task.Status == nil {
@@ -279,7 +287,7 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 	return introspection.WrapTypeFromDef(ec.Schema(), ec.Schema().Types[name]), nil
 }
 
-//go:embed "schema/health.graphql" "schema/logInput.graphql" "schema/schema.graphql" "schema/task.graphql" "schema/taskStatus.graphql"
+//go:embed "schema/log.graphql" "schema/schema.graphql" "schema/task.graphql"
 var sourcesFS embed.FS
 
 func sourceData(filename string) string {
@@ -291,11 +299,9 @@ func sourceData(filename string) string {
 }
 
 var sources = []*ast.Source{
-	{Name: "schema/health.graphql", Input: sourceData("schema/health.graphql"), BuiltIn: false},
-	{Name: "schema/logInput.graphql", Input: sourceData("schema/logInput.graphql"), BuiltIn: false},
+	{Name: "schema/log.graphql", Input: sourceData("schema/log.graphql"), BuiltIn: false},
 	{Name: "schema/schema.graphql", Input: sourceData("schema/schema.graphql"), BuiltIn: false},
 	{Name: "schema/task.graphql", Input: sourceData("schema/task.graphql"), BuiltIn: false},
-	{Name: "schema/taskStatus.graphql", Input: sourceData("schema/taskStatus.graphql"), BuiltIn: false},
 }
 var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
@@ -655,50 +661,6 @@ func (ec *executionContext) fieldContext_Mutation_register(_ context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Mutation_completed(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_completed(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().Completed(rctx)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(bool)
-	fc.Result = res
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Mutation_completed(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Mutation",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
 func (ec *executionContext) _Mutation_log(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Mutation_log(ctx, field)
 	if err != nil {
@@ -750,6 +712,50 @@ func (ec *executionContext) fieldContext_Mutation_log(ctx context.Context, field
 	if fc.Args, err = ec.field_Mutation_log_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_completed(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_completed(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().Completed(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_completed(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
 	}
 	return fc, nil
 }
@@ -847,6 +853,8 @@ func (ec *executionContext) fieldContext_Query_task(_ context.Context, field gra
 			switch field.Name {
 			case "status":
 				return ec.fieldContext_Task_status(ctx, field)
+			case "method":
+				return ec.fieldContext_Task_method(ctx, field)
 			case "cmd":
 				return ec.fieldContext_Task_cmd(ctx, field)
 			}
@@ -1026,6 +1034,50 @@ func (ec *executionContext) fieldContext_Task_status(_ context.Context, field gr
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type TaskStatus does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Task_method(ctx context.Context, field graphql.CollectedField, obj *model.Task) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Task_method(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Method, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(model.TaskMethod)
+	fc.Result = res
+	return ec.marshalNTaskMethod2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋgqlserverᚋmodelᚐTaskMethod(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Task_method(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Task",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type TaskMethod does not have child fields")
 		},
 	}
 	return fc, nil
@@ -3136,16 +3188,16 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "completed":
+		case "log":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_completed(ctx, field)
+				return ec._Mutation_log(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "log":
+		case "completed":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_log(ctx, field)
+				return ec._Mutation_completed(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
@@ -3280,6 +3332,11 @@ func (ec *executionContext) _Task(ctx context.Context, sel ast.SelectionSet, obj
 			out.Values[i] = graphql.MarshalString("Task")
 		case "status":
 			out.Values[i] = ec._Task_status(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "method":
+			out.Values[i] = ec._Task_method(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -3707,6 +3764,16 @@ func (ec *executionContext) marshalNTask2ᚖgithubᚗcomᚋenuesaaᚋtaskhopᚋa
 		return graphql.Null
 	}
 	return ec._Task(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNTaskMethod2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋgqlserverᚋmodelᚐTaskMethod(ctx context.Context, v any) (model.TaskMethod, error) {
+	var res model.TaskMethod
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNTaskMethod2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋgqlserverᚋmodelᚐTaskMethod(ctx context.Context, sel ast.SelectionSet, v model.TaskMethod) graphql.Marshaler {
+	return v
 }
 
 func (ec *executionContext) unmarshalNTaskStatus2githubᚗcomᚋenuesaaᚋtaskhopᚋappᚋgqlserverᚋmodelᚐTaskStatus(ctx context.Context, v any) (model.TaskStatus, error) {

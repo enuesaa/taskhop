@@ -26,7 +26,49 @@ type Query struct {
 
 type Task struct {
 	Status TaskStatus `json:"status"`
+	Method TaskMethod `json:"method"`
 	Cmd    string     `json:"cmd"`
+}
+
+type TaskMethod string
+
+const (
+	TaskMethodCmd           TaskMethod = "CMD"
+	TaskMethodDownloadAsset TaskMethod = "DOWNLOAD_ASSET"
+)
+
+var AllTaskMethod = []TaskMethod{
+	TaskMethodCmd,
+	TaskMethodDownloadAsset,
+}
+
+func (e TaskMethod) IsValid() bool {
+	switch e {
+	case TaskMethodCmd, TaskMethodDownloadAsset:
+		return true
+	}
+	return false
+}
+
+func (e TaskMethod) String() string {
+	return string(e)
+}
+
+func (e *TaskMethod) UnmarshalGQL(v any) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = TaskMethod(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid TaskMethod", str)
+	}
+	return nil
+}
+
+func (e TaskMethod) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
 type TaskStatus string

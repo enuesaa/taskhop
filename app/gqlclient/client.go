@@ -38,6 +38,7 @@ func (t *GetHealth_Health) GetOk() bool {
 
 type GetTask_Task struct {
 	Cmd    string           "json:\"cmd\" graphql:\"cmd\""
+	Method model.TaskMethod "json:\"method\" graphql:\"method\""
 	Status model.TaskStatus "json:\"status\" graphql:\"status\""
 }
 
@@ -46,6 +47,12 @@ func (t *GetTask_Task) GetCmd() string {
 		t = &GetTask_Task{}
 	}
 	return t.Cmd
+}
+func (t *GetTask_Task) GetMethod() *model.TaskMethod {
+	if t == nil {
+		t = &GetTask_Task{}
+	}
+	return &t.Method
 }
 func (t *GetTask_Task) GetStatus() *model.TaskStatus {
 	if t == nil {
@@ -154,6 +161,7 @@ func (c *Client) GetHealth(ctx context.Context, interceptors ...clientv2.Request
 const GetTaskDocument = `query getTask {
 	task {
 		status
+		method
 		cmd
 	}
 }

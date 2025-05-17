@@ -1,5 +1,0 @@
-enum TaskStatus {
-  REGISTRATION
-  PROMPT
-  PROCEEDING
-}

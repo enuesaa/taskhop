@@ -5,11 +5,14 @@ schema {
 
 type Query {
   health: Health!
-  task: Task!
 }
 
 type Mutation {
   register: Boolean!
-  completed: Boolean!
-  log(input: LogInput!): Boolean!
+}
+
+type Health {
+  time: String!
+  ok: Boolean!
+  code: String!
 }

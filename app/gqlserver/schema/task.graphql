@@ -1,4 +1,23 @@
+extend type Query {
+  task: Task!
+}
+extend type Mutation {
+  completed: Boolean!
+}
+
 type Task {
   status: TaskStatus!
+  method: TaskMethod!
   cmd: String!
+}
+
+enum TaskStatus {
+  REGISTRATION
+  PROMPT
+  PROCEEDING
+}
+
+enum TaskMethod {
+  CMD
+  DOWNLOAD_ASSET
 }

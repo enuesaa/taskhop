@@ -1,5 +1,0 @@
-type Health {
-  time: String!
-  ok: Boolean!
-  code: String!
-}

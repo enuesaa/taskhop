@@ -8,7 +8,7 @@ import (
 )
 
 var ErrRegisterNotAvailable = errors.New("register not available")
-var ErrRunnerUnHealthy = errors.New("runner unhealthy")
+var ErrAgentUnHealthy = errors.New("agent unhealthy")
 
 func (i *TaskSrv) Register() (string, error) {
 	if i.current.Status != StatusRegistration {
@@ -22,11 +22,10 @@ func (i *TaskSrv) Register() (string, error) {
 			time.Sleep(5 * time.Second)
 
 			if time.Since(i.lastHealthy) > 5*time.Second {
-				i.errch <- ErrRunnerUnHealthy
+				i.errch <- ErrAgentUnHealthy
 				break
 			}
 		}
 	}()
-
 	return id, nil
 }

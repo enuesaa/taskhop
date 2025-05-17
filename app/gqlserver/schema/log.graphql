@@ -1,0 +1,7 @@
+extend type Mutation {
+  log(input: LogInput!): Boolean!
+}
+
+input LogInput {
+  output: String!
+}

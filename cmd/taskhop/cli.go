@@ -46,7 +46,6 @@ func (c *Cli) parse() {
 		fmt.Fprintf(os.Stderr, "Usage:\n")
 		flag.PrintDefaults()
 	}
-	// flag.BoolVar(&c.config.TransferFlag, "transfer", false, "DO NOT transfer assets in workdir to the agent")
 	flag.StringVarP(&c.config.Workdir, "workdir", "w", ".", "workdir. Example: ./aaa")
 	flag.BoolVar(&c.config.VersionFlag, "version", false, "Print version")
 	flag.BoolVarP(&c.config.HelpFlag, "help", "h", false, "Print help message")
@@ -59,7 +58,6 @@ func (c *Cli) printBanner() {
 		addr = "localhosr"
 	}
 	fmt.Printf("Taskhop is running!\n")
-	// fmt.Printf("To run agent: taskhop-agent -c %s:3000\n", addr)
 	fmt.Printf("┌─────────────────────────────────────────────────────────────────\n")
 	fmt.Printf("│ To launch the agent:\n")
 	fmt.Printf("│   taskhop-agent -c %s:3000\n", addr)
