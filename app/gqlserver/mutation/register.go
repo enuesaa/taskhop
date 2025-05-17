@@ -13,7 +13,8 @@ func (r *MutationResolver) Register(ctx context.Context) (bool, error) {
 	}
 	r.Lib.Log.AppInfo(context.Background(), "started: %s", id)
 
-	if task := r.Lib.Task.Get(); task.Status == taskfx.StatusPrompt {
+	task := r.Lib.Task.Get()
+	if task.Status == taskfx.StatusPrompt || task.Status == taskfx.StatusDownloadAssets {
 		go r.Lib.Task.Prompt()
 	}
 

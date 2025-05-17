@@ -26,7 +26,7 @@ func (i *TaskSrv) Register() (string, error) {
 		for {
 			time.Sleep(5 * time.Second)
 
-			if time.Since(i.lastHealthy) > 5 * time.Second {
+			if time.Since(i.lastHealthy) > 5*time.Second {
 				i.errch <- ErrRunnerUnHealthy
 				break
 			}

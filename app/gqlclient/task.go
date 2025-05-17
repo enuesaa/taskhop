@@ -9,16 +9,16 @@ import (
 )
 
 type Task struct {
-	Err error
+	Err        error
 	IsDownload bool
-	IsCmd bool
-	Cmd string
+	IsCmd      bool
+	Cmd        string
 }
 
 func (c *Connector) SubscribeTask(ctx context.Context) <-chan Task {
 	ch := make(chan Task)
 
-	go func(){
+	go func() {
 		defer close(ch)
 		times := 0
 
@@ -40,7 +40,7 @@ func (c *Connector) SubscribeTask(ctx context.Context) <-chan Task {
 			case model.TaskStatusProceeding:
 				ch <- Task{
 					IsCmd: true,
-					Cmd: taskres.Task.Cmd,
+					Cmd:   taskres.Task.Cmd,
 				}
 				times = 0
 			default:

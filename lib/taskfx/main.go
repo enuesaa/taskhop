@@ -12,12 +12,12 @@ func New(config *conf.Config, repo IRepository) ITaskSrv {
 		repo:   repo,
 		current: Task{
 			Status: StatusRegistration,
-			Cmd: "",
+			Cmd:    "",
 		},
 		assetsDownloaded: false,
-		errch: make(chan error, 1),
-		completedch: make(chan bool, 1),
-		lastHealthy: time.Now(),
+		errch:            make(chan error, 1),
+		completedch:      make(chan bool, 1),
+		lastHealthy:      time.Now(),
 	}
 }
 
@@ -33,9 +33,9 @@ type TaskSrv struct {
 	config *conf.Config
 	repo   IRepository
 
-	current Task
+	current          Task
 	assetsDownloaded bool
-	errch chan error
-	completedch chan bool
-	lastHealthy time.Time
+	errch            chan error
+	completedch      chan bool
+	lastHealthy      time.Time
 }

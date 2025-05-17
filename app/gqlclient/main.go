@@ -12,7 +12,7 @@ func New(config *conf.Config) Connector {
 	client := NewClient(http.DefaultClient, url, nil)
 
 	connector := Connector{
-		gql: client,
+		gql:    client,
 		config: config,
 		LogWriter: LogWriter{
 			gql: client,
@@ -22,7 +22,7 @@ func New(config *conf.Config) Connector {
 }
 
 type Connector struct {
-	gql GQLClient
+	gql    GQLClient
 	config *conf.Config
 
 	LogWriter LogWriter

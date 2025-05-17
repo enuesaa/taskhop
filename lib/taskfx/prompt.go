@@ -13,7 +13,7 @@ func (i *TaskSrv) Prompt() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
-		fmt.Printf("> ") 
+		fmt.Printf("> ")
 		if !scanner.Scan() {
 			break
 		}

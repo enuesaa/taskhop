@@ -41,4 +41,3 @@ func (c *Connector) dial() bool {
 
 	return true
 }
-

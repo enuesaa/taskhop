@@ -13,9 +13,9 @@ func (r *QueryResolver) Task(ctx context.Context) (*model.Task, error) {
 	var statusgql model.TaskStatus
 	switch f.Status {
 	case taskfx.StatusRegistration:
-		statusgql = model.TaskStatusRegistration	
+		statusgql = model.TaskStatusRegistration
 	case taskfx.StatusDownloadAssets:
-			statusgql = model.TaskStatusDownloadAssets
+		statusgql = model.TaskStatusDownloadAssets
 	case taskfx.StatusPrompt:
 		statusgql = model.TaskStatusPrompt
 	case taskfx.StatusProceeding:
