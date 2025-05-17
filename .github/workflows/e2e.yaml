@@ -15,11 +15,11 @@ jobs:
       - uses: ./.github/actions/env
 
       - run: go install ./cmd/taskhop
-      - run: go install ./cmd/taskhop-runner
+      - run: go install ./cmd/taskhop-agent
 
-      - name: Run runner
-        working-directory: ./testdata/runner
-        run: nohup taskhop-runner -c localhost:3000 &
+      - name: Run agent
+        working-directory: ./testdata/agent
+        run: nohup taskhop-agent -c localhost:3000 &
 
       - name: Run commander
         run: echo -e "pwd\nexit" | taskhop -w testdata/commander

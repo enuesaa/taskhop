@@ -20,7 +20,7 @@ jobs:
       - uses: ./.github/actions/env
 
       - run: go install ./cmd/taskhop
-      - run: go install ./cmd/taskhop-runner
+      - run: go install ./cmd/taskhop-agent
 
   test:
     runs-on: ubuntu-latest

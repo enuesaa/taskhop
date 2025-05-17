@@ -41,7 +41,7 @@ mkdir $TMP_OUT_DIR;
 # download
 curl -L "$URL" | tar -xz -C $TMP_OUT_DIR;
 mv $TMP_OUT_DIR/taskhop .;
-mv $TMP_OUT_DIR/taskhop-runner .;
+mv $TMP_OUT_DIR/taskhop-agent .;
 
 rm -rf $TMP_OUT_DIR;
 
@@ -50,4 +50,4 @@ echo "Download complete!";
 echo "";
 echo "Next, run the following command:"
 echo "  mv taskhop /usr/local/bin/taskhop";
-echo "  mv taskhop-runner /usr/local/bin/taskhop-runner";
+echo "  mv taskhop-agent /usr/local/bin/taskhop-agent";
