@@ -27,6 +27,13 @@ func (r *QueryResolver) Task(ctx context.Context) (*model.Task, error) {
 		}
 		return &res, nil
 	}
+	if f.Text == "@pull" {
+		res := model.Task{
+			Status: status,
+			Method: model.TaskMethodUploadAsset,
+		}
+		return &res, nil
+	}
 
 	res := model.Task{
 		Status: status,

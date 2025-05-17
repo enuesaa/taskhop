@@ -23,3 +23,18 @@ func (c *Connector) DownloadAssets(dest io.Writer) error {
 	}
 	return nil
 }
+
+func (c *Connector) UploadAssets(body io.Reader) error {
+	url := fmt.Sprintf("http://%s/upload", c.config.Address)
+
+	res, err := http.Post(url, "application/zip", body)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != 200 {
+		return fmt.Errorf("failed to upload assets. status code: %s", res.Status)
+	}
+	return nil
+}

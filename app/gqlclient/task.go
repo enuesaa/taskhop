@@ -11,6 +11,7 @@ import (
 type Task struct {
 	Err        error
 	IsDownload bool
+	IsUpload   bool
 	IsCmd      bool
 	Cmd        string
 }
@@ -33,11 +34,16 @@ func (c *Connector) SubscribeTask(ctx context.Context) <-chan Task {
 
 			if t.Task.Status == model.TaskStatusProceeding {
 				times = 0
-				if t.Task.Method == model.TaskMethodDownloadAsset {
+				switch t.Task.Method {
+				case model.TaskMethodDownloadAsset:
 					ch <- Task{
 						IsDownload: true,
-					}					
-				} else {
+					}
+				case model.TaskMethodUploadAsset:
+					ch <- Task{
+						IsUpload: true,
+					}
+				default:
 					ch <- Task{
 						IsCmd: true,
 						Cmd:   t.Task.Cmd,

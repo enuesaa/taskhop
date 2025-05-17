@@ -35,16 +35,18 @@ type TaskMethod string
 const (
 	TaskMethodCmd           TaskMethod = "CMD"
 	TaskMethodDownloadAsset TaskMethod = "DOWNLOAD_ASSET"
+	TaskMethodUploadAsset   TaskMethod = "UPLOAD_ASSET"
 )
 
 var AllTaskMethod = []TaskMethod{
 	TaskMethodCmd,
 	TaskMethodDownloadAsset,
+	TaskMethodUploadAsset,
 }
 
 func (e TaskMethod) IsValid() bool {
 	switch e {
-	case TaskMethodCmd, TaskMethodDownloadAsset:
+	case TaskMethodCmd, TaskMethodDownloadAsset, TaskMethodUploadAsset:
 		return true
 	}
 	return false

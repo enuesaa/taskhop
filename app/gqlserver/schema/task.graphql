@@ -20,4 +20,5 @@ enum TaskStatus {
 enum TaskMethod {
   CMD
   DOWNLOAD_ASSET
+  UPLOAD_ASSET
 }
