@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"os"
 
 	"github.com/enuesaa/taskhop/app"
@@ -24,8 +25,8 @@ func main() {
 		fx.Invoke(func(cli ICli) error {
 			return cli.Launch()
 		}),
-		fx.Invoke(func(commander app.Commander) error {
-			return commander.Run()
+		fx.Invoke(func(commander *app.Commander) error {
+			return commander.Run(context.Background())
 		}),
 	)
 	fxapp.Run()

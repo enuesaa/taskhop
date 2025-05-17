@@ -13,8 +13,8 @@ import (
 	"go.uber.org/fx"
 )
 
-func NewCommander(config *conf.Config, li lib.Lib, lc fx.Lifecycle, shutdowner fx.Shutdowner) Commander {
-	commander := Commander{
+func NewCommander(config *conf.Config, li lib.Lib, lc fx.Lifecycle, shutdowner fx.Shutdowner) *Commander {
+	commander := &Commander{
 		config:     config,
 		lib:        li,
 		lc:         lc,
@@ -28,36 +28,29 @@ type Commander struct {
 	lib        lib.Lib
 	lc         fx.Lifecycle
 	shutdowner fx.Shutdowner
+	server     *http.Server
 }
 
-func (a *Commander) Run() error {
-	go a.monitor2shutdown()
-
-	server := http.Server{
+func (a *Commander) Run(ctx context.Context) error {
+	a.server = &http.Server{
 		Addr:    ":3000",
 		Handler: a.handle(),
 	}
-	go func() {
-		if err := server.ListenAndServe(); err != nil {
-			if errors.Is(err, http.ErrServerClosed) {
-				return
-			}
-			a.lib.Log.Info(context.Background(), "Error: %s", err.Error())
-		}
-	}()
+	go a.listen(ctx)
+	go a.monitor(ctx)
 
 	a.lc.Append(fx.Hook{
-		OnStop: func(ctx context.Context) error {
-			return server.Shutdown(ctx)
-		},
+		OnStop: a.close,
 	})
 	return nil
 }
 
-func (a *Commander) monitor2shutdown() {
-	for err := range a.lib.Task.Subscribe() {
-		a.lib.Log.Info(context.Background(), "\n%s\n", err.Error())
-		a.shutdowner.Shutdown()
+func (a *Commander) listen(ctx context.Context) {
+	if err := a.server.ListenAndServe(); err != nil {
+		if errors.Is(err, http.ErrServerClosed) {
+			return
+		}
+		a.lib.Log.Info(ctx, "Error: %s", err.Error())
 	}
 }
 
@@ -75,4 +68,18 @@ func (a *Commander) handle() *chi.Mux {
 	router.Handle("/assets", gqlserver.HandleAssets(a.lib))
 
 	return router
+}
+
+func (a *Commander) monitor(ctx context.Context) {
+	for err := range a.lib.Task.Subscribe() {
+		a.lib.Log.Info(ctx, "Error: %s", err.Error())
+		a.shutdowner.Shutdown()
+	}
+}
+
+func (a *Commander) close(ctx context.Context) error {
+	if a.server != nil {
+		a.server.Shutdown(ctx)
+	}
+	return nil
 }
