@@ -32,11 +32,11 @@ func (c *Connector) SubscribeTask(ctx context.Context) <-chan Task {
 			}
 
 			switch taskres.Task.Status {
-			case model.TaskStatusDownloadAssets:
-				ch <- Task{
-					IsDownload: true,
-				}
-				times = 0
+			// case model.TaskStatusDownloadAssets:
+			// 	ch <- Task{
+			// 		IsDownload: true,
+			// 	}
+			// 	times = 0
 			case model.TaskStatusProceeding:
 				ch <- Task{
 					IsCmd: true,

@@ -1,7 +1,6 @@
 package app
 
 import (
-	"bytes"
 	"context"
 
 	"github.com/enuesaa/taskhop/app/gqlclient"
@@ -46,16 +45,16 @@ func (a *Agent) run(ctx context.Context) error {
 		if task.Err != nil {
 			return task.Err
 		}
-		if task.IsDownload {
-			a.lib.Log.AppInfo(ctx, "download assets...")
-			var buf bytes.Buffer
-			if err := a.conn.DownloadAssets(&buf); err != nil {
-				return err
-			}
-			if err := a.lib.Arv.UnArchive(&buf, a.config.Workdir); err != nil {
-				return err
-			}
-		}
+		// if task.IsDownload {
+		// 	a.lib.Log.AppInfo(ctx, "download assets...")
+		// 	var buf bytes.Buffer
+		// 	if err := a.conn.DownloadAssets(&buf); err != nil {
+		// 		return err
+		// 	}
+		// 	if err := a.lib.Arv.UnArchive(&buf, a.config.Workdir); err != nil {
+		// 		return err
+		// 	}
+		// }
 		if task.IsCmd {
 			a.lib.Log.AppInfo(ctx, "started: %s", task.Cmd)
 			if err := a.lib.Cmd.Exec(&a.conn.LogWriter, task.Cmd, a.config.Workdir); err != nil {

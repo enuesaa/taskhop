@@ -32,24 +32,20 @@ type Task struct {
 type TaskStatus string
 
 const (
-	TaskStatusRegistration   TaskStatus = "REGISTRATION"
-	TaskStatusDownloadAssets TaskStatus = "DOWNLOAD_ASSETS"
-	TaskStatusPrompt         TaskStatus = "PROMPT"
-	TaskStatusProceeding     TaskStatus = "PROCEEDING"
-	TaskStatusCompleted      TaskStatus = "COMPLETED"
+	TaskStatusRegistration TaskStatus = "REGISTRATION"
+	TaskStatusPrompt       TaskStatus = "PROMPT"
+	TaskStatusProceeding   TaskStatus = "PROCEEDING"
 )
 
 var AllTaskStatus = []TaskStatus{
 	TaskStatusRegistration,
-	TaskStatusDownloadAssets,
 	TaskStatusPrompt,
 	TaskStatusProceeding,
-	TaskStatusCompleted,
 }
 
 func (e TaskStatus) IsValid() bool {
 	switch e {
-	case TaskStatusRegistration, TaskStatusDownloadAssets, TaskStatusPrompt, TaskStatusProceeding, TaskStatusCompleted:
+	case TaskStatusRegistration, TaskStatusPrompt, TaskStatusProceeding:
 		return true
 	}
 	return false

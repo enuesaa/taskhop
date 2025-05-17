@@ -14,12 +14,7 @@ func (i *TaskSrv) Register() (string, error) {
 	if i.current.Status != StatusRegistration {
 		return "", ErrRegisterNotAvailable
 	}
-
-	if i.config.TransferFlag && !i.assetsDownloaded {
-		i.current.Status = StatusDownloadAssets
-	} else {
-		i.current.Status = StatusPrompt
-	}
+	i.current.Status = StatusPrompt
 	id := ulid.Make().String()
 
 	go func() {
