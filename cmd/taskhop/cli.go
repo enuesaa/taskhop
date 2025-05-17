@@ -58,7 +58,12 @@ func (c *Cli) printBanner() {
 	if err != nil {
 		addr = "localhosr"
 	}
-	fmt.Printf("Addr: %s:3000\n", addr)
+	fmt.Printf("Taskhop is running!\n")
+	// fmt.Printf("To run agent: taskhop-agent -c %s:3000\n", addr)
+	fmt.Printf("┌─────────────────────────────────────────────────────────────────\n")
+	fmt.Printf("│ To launch the agent:\n")
+	fmt.Printf("│   taskhop-agent -c %s:3000\n", addr)
+	fmt.Printf("└─────────────────────────────────────────────────────────────────\n")
 }
 
 // see https://stackoverflow.com/questions/23558425
