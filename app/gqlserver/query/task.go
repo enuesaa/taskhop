@@ -8,7 +8,7 @@ import (
 )
 
 func (r *QueryResolver) Task(ctx context.Context) (*model.Task, error) {
-	f := r.Lib.Task.Get()
+	f := r.li.Task.Get()
 
 	var status model.TaskStatus
 	switch f.Status {

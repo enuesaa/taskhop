@@ -7,7 +7,7 @@ import (
 )
 
 func (r *MutationResolver) Log(ctx context.Context, input model.LogInput) (bool, error) {
-	r.Lib.Log.Faint(ctx, input.Output)
+	r.li.Log.Faint(ctx, input.Output)
 
 	return true, nil
 }

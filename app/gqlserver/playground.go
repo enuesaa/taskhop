@@ -6,6 +6,6 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 )
 
-func HandlePlayground() http.HandlerFunc {
+func (h *Handler) HandlePlayground() http.HandlerFunc {
 	return playground.Handler("graphql", "/graphql")
 }

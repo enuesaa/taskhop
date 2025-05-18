@@ -10,13 +10,12 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 )
 
-func HandleGQL(c lib.Lib) http.HandlerFunc {
+func (h *Handler) HandleGQL() http.HandlerFunc {
 	schema := NewExecutableSchema(Config{
-		Resolvers: &Resolver{c},
+		Resolvers: &Resolver{h.li},
 	})
 
 	handle := handler.New(schema)
-
 	handle.AddTransport(transport.Options{})
 	handle.AddTransport(transport.GET{})
 	handle.AddTransport(transport.POST{})
@@ -26,19 +25,13 @@ func HandleGQL(c lib.Lib) http.HandlerFunc {
 }
 
 type Resolver struct {
-	lib.Lib
+	li *lib.Lib
 }
 
 func (r *Resolver) Query() QueryResolver {
-	resolver := query.QueryResolver{
-		Lib: r.Lib,
-	}
-	return &resolver
+	return query.New(r.li)
 }
 
 func (r *Resolver) Mutation() MutationResolver {
-	resolver := mutation.MutationResolver{
-		Lib: r.Lib,
-	}
-	return &resolver
+	return mutation.New(r.li)
 }
