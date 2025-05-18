@@ -4,13 +4,14 @@ import (
 	"context"
 	"io"
 
+	"github.com/enuesaa/taskhop/app/gqlclient/adapter"
 	"github.com/enuesaa/taskhop/app/gqlserver/model"
 )
 
 type LogWriter struct {
 	io.Writer
 
-	gql GQLClient
+	gql adapter.GQLClient
 }
 
 func (l *LogWriter) Write(b []byte) (int, error) {

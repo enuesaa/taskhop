@@ -5,11 +5,12 @@ import (
 	"net/http"
 
 	"github.com/enuesaa/taskhop/conf"
+	"github.com/enuesaa/taskhop/app/gqlclient/adapter"
 )
 
 func New(config *conf.Config) Connector {
 	url := fmt.Sprintf("http://%s/graphql", config.Address)
-	client := NewClient(http.DefaultClient, url, nil)
+	client := adapter.NewClient(http.DefaultClient, url, nil)
 
 	connector := Connector{
 		gql:    client,
@@ -22,7 +23,7 @@ func New(config *conf.Config) Connector {
 }
 
 type Connector struct {
-	gql    GQLClient
+	gql    adapter.GQLClient
 	config *conf.Config
 
 	LogWriter LogWriter

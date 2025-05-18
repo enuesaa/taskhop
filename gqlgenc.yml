@@ -5,8 +5,8 @@ model:
   package: model
 
 client:
-  package: gqlclient
-  filename: app/gqlclient/client.go
+  package: adapter
+  filename: app/gqlclient/adapter/client.go
 
 schema:
   - app/gqlserver/schema/*.graphql

@@ -10,10 +10,10 @@ import (
 	"go.uber.org/fx"
 )
 
-func NewAgent(config *conf.Config, li lib.Lib, shutdowner fx.Shutdowner) *Agent {
+func NewAgent(config *conf.Config, li *lib.Lib, shutdowner fx.Shutdowner) *Agent {
 	agent := &Agent{
 		config:     config,
-		lib:        li,
+		li:         li,
 		conn:       gqlclient.New(config),
 		shutdowner: shutdowner,
 	}
@@ -22,7 +22,7 @@ func NewAgent(config *conf.Config, li lib.Lib, shutdowner fx.Shutdowner) *Agent 
 
 type Agent struct {
 	config     *conf.Config
-	lib        lib.Lib
+	li         *lib.Lib
 	conn       gqlclient.Connector
 	shutdowner fx.Shutdowner
 }
@@ -30,13 +30,13 @@ type Agent struct {
 func (a *Agent) Run() error {
 	ctx := context.Background()
 	for {
-		a.lib.Log.AppInfo(ctx, "polling...")
+		a.li.Log.AppInfo(ctx, "polling...")
 
 		if err := a.conn.Connect(ctx); err != nil {
 			return err
 		}
 		if err := a.run(ctx); err != nil {
-			a.lib.Log.AppInfo(ctx, "reset: %s", err.Error())
+			a.li.Log.AppInfo(ctx, "reset: %s", err.Error())
 		}
 	}
 }
@@ -47,19 +47,19 @@ func (a *Agent) run(ctx context.Context) error {
 			return task.Err
 		}
 		if task.IsDownload {
-			a.lib.Log.AppInfo(ctx, "download assets...")
+			a.li.Log.AppInfo(ctx, "download assets...")
 			var buf bytes.Buffer
 			if err := a.conn.DownloadAssets(&buf); err != nil {
 				return err
 			}
-			if err := a.lib.Arv.UnArchive(&buf, a.config.Workdir); err != nil {
+			if err := a.li.Arv.UnArchive(&buf, a.config.Workdir); err != nil {
 				return err
 			}
 			a.conn.Log("success!")
 		}
 		if task.IsUpload {
-			a.lib.Log.AppInfo(ctx, "upload assets...")
-			archive, err := a.lib.Arv.Archive(".")
+			a.li.Log.AppInfo(ctx, "upload assets...")
+			archive, err := a.li.Arv.Archive(".")
 			if err != nil {
 				return err
 			}
@@ -69,8 +69,8 @@ func (a *Agent) run(ctx context.Context) error {
 			a.conn.Log("success!")
 		}
 		if task.IsCmd {
-			a.lib.Log.AppInfo(ctx, "started: %s", task.Cmd)
-			if err := a.lib.Cmd.Exec(&a.conn.LogWriter, task.Cmd, a.config.Workdir); err != nil {
+			a.li.Log.AppInfo(ctx, "started: %s", task.Cmd)
+			if err := a.li.Cmd.Exec(&a.conn.LogWriter, task.Cmd, a.config.Workdir); err != nil {
 				return err
 			}
 		}
