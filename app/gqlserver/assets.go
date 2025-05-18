@@ -8,9 +8,9 @@ import (
 	"github.com/enuesaa/taskhop/lib"
 )
 
-func HandleAssets(li lib.Lib) http.HandlerFunc {
+func HandleAssets(li lib.Lib, config *conf.Config) http.HandlerFunc {
 	handle := func(rw http.ResponseWriter, r *http.Request) {
-		archive, err := li.Arv.Archive()
+		archive, err := li.Arv.Archive(config.Workdir)
 		if err != nil {
 			li.Log.Info(r.Context(), "failed to create archive file: %s", err.Error())
 			http.Error(rw, "Internal Server Error", http.StatusInternalServerError)

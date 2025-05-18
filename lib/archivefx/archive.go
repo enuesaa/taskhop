@@ -8,12 +8,12 @@ import (
 	"path/filepath"
 )
 
-func (i *ArvSrv) Archive() (io.Reader, error) {
+func (i *ArvSrv) Archive(dir string) (io.Reader, error) {
 	zipb := bytes.NewBuffer([]byte{})
 	zipw := zip.NewWriter(zipb)
 	defer zipw.Close()
 
-	err := filepath.Walk(i.config.Workdir, func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -26,7 +26,7 @@ func (i *ArvSrv) Archive() (io.Reader, error) {
 			return err
 		}
 
-		fpath, err := filepath.Rel(i.config.Workdir, path)
+		fpath, err := filepath.Rel(dir, path)
 		if err != nil {
 			return err
 		}

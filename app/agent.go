@@ -58,7 +58,7 @@ func (a *Agent) run(ctx context.Context) error {
 		}
 		if task.IsUpload {
 			a.lib.Log.AppInfo(ctx, "upload assets...")
-			archive, err := a.lib.Arv.Archive()
+			archive, err := a.lib.Arv.Archive(".")
 			if err != nil {
 				return err
 			}

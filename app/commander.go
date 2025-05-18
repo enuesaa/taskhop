@@ -65,7 +65,7 @@ func (a *Commander) handle() *chi.Mux {
 	// routes
 	router.Handle("/graphql", gqlserver.HandleGQL(a.lib))
 	router.Handle("/graphql/playground", gqlserver.HandlePlayground())
-	router.Handle("/assets", gqlserver.HandleAssets(a.lib))
+	router.Handle("/assets", gqlserver.HandleAssets(a.lib, a.config))
 	router.Handle("/upload", gqlserver.HandleUpload(a.lib, a.config))
 
 	return router

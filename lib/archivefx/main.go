@@ -14,7 +14,7 @@ func New(config *conf.Config, repo IRepository) IArvSrv {
 }
 
 type IArvSrv interface {
-	Archive() (io.Reader, error)
+	Archive(dir string) (io.Reader, error)
 	UnArchive(r io.Reader, dest string) error
 }
 type ArvSrv struct {
