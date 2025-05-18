@@ -11,26 +11,23 @@ Ubuntu on WSL2 で開発したいが Windows のキー配置に慣れてなく�
 
 ```bash
 taskhop
-taskhop-runner
+taskhop-agent
 ```
 
 1. Mac で `taskhop` を実行しWebサーバを立ち上げる。
-2. Ubuntu on WSL2 で `taskhop-runner` を実行し 1 のアドレスをポーリングする
-3. `taskhop-runner` は `taskhop` より実行命令を受け取り実行する
+2. Ubuntu on WSL2 で `taskhop-agent` を実行し 1 のアドレスをポーリングする
+3. `taskhop-agent` は `taskhop` より実行命令を受け取り実行する
 
 ## Example
 ```bash
 # commander
 taskhop
 
-# commander (transfer assets)
-taskhop --transfer
-
 # runner
-taskhop-runner --connect localhost:3000
+taskhop-agent localhost:3000
 ```
 
 ## Feature Plan
 
-- runner と commander を connect するときに、両方のコマンドをいくつか操作する必要があり、ちょっと頭が混乱する
+- agent と commander を connect するときに、両方のコマンドをいくつか操作する必要があり、ちょっと頭が混乱する
 - 大きな仕組みは変えず、CLI のフラグなど見直して改善したい
