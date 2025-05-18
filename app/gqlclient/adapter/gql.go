@@ -27,3 +27,17 @@ func (c *Adapter) Completed() error {
 func (c *Adapter) GetTask() (*GetTask, error) {
 	return c.gql.GetTask(context.Background())
 }
+
+func (c *Adapter) GetHealth() error {
+	if _, err := c.gql.GetHealth(context.Background()); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Adapter) Register() error {
+	if _, err := c.gql.Register(context.Background()); err != nil {
+		return err
+	}
+	return nil
+}

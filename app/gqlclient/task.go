@@ -16,7 +16,7 @@ type Task struct {
 	Cmd        string
 }
 
-func (c *Connector) SubscribeTask(ctx context.Context) <-chan Task {
+func (u *UseCase) SubscribeTask(ctx context.Context) <-chan Task {
 	ch := make(chan Task)
 
 	go func() {
@@ -24,7 +24,7 @@ func (c *Connector) SubscribeTask(ctx context.Context) <-chan Task {
 		times := 0
 
 		for {
-			t, err := c.adap.GetTask()
+			t, err := u.adap.GetTask()
 			if err != nil {
 				ch <- Task{
 					Err: err,
