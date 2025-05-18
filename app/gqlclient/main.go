@@ -1,30 +1,26 @@
 package gqlclient
 
 import (
-	"fmt"
-	"net/http"
+	"io"
 
-	"github.com/enuesaa/taskhop/conf"
 	"github.com/enuesaa/taskhop/app/gqlclient/adapter"
+	"github.com/enuesaa/taskhop/app/gqlclient/logwriter"
+	"github.com/enuesaa/taskhop/conf"
 )
 
-func New(config *conf.Config) Connector {
-	url := fmt.Sprintf("http://%s/graphql", config.Address)
-	client := adapter.NewClient(http.DefaultClient, url, nil)
+func New(config *conf.Config) *Connector {
+	adap := adapter.New(config.Address)
 
-	connector := Connector{
-		gql:    client,
+	connector := &Connector{
 		config: config,
-		LogWriter: LogWriter{
-			gql: client,
-		},
+		adap:   adap,
+		LogWriter: logwriter.New(adap),
 	}
 	return connector
 }
 
 type Connector struct {
-	gql    adapter.GQLClient
 	config *conf.Config
-
-	LogWriter LogWriter
+	adap   *adapter.Adapter
+	LogWriter io.Writer
 }

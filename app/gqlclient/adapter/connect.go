@@ -1,4 +1,4 @@
-package gqlclient
+package adapter
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 
 var ErrConnect = errors.New("failed to connect")
 
-func (c *Connector) Connect(ctx context.Context) error {
+func (c *Adapter) Connect(ctx context.Context) error {
 	if err := c.dialPolling(); err != nil {
 		return err
 	}
@@ -22,7 +22,7 @@ func (c *Connector) Connect(ctx context.Context) error {
 	return nil
 }
 
-func (c *Connector) dialPolling() error {
+func (c *Adapter) dialPolling() error {
 	for range 120 {
 		if c.dial() {
 			return nil
@@ -32,8 +32,8 @@ func (c *Connector) dialPolling() error {
 	return ErrConnect
 }
 
-func (c *Connector) dial() bool {
-	conn, err := net.DialTimeout("tcp", c.config.Address, 5*time.Second)
+func (c *Adapter) dial() bool {
+	conn, err := net.DialTimeout("tcp", c.address, 5*time.Second)
 	if err != nil {
 		return false
 	}

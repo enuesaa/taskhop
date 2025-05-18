@@ -1,26 +1,27 @@
-package gqlclient
+package logwriter
 
 import (
-	"context"
 	"io"
 
 	"github.com/enuesaa/taskhop/app/gqlclient/adapter"
-	"github.com/enuesaa/taskhop/app/gqlserver/model"
 )
+
+func New(adap *adapter.Adapter) io.Writer {
+	return &LogWriter{
+		adap: adap,
+	}
+}
 
 type LogWriter struct {
 	io.Writer
 
-	gql adapter.GQLClient
+	adap *adapter.Adapter
 }
 
 func (l *LogWriter) Write(b []byte) (int, error) {
 	data := string(b)
 
-	input := model.LogInput{
-		Output: data,
-	}
-	if _, err := l.gql.Log(context.Background(), input); err != nil {
+	if err := l.adap.Log(data); err != nil {
 		return 0, err
 	}
 	return len(b), nil

@@ -24,7 +24,7 @@ func (c *Connector) SubscribeTask(ctx context.Context) <-chan Task {
 		times := 0
 
 		for {
-			t, err := c.gql.GetTask(ctx)
+			t, err := c.adap.GetTask()
 			if err != nil {
 				ch <- Task{
 					Err: err,

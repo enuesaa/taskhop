@@ -7,13 +7,18 @@ import (
 )
 
 func New(address string) *Adapter {
+	url := fmt.Sprintf("http://%s/graphql", address)
+	gql := NewClient(http.DefaultClient, url, nil)
+
 	return &Adapter{
 		address: address,
+		gql: gql,
 	}
 }
 
 type Adapter struct {
 	address string
+	gql     GQLClient
 }
 
 func (c *Adapter) get(endpoint string) (*http.Response, error) {
