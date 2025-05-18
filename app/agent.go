@@ -55,6 +55,7 @@ func (a *Agent) run(ctx context.Context) error {
 			if err := a.lib.Arv.UnArchive(&buf, a.config.Workdir); err != nil {
 				return err
 			}
+			a.conn.Log("success!")
 		}
 		if task.IsUpload {
 			a.lib.Log.AppInfo(ctx, "upload assets...")
@@ -65,6 +66,7 @@ func (a *Agent) run(ctx context.Context) error {
 			if err := a.conn.UploadAssets(archive); err != nil {
 				return err
 			}
+			a.conn.Log("success!")
 		}
 		if task.IsCmd {
 			a.lib.Log.AppInfo(ctx, "started: %s", task.Cmd)
