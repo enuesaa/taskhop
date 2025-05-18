@@ -1,8 +1,6 @@
 package gqlclient
 
-import (
-	"context"
-)
+import "context"
 
 func (u *UseCase) Cmd(ctx context.Context, task Task) error {
 	u.li.Log.AppInfo(ctx, "started: %s", task.Cmd())

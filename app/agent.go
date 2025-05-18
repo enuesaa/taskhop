@@ -38,7 +38,7 @@ func (a *Agent) Run() error {
 }
 
 func (a *Agent) run(ctx context.Context) error {
-	for task := range a.usecase.SubscribeTaskIter(ctx) {
+	for task := range a.usecase.SubscribeTask(ctx) {
 		if task.Err != nil {
 			return task.Err
 		}

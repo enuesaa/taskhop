@@ -60,7 +60,7 @@ func (c *Cli) printBanner() {
 	fmt.Printf("running!\n")
 	fmt.Printf("┌─────────────────────────────────────────────────────────────────\n")
 	fmt.Printf("│ To launch the agent:\n")
-	fmt.Printf("│   taskhop-agent -c %s:3000\n", addr)
+	fmt.Printf("│   taskhop-agent %s:3000\n", addr)
 	fmt.Printf("└─────────────────────────────────────────────────────────────────\n")
 }
 

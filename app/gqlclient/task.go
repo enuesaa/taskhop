@@ -3,8 +3,8 @@ package gqlclient
 import (
 	"context"
 	"errors"
-	"time"
 	"iter"
+	"time"
 
 	"github.com/enuesaa/taskhop/app/gqlclient/adapter"
 	"github.com/enuesaa/taskhop/app/gqlserver/model"
@@ -36,38 +36,7 @@ func (t *Task) Cmd() string {
 	return ""
 }
 
-func (u *UseCase) SubscribeTask(ctx context.Context) <-chan Task {
-	ch := make(chan Task)
-
-	go func() {
-		defer close(ch)
-		times := 0
-
-		for {
-			t, err := u.adap.GetTask(ctx)
-			if err != nil {
-				ch <- Task{Err: err}
-				break
-			}
-			if t.Task.Status == model.TaskStatusProceeding {
-				times = 0
-				ch <- Task{res: t}
-			} else {
-				times++
-			}
-
-			if times > 600 {
-				ch <- Task{Err: ErrConnectOnGetTask}
-				break
-			}
-			time.Sleep(1 * time.Second)
-		}
-	}()
-
-	return ch
-}
-
-func (u *UseCase) SubscribeTaskIter(ctx context.Context) iter.Seq[Task] {
+func (u *UseCase) SubscribeTask(ctx context.Context) iter.Seq[Task] {
 	return func(yield func(Task) bool) {
 		times := 0
 

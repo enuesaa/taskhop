@@ -12,8 +12,8 @@ func New(
 	cmd cmdfx.ICmdSrv,
 	task taskfx.ITaskSrv,
 	log logfx.ILogSrv,
-) Lib {
-	return Lib{
+) *Lib {
+	return &Lib{
 		Arv:  arv,
 		Cmd:  cmd,
 		Task: task,

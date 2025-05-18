@@ -47,10 +47,15 @@ func (c *Cli) parse() {
 		fmt.Fprintf(os.Stderr, "Usage:\n")
 		flag.PrintDefaults()
 	}
-	flag.StringVarP(&c.config.Address, "connect", "c", "localhost:3000", "Commander address")
 	flag.BoolVar(&c.config.VersionFlag, "version", false, "Print version")
 	flag.BoolVarP(&c.config.HelpFlag, "help", "h", false, "Print help message")
 	flag.Parse()
+
+	if len(os.Args) > 1 {
+		c.config.Address = os.Args[1]
+	} else {
+		c.config.Address = "localhost:3000"
+	}
 }
 
 func (c *Cli) validate() error {
