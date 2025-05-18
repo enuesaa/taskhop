@@ -38,21 +38,21 @@ func (a *Agent) Run() error {
 }
 
 func (a *Agent) run(ctx context.Context) error {
-	for task := range a.usecase.SubscribeTask(ctx) {
+	for task := range a.usecase.SubscribeTaskIter(ctx) {
 		if task.Err != nil {
 			return task.Err
 		}
-		if task.IsDownload {
+		if task.IsDownload() {
 			if err := a.usecase.DownloadAssets(ctx); err != nil {
 				return err
 			}
 		}
-		if task.IsUpload {
+		if task.IsUpload() {
 			if err := a.usecase.UploadAssets(ctx); err != nil {
 				return err
 			}
 		}
-		if task.IsCmd {
+		if task.IsCmd() {
 			if err := a.usecase.Cmd(ctx, task); err != nil {
 				return err
 			}
