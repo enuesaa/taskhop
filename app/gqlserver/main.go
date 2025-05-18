@@ -17,7 +17,7 @@ func New(config *conf.Config, li *lib.Lib) *chi.Mux {
 
 	// routes
 	handler := Handler{
-		li: li,
+		li:     li,
 		config: config,
 	}
 	router.Handle("/graphql", handler.HandleGQL())
@@ -29,6 +29,6 @@ func New(config *conf.Config, li *lib.Lib) *chi.Mux {
 }
 
 type Handler struct {
-	li *lib.Lib
+	li     *lib.Lib
 	config *conf.Config
 }

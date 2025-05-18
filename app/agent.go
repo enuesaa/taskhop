@@ -10,29 +10,29 @@ import (
 
 func NewAgent(config *conf.Config, li *lib.Lib) *Agent {
 	agent := &Agent{
-		config:     config,
-		li:         li,
-		usecase:    gqlclient.New(config, li),
+		config:  config,
+		li:      li,
+		usecase: gqlclient.New(config, li),
 	}
 	return agent
 }
 
 type Agent struct {
-	config     *conf.Config
-	li         *lib.Lib
-	usecase    *gqlclient.UseCase
+	config  *conf.Config
+	li      *lib.Lib
+	usecase *gqlclient.UseCase
 }
 
 func (a *Agent) Run() error {
 	ctx := context.Background()
 	for {
-		a.li.Log.AppInfo(ctx, "polling...")
+		a.usecase.AppInfo(ctx, "polling...")
 
 		if err := a.usecase.Connect(ctx); err != nil {
 			return err
 		}
 		if err := a.run(ctx); err != nil {
-			a.li.Log.AppInfo(ctx, "reset: %s", err.Error())
+			a.usecase.AppInfo(ctx, "reset: %s", err.Error())
 		}
 	}
 }
@@ -57,7 +57,7 @@ func (a *Agent) run(ctx context.Context) error {
 				return err
 			}
 		}
-		if err := a.usecase.Completed(); err != nil {
+		if err := a.usecase.Completed(ctx); err != nil {
 			return err
 		}
 	}

@@ -12,7 +12,7 @@ func New(address string) *Adapter {
 
 	return &Adapter{
 		address: address,
-		gql: gql,
+		gql:     gql,
 	}
 }
 

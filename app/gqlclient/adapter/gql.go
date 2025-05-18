@@ -6,37 +6,37 @@ import (
 	"github.com/enuesaa/taskhop/app/gqlserver/model"
 )
 
-func (c *Adapter) Log(output string) error {
+func (c *Adapter) Log(ctx context.Context, output string) error {
 	input := model.LogInput{
 		Output: output,
 	}
-	_, err := c.gql.Log(context.Background(), input)
+	_, err := c.gql.Log(ctx, input)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Adapter) Completed() error {
-	if _, err := c.gql.Completed(context.Background()); err != nil {
+func (c *Adapter) Completed(ctx context.Context) error {
+	if _, err := c.gql.Completed(ctx); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Adapter) GetTask() (*GetTask, error) {
-	return c.gql.GetTask(context.Background())
+func (c *Adapter) GetTask(ctx context.Context) (*GetTask, error) {
+	return c.gql.GetTask(ctx)
 }
 
-func (c *Adapter) GetHealth() error {
-	if _, err := c.gql.GetHealth(context.Background()); err != nil {
+func (c *Adapter) GetHealth(ctx context.Context) error {
+	if _, err := c.gql.GetHealth(ctx); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Adapter) Register() error {
-	if _, err := c.gql.Register(context.Background()); err != nil {
+func (c *Adapter) Register(ctx context.Context) error {
+	if _, err := c.gql.Register(ctx); err != nil {
 		return err
 	}
 	return nil

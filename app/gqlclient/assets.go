@@ -15,7 +15,7 @@ func (u *UseCase) DownloadAssets(ctx context.Context) error {
 	if err := u.li.Arv.UnArchive(&buf, u.config.Workdir); err != nil {
 		return err
 	}
-	u.Log("success!")
+	u.adap.Log(ctx, "success!")
 
 	return nil
 }
@@ -29,7 +29,7 @@ func (u *UseCase) UploadAssets(ctx context.Context) error {
 	if err := u.adap.UploadAssets(archive); err != nil {
 		return err
 	}
-	u.Log("success!")
+	u.adap.Log(ctx, "success!")
 
 	return nil
 }

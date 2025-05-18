@@ -13,17 +13,17 @@ func New(config *conf.Config, li *lib.Lib) *UseCase {
 	adap := adapter.New(config.Address)
 
 	u := &UseCase{
-		li:     li,
-		config: config,
-		adap:   adap,
+		li:        li,
+		config:    config,
+		adap:      adap,
 		LogWriter: logwriter.New(adap),
 	}
 	return u
 }
 
 type UseCase struct {
-	li     *lib.Lib
-	config *conf.Config
-	adap   *adapter.Adapter
+	li        *lib.Lib
+	config    *conf.Config
+	adap      *adapter.Adapter
 	LogWriter io.Writer
 }

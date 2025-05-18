@@ -1,5 +1,7 @@
 package gqlclient
 
-func (u *UseCase) Completed() error {
-	return u.adap.Completed()
+import "context"
+
+func (u *UseCase) Completed(ctx context.Context) error {
+	return u.adap.Completed(ctx)
 }

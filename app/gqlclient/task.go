@@ -24,7 +24,7 @@ func (u *UseCase) SubscribeTask(ctx context.Context) <-chan Task {
 		times := 0
 
 		for {
-			t, err := u.adap.GetTask()
+			t, err := u.adap.GetTask(ctx)
 			if err != nil {
 				ch <- Task{
 					Err: err,

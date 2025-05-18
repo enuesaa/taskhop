@@ -12,13 +12,10 @@ func (u *UseCase) Connect(ctx context.Context) error {
 	if err := u.dialPolling(); err != nil {
 		return err
 	}
-	if err := u.adap.GetHealth(); err != nil {
+	if err := u.adap.GetHealth(ctx); err != nil {
 		return err
 	}
-	if err := u.adap.Register(); err != nil {
-		return err
-	}
-	return nil
+	return u.adap.Register(ctx)
 }
 
 func (u *UseCase) dialPolling() error {

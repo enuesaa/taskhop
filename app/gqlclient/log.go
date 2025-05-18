@@ -1,5 +1,7 @@
 package gqlclient
 
-func (u *UseCase) Log(text string) {
-	u.LogWriter.Write([]byte(text))
+import "context"
+
+func (u *UseCase) AppInfo(ctx context.Context, format string, a ...any) {
+	u.li.Log.AppInfo(ctx, format, a...)
 }
