@@ -6,14 +6,12 @@ import (
 	"net/http"
 
 	"github.com/enuesaa/taskhop/app/gqlserver"
-	"github.com/enuesaa/taskhop/app/gqlserver/middleware"
 	"github.com/enuesaa/taskhop/conf"
 	"github.com/enuesaa/taskhop/lib"
-	"github.com/go-chi/chi/v5"
 	"go.uber.org/fx"
 )
 
-func NewCommander(config *conf.Config, li lib.Lib, lc fx.Lifecycle, shutdowner fx.Shutdowner) *Commander {
+func NewCommander(config *conf.Config, li *lib.Lib, lc fx.Lifecycle, shutdowner fx.Shutdowner) *Commander {
 	commander := &Commander{
 		config:     config,
 		lib:        li,
@@ -25,16 +23,17 @@ func NewCommander(config *conf.Config, li lib.Lib, lc fx.Lifecycle, shutdowner f
 
 type Commander struct {
 	config     *conf.Config
-	lib        lib.Lib
+	lib        *lib.Lib
 	lc         fx.Lifecycle
 	shutdowner fx.Shutdowner
 	server     *http.Server
 }
 
 func (a *Commander) Run(ctx context.Context) error {
+	router := gqlserver.New(a.config, a.lib)
 	a.server = &http.Server{
 		Addr:    ":3000",
-		Handler: a.handle(),
+		Handler: router,
 	}
 	go a.listen(ctx)
 	go a.monitor(ctx)
@@ -52,24 +51,6 @@ func (a *Commander) listen(ctx context.Context) {
 		}
 		a.lib.Log.Info(ctx, "Error: %s", err.Error())
 	}
-}
-
-func (a *Commander) handle() *chi.Mux {
-	router := chi.NewRouter()
-
-	// middleware
-	router.Use(middleware.Recover())
-	router.Use(middleware.NoCache())
-	router.Use(middleware.Cors())
-
-	// routes
-	handler := gqlserver.NewHandler(&a.lib, a.config)
-	router.Handle("/graphql", handler.HandleGQL())
-	router.Handle("/graphql/playground", handler.HandlePlayground())
-	router.Get("/assets", handler.Assets)
-	router.Post("/upload", handler.Upload)
-
-	return router
 }
 
 func (a *Commander) monitor(ctx context.Context) {
