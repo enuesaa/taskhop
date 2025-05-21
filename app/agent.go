@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"errors"
 
 	"github.com/enuesaa/taskhop/app/gqlclient"
 	"github.com/enuesaa/taskhop/conf"
@@ -26,13 +27,15 @@ type Agent struct {
 func (a *Agent) Run() error {
 	ctx := context.Background()
 	for {
-		a.usecase.AppInfo(ctx, "polling...")
+		a.usecase.AppInfo(ctx, "polling..")
 
 		if err := a.usecase.Connect(ctx); err != nil {
 			return err
 		}
+		a.usecase.AppInfo(ctx, "started..")
+
 		if err := a.run(ctx); err != nil {
-			a.usecase.AppInfo(ctx, "reset: %s", err.Error())
+			a.usecase.AppInfo(ctx, "error: %s", err.Error())
 		}
 	}
 }
@@ -40,6 +43,10 @@ func (a *Agent) Run() error {
 func (a *Agent) run(ctx context.Context) error {
 	for task := range a.usecase.SubscribeTask(ctx) {
 		if task.Err != nil {
+			if errors.Is(task.Err, gqlclient.ErrConnectionEnd) {
+				a.usecase.AppInfo(ctx, "end")
+				return nil
+			}
 			return task.Err
 		}
 		if task.IsDownload() {

@@ -6,7 +6,7 @@ import (
 )
 
 func (u *UseCase) DownloadAssets(ctx context.Context) error {
-	u.li.Log.AppInfo(ctx, "download assets...")
+	u.AppDebug(ctx, "download assets")
 
 	var buf bytes.Buffer
 	if err := u.adap.DownloadAssets(&buf); err != nil {
@@ -21,7 +21,8 @@ func (u *UseCase) DownloadAssets(ctx context.Context) error {
 }
 
 func (u *UseCase) UploadAssets(ctx context.Context) error {
-	u.li.Log.AppInfo(ctx, "upload assets...")
+	u.AppDebug(ctx, "upload assets")
+
 	archive, err := u.li.Arv.Archive(".")
 	if err != nil {
 		return err
