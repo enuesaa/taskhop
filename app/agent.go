@@ -32,7 +32,7 @@ func (a *Agent) Run() error {
 			return err
 		}
 		if err := a.run(ctx); err != nil {
-			a.usecase.AppInfo(ctx, "reset: %s", err.Error())
+			a.usecase.AppInfo(ctx, "error: %s", err.Error())
 		}
 	}
 }

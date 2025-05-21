@@ -10,7 +10,7 @@ import (
 	"github.com/enuesaa/taskhop/app/gqlserver/model"
 )
 
-var ErrConnectOnGetTask = errors.New("failed to connect on getTask")
+var ErrConnectOnGetTask = errors.New("failed to get task")
 
 type Task struct {
 	Err error
@@ -43,7 +43,8 @@ func (u *UseCase) SubscribeTask(ctx context.Context) iter.Seq[Task] {
 		for {
 			t, err := u.adap.GetTask(ctx)
 			if err != nil {
-				yield(Task{Err: err})
+				u.AppDebugE(ctx, err)
+				yield(Task{Err: ErrConnectOnGetTask})
 				return
 			}
 
