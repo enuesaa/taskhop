@@ -10,7 +10,7 @@ import (
 	"github.com/enuesaa/taskhop/app/gqlserver/model"
 )
 
-var ErrConnectOnGetTask = errors.New("failed to get task")
+var ErrConnectionEnd = errors.New("connection end")
 
 type Task struct {
 	Err error
@@ -44,7 +44,7 @@ func (u *UseCase) SubscribeTask(ctx context.Context) iter.Seq[Task] {
 			t, err := u.adap.GetTask(ctx)
 			if err != nil {
 				u.AppDebug(ctx, "err: %s", err.Error())
-				yield(Task{Err: ErrConnectOnGetTask})
+				yield(Task{Err: ErrConnectionEnd})
 				return
 			}
 
@@ -58,7 +58,7 @@ func (u *UseCase) SubscribeTask(ctx context.Context) iter.Seq[Task] {
 			}
 
 			if times > 600 {
-				yield(Task{Err: ErrConnectOnGetTask})
+				yield(Task{Err: ErrConnectionEnd})
 				return
 			}
 			time.Sleep(1 * time.Second)

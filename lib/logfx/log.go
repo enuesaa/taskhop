@@ -32,5 +32,5 @@ func (i *LogSrv) Error(ctx context.Context, err error) {
 }
 
 func (i *LogSrv) Debug(ctx context.Context, format string, a ...any) {
-	i.Faint(ctx, "[DEBUG]"+format, a...)
+	i.Faint(ctx, "[DEBUG] "+format, a...)
 }
