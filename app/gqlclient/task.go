@@ -43,7 +43,7 @@ func (u *UseCase) SubscribeTask(ctx context.Context) iter.Seq[Task] {
 		for {
 			t, err := u.adap.GetTask(ctx)
 			if err != nil {
-				u.AppDebugE(ctx, err)
+				u.AppDebug(ctx, "err: %s", err.Error())
 				yield(Task{Err: ErrConnectOnGetTask})
 				return
 			}
