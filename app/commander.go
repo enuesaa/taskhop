@@ -62,7 +62,7 @@ func (a *Commander) monitor(ctx context.Context) {
 
 func (a *Commander) close(ctx context.Context) error {
 	if a.server != nil {
-		a.server.Shutdown(ctx)
+		return a.server.Shutdown(ctx)
 	}
 	return nil
 }
