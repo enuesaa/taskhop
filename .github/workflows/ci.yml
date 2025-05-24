@@ -44,6 +44,14 @@ jobs:
       - run: echo '# staticcheck' >> $GITHUB_STEP_SUMMARY
       - run: staticcheck ./... >> $GITHUB_STEP_SUMMARY
 
+  golangci:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/env
+      - uses: golangci/golangci-lint-action@v8
+
   gogenerate:
     runs-on: ubuntu-latest
     steps:
