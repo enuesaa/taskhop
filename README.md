@@ -1,7 +1,7 @@
 # taskhop
 Prototype. Remote Task Runner
 
-[![ci](https://github.com/enuesaa/taskhop/actions/workflows/ci.yaml/badge.svg)](https://github.com/enuesaa/taskhop/actions/workflows/ci.yaml)
+[![ci](https://github.com/enuesaa/taskhop/actions/workflows/ci.yaml/badge.svg)](https://github.com/enuesaa/taskhop/actions/workflows/ci.yml)
 
 ## 動機
 Ubuntu on WSL2 で開発したいが Windows のキー配置に慣れてなく捗らない。そのため Mac から Ubuntu へアクセスしたい
@@ -28,6 +28,4 @@ taskhop-agent localhost:3000
 ```
 
 ## Feature Plan
-
-- agent と commander を connect するときに、両方のコマンドをいくつか操作する必要があり、ちょっと頭が混乱する
-- 大きな仕組みは変えず、CLI のフラグなど見直して改善したい
+- agent を立ち上げる際に commander への接続情報が必要であり、両方を操作する必要があるので、ちょっと頭が混乱する
