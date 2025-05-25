@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"errors"
+	"net"
 	"net/http"
 
 	"github.com/enuesaa/taskhop/app/gqlserver"
@@ -37,6 +38,7 @@ func (a *Commander) Run(ctx context.Context) error {
 	}
 	go a.listen(ctx)
 	go a.monitor(ctx)
+	a.printBanner(ctx)
 
 	a.lc.Append(fx.Hook{
 		OnStop: a.close,
@@ -65,4 +67,28 @@ func (a *Commander) close(ctx context.Context) error {
 		return a.server.Shutdown(ctx)
 	}
 	return nil
+}
+
+func (a *Commander) printBanner(ctx context.Context) {
+	addr := a.calcCommanderAddr()
+	a.lib.Log.Info(ctx, "running!")
+	a.lib.Log.Info(ctx, "┌─────────────────────────────────────────────────────────────────")
+	a.lib.Log.Info(ctx, "│ To launch the agent:")
+	a.lib.Log.Info(ctx, "│   taskhop-agent %s:3000", addr)
+	a.lib.Log.Info(ctx, "└─────────────────────────────────────────────────────────────────")
+}
+
+func (a *Commander) calcCommanderAddr() string {
+	// see https://stackoverflow.com/questions/23558425
+	conn, err := net.Dial("udp", "8.8.8.8:80")
+	if err != nil {
+		return "localhost"
+	}
+	defer conn.Close() //nolint:errcheck
+
+	addr, ok := conn.LocalAddr().(*net.UDPAddr)
+	if !ok {
+		return "localhost"
+	}
+	return addr.IP.To4().String()
 }
