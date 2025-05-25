@@ -20,7 +20,7 @@ func (i *Repository) Read(path string) (io.Reader, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer f.Close()
+	defer f.Close() //nolint:errcheck
 
 	var buf bytes.Buffer
 	if _, err := io.Copy(&buf, f); err != nil {

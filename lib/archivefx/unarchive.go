@@ -22,7 +22,9 @@ func (i *ArvSrv) UnArchive(r io.Reader, dest string) error {
 		fpath := filepath.Join(dest, file.Name)
 
 		if file.FileInfo().IsDir() {
-			os.MkdirAll(fpath, os.ModePerm)
+			if err := os.MkdirAll(fpath, os.ModePerm); err != nil {
+				return err
+			}
 			continue
 		}
 
@@ -34,13 +36,13 @@ func (i *ArvSrv) UnArchive(r io.Reader, dest string) error {
 		if err != nil {
 			return err
 		}
-		defer f.Close()
+		defer f.Close() //nolint:errcheck
 
 		fr, err := file.Open()
 		if err != nil {
 			return err
 		}
-		defer fr.Close()
+		defer fr.Close() //nolint:errcheck
 
 		if _, err = io.Copy(f, fr); err != nil {
 			return err

@@ -44,12 +44,12 @@ func (i *Repository) CreateDir(path string) error {
 }
 
 func (i *Repository) Create(path string, body []byte) error {
-	file, err := os.Create(path)
+	f, err := os.Create(path)
 	if err != nil {
 		return err
 	}
-	defer file.Close()
-	if _, err := file.Write(body); err != nil {
+	defer f.Close() //nolint:errcheck
+	if _, err := f.Write(body); err != nil {
 		return err
 	}
 	return nil
@@ -72,7 +72,7 @@ func (i *Repository) Read(path string) ([]byte, error) {
 	if err != nil {
 		return make([]byte, 0), err
 	}
-	defer f.Close()
+	defer f.Close() //nolint:errcheck
 	return io.ReadAll(f)
 }
 

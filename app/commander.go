@@ -56,7 +56,7 @@ func (a *Commander) listen(ctx context.Context) {
 func (a *Commander) monitor(ctx context.Context) {
 	for err := range a.lib.Task.Subscribe() {
 		a.lib.Log.Info(ctx, "Error: %s", err.Error())
-		a.shutdowner.Shutdown()
+		a.shutdowner.Shutdown() //nolint:errcheck
 	}
 }
 

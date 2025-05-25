@@ -11,7 +11,7 @@ import (
 func (i *ArvSrv) Archive(dir string) (io.Reader, error) {
 	zipb := bytes.NewBuffer([]byte{})
 	zipw := zip.NewWriter(zipb)
-	defer zipw.Close()
+	defer zipw.Close() //nolint:errcheck
 
 	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {

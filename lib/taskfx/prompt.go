@@ -23,7 +23,7 @@ func (i *TaskSrv) StartPrompt() error {
 	return nil
 }
 
-func (i *TaskSrv) monitor() error {
+func (i *TaskSrv) monitor() {
 	for {
 		time.Sleep(5 * time.Second)
 
@@ -32,7 +32,6 @@ func (i *TaskSrv) monitor() error {
 			break
 		}
 	}
-	return nil
 }
 
 var ErrPromptExit = errors.New("exit")

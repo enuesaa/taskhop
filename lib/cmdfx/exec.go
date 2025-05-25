@@ -15,7 +15,7 @@ func (i *CmdSrv) Exec(writer io.Writer, command string, workdir string) error {
 	multiwriter := io.MultiWriter(writer, &buf)
 	defer func() {
 		if buf.Len() == 0 {
-			writer.Write([]byte(""))
+			writer.Write([]byte("")) //nolint:errcheck
 		}
 	}()
 	cmd.Stdout = multiwriter

@@ -70,7 +70,7 @@ func (c *Cli) getLocalIpAddress() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer conn.Close()
+	defer conn.Close() //nolint:errcheck
 
 	addr := conn.LocalAddr().(*net.UDPAddr)
 

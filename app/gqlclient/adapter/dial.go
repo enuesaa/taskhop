@@ -10,7 +10,7 @@ func (c *Adapter) Dial() bool {
 	if err != nil {
 		return false
 	}
-	conn.Close()
+	conn.Close() //nolint:errcheck
 
 	return true
 }
