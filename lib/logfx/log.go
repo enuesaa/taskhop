@@ -9,9 +9,7 @@ import (
 
 func (i *LogSrv) AppInfo(ctx context.Context, format string, a ...any) {
 	text := fmt.Sprintf(format, a...)
-	message := color.YellowString(text)
-
-	i.repository.Print(message)
+	i.repository.Print(text)
 }
 
 func (i *LogSrv) Faint(ctx context.Context, format string, a ...any) {
