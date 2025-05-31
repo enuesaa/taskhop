@@ -72,10 +72,10 @@ func (a *Commander) close(ctx context.Context) error {
 func (a *Commander) printBanner(ctx context.Context) {
 	addr := a.calcCommanderAddr()
 	a.lib.Log.Info(ctx, "running!")
-	a.lib.Log.Info(ctx, "┌─────────────────────────────────────────────────────────────────")
+	a.lib.Log.Info(ctx, "┌───────────────────────────────────────────────────────")
 	a.lib.Log.Info(ctx, "│ To launch the agent:")
 	a.lib.Log.Info(ctx, "│   taskhop-agent %s:3000", addr)
-	a.lib.Log.Info(ctx, "└─────────────────────────────────────────────────────────────────")
+	a.lib.Log.Info(ctx, "└───────────────────────────────────────────────────────")
 }
 
 func (a *Commander) calcCommanderAddr() string {

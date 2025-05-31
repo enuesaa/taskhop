@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/enuesaa/taskhop/app/gqlclient"
 	"github.com/enuesaa/taskhop/conf"
@@ -24,14 +25,16 @@ type Agent struct {
 	usecase *gqlclient.UseCase
 }
 
-func (a *Agent) Run() error {
+func (a *Agent) Run() {
 	ctx := context.Background()
 	for {
 		a.usecase.Info(ctx, "polling..")
 
 		appctx, err := a.usecase.Connect(ctx)
 		if err != nil {
-			return err
+			a.usecase.InfoE(ctx, err)
+			time.Sleep(10 * time.Second)
+			continue
 		}
 		a.usecase.Info(appctx, "START")
 
