@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/enuesaa/taskhop/app/gqlclient"
 	"github.com/enuesaa/taskhop/conf"
@@ -24,18 +25,21 @@ type Agent struct {
 	usecase *gqlclient.UseCase
 }
 
-func (a *Agent) Run() error {
+func (a *Agent) Run() {
 	ctx := context.Background()
 	for {
-		a.usecase.AppInfo(ctx, "polling..")
+		a.usecase.Info(ctx, "polling..")
 
-		if err := a.usecase.Connect(ctx); err != nil {
-			return err
+		appctx, err := a.usecase.Connect(ctx)
+		if err != nil {
+			a.usecase.InfoE(ctx, err)
+			time.Sleep(10 * time.Second)
+			continue
 		}
-		a.usecase.AppInfo(ctx, "started..")
+		a.usecase.Info(appctx, "START")
 
-		if err := a.run(ctx); err != nil {
-			a.usecase.AppInfo(ctx, "error: %s", err.Error())
+		if err := a.run(appctx); err != nil {
+			a.usecase.InfoE(appctx, err)
 		}
 	}
 }
@@ -44,7 +48,7 @@ func (a *Agent) run(ctx context.Context) error {
 	for task := range a.usecase.SubscribeTask(ctx) {
 		if task.Err != nil {
 			if errors.Is(task.Err, gqlclient.ErrConnectionEnd) {
-				a.usecase.AppInfo(ctx, "end")
+				a.usecase.Info(ctx, "END")
 				return nil
 			}
 			return task.Err

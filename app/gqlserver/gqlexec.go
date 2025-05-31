@@ -72,7 +72,7 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	Register(ctx context.Context) (bool, error)
+	Register(ctx context.Context) (string, error)
 	Log(ctx context.Context, input model.LogInput) (bool, error)
 	Completed(ctx context.Context) (bool, error)
 }
@@ -643,9 +643,9 @@ func (ec *executionContext) _Mutation_register(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(bool)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_register(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -655,7 +655,7 @@ func (ec *executionContext) fieldContext_Mutation_register(_ context.Context, fi
 		IsMethod:   true,
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil

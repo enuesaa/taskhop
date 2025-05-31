@@ -35,9 +35,10 @@ func (c *Adapter) GetHealth(ctx context.Context) error {
 	return nil
 }
 
-func (c *Adapter) Register(ctx context.Context) error {
-	if _, err := c.gql.Register(ctx); err != nil {
-		return err
+func (c *Adapter) Register(ctx context.Context) (string, error) {
+	res, err := c.gql.Register(ctx)
+	if err != nil {
+		return "", err
 	}
-	return nil
+	return res.Register, nil
 }

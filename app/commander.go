@@ -9,6 +9,7 @@ import (
 	"github.com/enuesaa/taskhop/app/gqlserver"
 	"github.com/enuesaa/taskhop/conf"
 	"github.com/enuesaa/taskhop/lib"
+	"github.com/enuesaa/taskhop/lib/taskfx"
 	"go.uber.org/fx"
 )
 
@@ -57,7 +58,9 @@ func (a *Commander) listen(ctx context.Context) {
 
 func (a *Commander) monitor(ctx context.Context) {
 	for err := range a.lib.Task.Subscribe() {
-		a.lib.Log.Info(ctx, "Error: %s", err.Error())
+		if !errors.Is(err, taskfx.ErrPromptExit) {
+			a.lib.Log.Info(ctx, "Error: %s", err.Error())
+		}
 		a.shutdowner.Shutdown() //nolint:errcheck
 	}
 }
@@ -72,10 +75,10 @@ func (a *Commander) close(ctx context.Context) error {
 func (a *Commander) printBanner(ctx context.Context) {
 	addr := a.calcCommanderAddr()
 	a.lib.Log.Info(ctx, "running!")
-	a.lib.Log.Info(ctx, "┌─────────────────────────────────────────────────────────────────")
+	a.lib.Log.Info(ctx, "┌───────────────────────────────────────────────────────")
 	a.lib.Log.Info(ctx, "│ To launch the agent:")
 	a.lib.Log.Info(ctx, "│   taskhop-agent %s:3000", addr)
-	a.lib.Log.Info(ctx, "└─────────────────────────────────────────────────────────────────")
+	a.lib.Log.Info(ctx, "└───────────────────────────────────────────────────────")
 }
 
 func (a *Commander) calcCommanderAddr() string {

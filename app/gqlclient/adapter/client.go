@@ -106,10 +106,10 @@ func (t *Log) GetLog() bool {
 }
 
 type Register struct {
-	Register bool "json:\"register\" graphql:\"register\""
+	Register string "json:\"register\" graphql:\"register\""
 }
 
-func (t *Register) GetRegister() bool {
+func (t *Register) GetRegister() string {
 	if t == nil {
 		t = &Register{}
 	}
