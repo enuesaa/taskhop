@@ -33,7 +33,7 @@ func (a *Agent) Run() error {
 		if err != nil {
 			return err
 		}
-		a.usecase.Info(appctx, "started")
+		a.usecase.Info(appctx, "START")
 
 		if err := a.run(appctx); err != nil {
 			a.usecase.InfoE(appctx, err)
@@ -45,7 +45,7 @@ func (a *Agent) run(ctx context.Context) error {
 	for task := range a.usecase.SubscribeTask(ctx) {
 		if task.Err != nil {
 			if errors.Is(task.Err, gqlclient.ErrConnectionEnd) {
-				a.usecase.Info(ctx, "end")
+				a.usecase.Info(ctx, "END")
 				return nil
 			}
 			return task.Err
