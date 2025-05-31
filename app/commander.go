@@ -9,6 +9,7 @@ import (
 	"github.com/enuesaa/taskhop/app/gqlserver"
 	"github.com/enuesaa/taskhop/conf"
 	"github.com/enuesaa/taskhop/lib"
+	"github.com/enuesaa/taskhop/lib/taskfx"
 	"go.uber.org/fx"
 )
 
@@ -57,7 +58,9 @@ func (a *Commander) listen(ctx context.Context) {
 
 func (a *Commander) monitor(ctx context.Context) {
 	for err := range a.lib.Task.Subscribe() {
-		a.lib.Log.Info(ctx, "Error: %s", err.Error())
+		if !errors.Is(err, taskfx.ErrPromptExit) {
+			a.lib.Log.Info(ctx, "Error: %s", err.Error())
+		}
 		a.shutdowner.Shutdown() //nolint:errcheck
 	}
 }
