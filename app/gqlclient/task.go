@@ -43,7 +43,7 @@ func (u *UseCase) SubscribeTask(ctx context.Context) iter.Seq[Task] {
 		for {
 			t, err := u.adap.GetTask(ctx)
 			if err != nil {
-				u.AppDebug(ctx, "err: %s", err.Error())
+				u.InfoE(ctx, err)
 				yield(Task{Err: ErrConnectionEnd})
 				return
 			}

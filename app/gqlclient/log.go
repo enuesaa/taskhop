@@ -5,17 +5,17 @@ import (
 	"fmt"
 )
 
-func (u *UseCase) AppInfo(ctx context.Context, format string, a ...any) {
+func (u *UseCase) Info(ctx context.Context, format string, a ...any) {
 	text := fmt.Sprintf(format, a...)
-	u.info(ctx, text)
+	u.log(ctx, text)
 }
 
-func (u *UseCase) AppDebug(ctx context.Context, format string, a... any) {
-	text := fmt.Sprintf(format, a...)
-	u.info(ctx, text)
+func (u *UseCase) InfoE(ctx context.Context, err error) {
+	text := fmt.Sprintf("ERROR: %s", err.Error())
+	u.log(ctx, text)
 }
 
-func (u *UseCase) info(ctx context.Context, text string) {
+func (u *UseCase) log(ctx context.Context, text string) {
 	sessionID, is := u.getSessionID(ctx)
 	if !is {
 		u.li.Log.Info(ctx, text)

@@ -27,16 +27,16 @@ type Agent struct {
 func (a *Agent) Run() error {
 	ctx := context.Background()
 	for {
-		a.usecase.AppInfo(ctx, "polling..")
+		a.usecase.Info(ctx, "polling..")
 
 		appctx, err := a.usecase.Connect(ctx)
 		if err != nil {
 			return err
 		}
-		a.usecase.AppInfo(appctx, "started")
+		a.usecase.Info(appctx, "started")
 
 		if err := a.run(appctx); err != nil {
-			a.usecase.AppInfo(appctx, "error: %s", err.Error())
+			a.usecase.InfoE(appctx, err)
 		}
 	}
 }
@@ -45,7 +45,7 @@ func (a *Agent) run(ctx context.Context) error {
 	for task := range a.usecase.SubscribeTask(ctx) {
 		if task.Err != nil {
 			if errors.Is(task.Err, gqlclient.ErrConnectionEnd) {
-				a.usecase.AppInfo(ctx, "end")
+				a.usecase.Info(ctx, "end")
 				return nil
 			}
 			return task.Err
