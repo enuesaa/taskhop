@@ -7,11 +7,6 @@ import (
 	"github.com/fatih/color"
 )
 
-func (i *LogSrv) AppInfo(ctx context.Context, format string, a ...any) {
-	text := fmt.Sprintf(format, a...)
-	i.repository.Print(text)
-}
-
 func (i *LogSrv) Faint(ctx context.Context, format string, a ...any) {
 	italic := color.New(color.Faint)
 	text := italic.Sprintf(format, a...)
@@ -21,14 +16,5 @@ func (i *LogSrv) Faint(ctx context.Context, format string, a ...any) {
 
 func (i *LogSrv) Info(ctx context.Context, format string, a ...any) {
 	text := fmt.Sprintf(format, a...)
-
 	i.repository.Print(text)
-}
-
-func (i *LogSrv) Error(ctx context.Context, err error) {
-	i.Faint(ctx, "[ERROR] %s", err.Error())
-}
-
-func (i *LogSrv) Debug(ctx context.Context, format string, a ...any) {
-	i.Faint(ctx, "[DEBUG] "+format, a...)
 }
