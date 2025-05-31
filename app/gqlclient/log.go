@@ -1,9 +1,19 @@
 package gqlclient
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 func (u *UseCase) AppInfo(ctx context.Context, format string, a ...any) {
-	u.li.Log.Info(ctx, format, a...)
+	sessionID, is := u.getSessionID(ctx)
+	if !is {
+		u.li.Log.Info(ctx, format, a...)
+		return
+	}
+	text := fmt.Sprintf(format, a...)
+
+	u.li.Log.Info(ctx, "[%s] %s", sessionID, text)
 }
 
 func (u *UseCase) AppError(ctx context.Context, err error) {

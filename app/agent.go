@@ -29,13 +29,14 @@ func (a *Agent) Run() error {
 	for {
 		a.usecase.AppInfo(ctx, "polling..")
 
-		if err := a.usecase.Connect(ctx); err != nil {
+		appctx, err := a.usecase.Connect(ctx)
+		if err != nil {
 			return err
 		}
-		a.usecase.AppInfo(ctx, "started..")
+		a.usecase.AppInfo(appctx, "started")
 
-		if err := a.run(ctx); err != nil {
-			a.usecase.AppInfo(ctx, "error: %s", err.Error())
+		if err := a.run(appctx); err != nil {
+			a.usecase.AppInfo(appctx, "error: %s", err.Error())
 		}
 	}
 }
