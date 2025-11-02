@@ -1,7 +1,7 @@
 # taskhop
 Prototype. Remote Task Runner
 
-[![ci](https://github.com/enuesaa/taskhop/actions/workflows/ci.yaml/badge.svg)](https://github.com/enuesaa/taskhop/actions/workflows/ci.yml)
+[![ci](https://github.com/enuesaa/taskhop/actions/workflows/ci.yml/badge.svg)](https://github.com/enuesaa/taskhop/actions/workflows/ci.yml)
 
 ## 動機
 Ubuntu on WSL2 で開発したいが Windows のキー配置に慣れてなく捗らない。そのため Mac から Ubuntu へアクセスしたい
